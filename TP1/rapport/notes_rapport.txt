@@ -1,0 +1,49 @@
+1.1 Notes
+
+
+Question 1 : analyse générale
+
+### Faire une analyse descriptive générale des données, en présentant les informations disponibles (nature, domaine de définition, volume, etc)
+
+Données = 296 notes médian et final élèves SY02 P16 avec des variables qualitatives
+8 Variables qualitatives
+    nom => texte
+    specialite => [GB, GI, ...]
+    niveau => [1;6] (GX01 à GX06
+    statut => {UTC,Echange}
+    dernier.diplome.obtenu => texte
+    correcteur.median et correcteur.final => texte
+    resultat => ABS - A à Fx
+3 Variables quantitatives notes de 0 à 20
+    note.median
+    note.final
+    note.totale
+
+
+### Identifier les valeurs manquantes et les expliquer si possible
+Données manquantes
+    - resultalt pour les élèves absents au médian et/ou au final (abscences, abandons)
+    - dernier diplome obtenu manquant pour les étudiants en échange
+    - notes manquantes pour les étudiants absents au médian et/ou au final
+
+
+### Mentionner les variables qui sont a priori liées
+De manière logique, on pourrait penser que les notes entre le médian et le final sont liées.
+De même, la formation d'origine de l'étudiant devrait influencer l'obtention de l'UV, un étudiant venant de tronc commun ayant plus de chance de réussir.
+Inversement, le correcteur ne devrait influencer les notes.
+
+
+### Étudier les liens statistiques entre variables.
+### On pourra en particulier étudier si la réussite à l’UV est influencée par la formation d’origine
+### des étudiants, leur branche, ou leur niveau. On pourra de même étudier l’influence du correcteur
+### sur la note obtenue.
+
+
+
+- Formation d'origine des étudiants
+
+
+
+
+
+
