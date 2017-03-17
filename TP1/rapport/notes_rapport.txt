@@ -33,10 +33,12 @@ De même, la formation d'origine de l'étudiant devrait influencer l'obtention d
 Inversement, le correcteur ne devrait influencer les notes.
 
 
-### Étudier les liens statistiques entre variables.
-### On pourra en particulier étudier si la réussite à l’UV est influencée par la formation d’origine
-### des étudiants, leur branche, ou leur niveau. On pourra de même étudier l’influence du correcteur
-### sur la note obtenue.
+Question 1 : analyse générale
+
+### Étudier les liens statistiques entre variables
+### On pourra en particulier étudier si la réussite à l’UV est influencée par la formation d’origine des étudiants, leur branche, ou leur niveau. On pourra de même étudier l’influence du correcteur sur la note obtenue
+
+
 
 
 
