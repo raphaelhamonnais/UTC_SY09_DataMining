@@ -89,7 +89,7 @@ t(t(summary(notes$specialite))) # pas de NA mais on remarque des classes avec pe
 
 contingence_resut_speciality = as.data.frame.matrix(table(notes$specialite, notes$resultat))
 contingence_resut_speciality
-chisq.test(contingence_resut_speciality) # 0.02088
+chisq.test(contingence_resut_speciality) #p-value = 0.02088 < 0,05 donc on refute l'hypothèse d'indépendance => les variables sont dépendantes
 filtered_contingence_resut_speciality = rbind(
   contingence_resut_speciality[1,], 
   contingence_resut_speciality[2,], 
@@ -98,5 +98,51 @@ filtered_contingence_resut_speciality = rbind(
   contingence_resut_speciality[6,]
 )
 filtered_contingence_resut_speciality
-chisq.test(filtered_contingence_resut_speciality)
-boxplot(filtered_contingence_resut_speciality)
+chisq.test(filtered_contingence_resut_speciality) # p-value = 0.4853 largement supérieur à 0,05 donc on accepte avec grande confiance l'yphothèse d'un
+plot(filtered_contingence_resut_speciality) # ?????????? comment modéliser graphiquement ?
+
+
+### Lien Resultat et leur niveau (GX 1 à 6)
+t(t(summary(notes$niveau))) 
+contingence_resut_niveau = as.data.frame.matrix(table(notes$niveau, notes$resultat))
+contingence_resut_niveau
+chisq.test(contingence_resut_niveau) # condition non remplie, p-value = 0.0003518 => rejet hypothèse indépendance
+filtered_contingence_resut_niveau = rbind(
+  contingence_resut_niveau[1,], 
+  contingence_resut_niveau[2,], 
+  contingence_resut_niveau[4,]
+)
+filtered_contingence_resut_niveau
+chisq.test(filtered_contingence_resut_niveau) # p-value = 0.002587 => rejet hypothèse indépendance, plus le niveau monte (plus le temps passe pour l'étudiant), plus il semble difficile de réussir l'UV
+
+
+
+### Lien Resultat et Correcteur
+t(t(summary(notes$correcteur.median)))
+t(t(summary(notes$note.median)))
+cor_median_clean = na.omit(notes$correcteur.median)
+notes_median_clean = na.omit(notes$note.median)
+as.data.frame.matrix(table(cor_median_clean, notes_median_clean)) # difficilement utilisable
+classes_notes_median_clean = cut(notes_median_clean, 
+    breaks = c(-Inf, 6, 10, 14, 16, Inf), 
+    labels = c("0-5", "6-9", "10-13", "14-15", "16-20"), 
+    right = FALSE) # regrouper les notes en classes
+contingence_result_correcteur_median = as.data.frame.matrix(table(cor_median_clean, classes_notes_median_clean))
+#contingence_result_correcteur_median = as.data.frame.matrix(table(classes_notes_median_clean, cor_median_clean))
+contingence_result_correcteur_median
+chisq.test(contingence_result_correcteur_median) # p-value = 0.08142 => on accepte l'hypothèse d'indépendance mais de peu
+
+
+
+t(t(summary(notes$correcteur.final)))
+t(t(summary(notes$note.final)))
+cor_final_clean = na.omit(notes$correcteur.final)
+notes_final_clean = na.omit(notes$note.final)
+as.data.frame.matrix(table(cor_final_clean, notes_final_clean)) # difficilement utilisable
+classes_notes_final_clean = cut(notes_final_clean, 
+                                 breaks = c(-Inf, 6, 10, 14, 16, Inf), 
+                                 labels = c("0-5", "6-9", "10-13", "14-15", "16-20"), 
+                                 right = FALSE) # regrouper les notes en classes
+contingence_result_correcteur_final = as.data.frame.matrix(table(cor_final_clean, classes_notes_final_clean))
+contingence_result_correcteur_final
+chisq.test(contingence_result_correcteur_final) # p-value = 0.05737 => on accepte l'hypothèse d'indépendance mais de très peu
