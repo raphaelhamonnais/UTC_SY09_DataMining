@@ -3,139 +3,148 @@
 install.packages("MASS")
 #charger le package "MASS"
 library(MASS)
-#morphom¨¦trique du crabe: 200 lignes et 8 colonnes, 4 groupes(chaque groupe a 50 crabes), cinq morphom¨¦triques (FL: taille de la frontale, RW: largeur de la queue, CL: longueur de la coquille, CW: largeur de la coque, BD: la profondeur du corps), deux type de couleurs (B: bleu, O: orange), le sexe
-#crabs:Ğ·µÄĞÎÌ¬²âÁ¿: ÓĞ200ĞĞºÍ8ÁĞ, 4×éÃ¿×é50Ö»ó¦Ğ·£¬5¸öĞÎÌ¬²âÁ¿(FL: ¶îÒ¶³ß´ç, RW:Î²²¿¿í¶È, CL:¿Ç³¤, CW:¿Ç¿í, BD:ÉíÌåÉî¶È), Á½ÖÖÑÕÉ«(B:À¶É«, O:³ÈÉ«), ĞÔ±ğ
-crabs
 
-#transf¨¦rer des donn¨¦es au fichier .csv 
+
+#morphomÃ©trique du crabe:
+#   - 200 lignes et 8 colonnes
+#   - 4 groupes(chaque groupe a 50 crabes)
+#   - cinq morphomÃ©triques
+#     - FL: taille de la frontale
+#     - RW: largeur de la queue
+#     - CL: longueur de la coquille
+#     - CW: largeur de la coque
+#     - BD: la profondeur du corps
+#   - deux espÃ¨ces diffÃ©rentes selon la couleur (B: bleu, O: orange)
+#   - le sexe (male / femelle)
+#crabs:Ğ·????Ì¬??ï¿½ï¿½: ??200?Ğº?8??, 4??Ã¿??50Ö»??Ğ·??5????Ì¬??ï¿½ï¿½(FL: ??Ò¶?ß´?, RW:Î²??????, CL:?Ç³?, CW:?Ç¿?, BD:????????), ï¿½ï¿½????É«(B:ï¿½ï¿½É«, O:??É«), ?Ô±?
+
+#transfÃ©rer des donnÃ©es au fichier .csv 
 #write.csv(crabs, file = "E:/study/UTC/GI05/SY09/TD/TD1/crabs.csv")
-
-#voir la d¨¦finition et des d¨¦tails des donn¨¦es ¡°crabs¡±
+#voir la dÃ©finition et des dÃ©tails des donnÃ©es "crabs"
 help(crabs)
 
 #faire un sommaire 
 summary(crabs)
 
-#dessiner les donn¨¦es en utilisant les fonctions plot() et boxplot()
+#dessiner les donnÃ©es en utilisant les fonctions plot() et boxplot()
 plot(crabs)
 boxplot(crabs)
 
-#data(): charger l'ensemble de donn¨¦es sp¨¦cifi¨¦s ou lister l'ensemble de donn¨¦es disponibles
+#data(): charger l'ensemble de donnÃ©es spÃ©cifiÃ©es ou lister l'ensemble de donnÃ©es disponibles
 data(crabs)
 
-#cinq morphom¨¦triques du crabe: FL, RW, CL, CW, BD
+#cinq morphomÃ©triques du crabe: FL, RW, CL, CW, BD
 crabsquant <- crabs[,4:8]
 crabsquant
 summary(crabsquant)
 plot(crabsquant)
 boxplot(crabsquant)
 
-#le sexe du crabe: male et femelle  
+# Obtenir les index des crabes selon leur sexe : male et femelle  
 Male <- which(crabs$sex == "M")
 Male
 Female <- which(crabs$sex == "F")
 Female
 
-#l'esp¨¨ce du crabe: couleur bleu ou couleur orange 
+# Obtenir les index des crabes selon leur espÃ¨ce : bleu ou orange
 Blue  <- which(crabs$sp == "B")
 Blue
 Orange <- which(crabs$sp == "O")
 Orange
 
 #1.2.1
-#desinner selon l'esp¨¨ce 
-plot(crabsquant,col = c("blue","orange")[crabs$sp])
+#diffÃ©rencier graphiquement les donnÃ©es en fonction de l'espÃ¨ce 
+plot(crabsquant,col = c("blue","orange")[crabs$sp]) # => aucune diffÃ©renciation visible
 dev.off()
-#dessiner selon le sex
-plot(crabsquant,col=c("black","red")[crabs$sex])
+#diffÃ©rencier graphiquement les donnÃ©es en fonction du sexe
+plot(crabsquant,col=c("black","red")[crabs$sex]) # => aucune diffÃ©renciation visible
 dev.off()
 
-#¨¦tudier selon l'esp¨¨ce 
-#crabes males, avec le num¨¦ro 1-50 et 101-150
+#Etudier selon l'espÃ¨ce 
+#crabes males, (index 1-50 et 101-150)
 CM <- crabsquant[Male,]
 CM
-#crabes males de couleur bleue, avec le num¨¦ro 1-50
+#crabes males appartenant Ã  l'espÃ¨ce de couleur bleue, (index 1-50)
 CMB <- CM[Male == Blue,]
 CMB
-#crabes males de couleur orange, avec le num¨¦ro 101-150
+#crabes males appartenant Ã  l'espÃ¨ce de couleur orange, (index 101-150)
 CMO <- CM[!Male == Blue,]
 CMO
-#comparaison le param¨¨tre FL de crabe male de couleur bleue et orange
-boxplot(CMB$FL,CMO$FL,col = c("blue","orange"), main = "Comparaison de la variable FL selon l'esp¨¨ce")
-#comparaison le param¨¨tre RW de crabe male de couleur bleue et orange
-boxplot(CMB$RW,CMO$RW,col = c("blue","orange"), main = "Comparaison de la variable RW selon l'esp¨¨ce")
-#comparaison le param¨¨tre CL de crabe male de couleur bleue et orange
-boxplot(CMB$CL,CMO$CL,col = c("blue","orange"), main = "Comparaison de la variable CL selon l'esp¨¨ce")
-#comparaison le param¨¨tre CW de crabe male de couleur bleue et orange
-boxplot(CMB$CW,CMO$CW,col = c("blue","orange"), main = "Comparaison de la variable CW selon l'esp¨¨ce")
-#comparaison le param¨¨tre BD de crabe male de couleur bleue et orange
-boxplot(CMB$BD,CMO$BD,col = c("blue","orange"), main = "Comparaison de la variable BD selon l'esp¨¨ce")
+#comparer le paramÃ¨tre FL de crabe male en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CMB$FL,CMO$FL,col = c("blue","orange"), main = "Males - Comparaison de la variable FL selon l'espÃ¨ce")
+#comparer le paramÃ¨tre RW de crabe male en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CMB$RW,CMO$RW,col = c("blue","orange"), main = "Males - Comparaison de la variable RW selon l'espÃ¨ce")
+#comparer le paramÃ¨tre CL de crabe male en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CMB$CL,CMO$CL,col = c("blue","orange"), main = "Males - Comparaison de la variable CL selon l'espÃ¨ce")
+#comparer le paramÃ¨tre CW de crabe male en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CMB$CW,CMO$CW,col = c("blue","orange"), main = "Males - Comparaison de la variable CW selon l'espÃ¨ce")
+#comparer le paramÃ¨tre BD de crabe male en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CMB$BD,CMO$BD,col = c("blue","orange"), main = "Males - Comparaison de la variable BD selon l'espÃ¨ce")
 
-#crabes femelles, avec le num¨¦ro 51-100 et 151-200
+#crabes femelles (index 51-100 et 151-200)
 CF <- crabsquant[Female,]
 CF
-#crabes femelles de couleur bleue, avec le num¨¦ro 51-100
+#crabes femelles appartenant Ã  l'espÃ¨ce de couleur bleue (index 51-100)
 CFB <- CF[!Female == Orange,]
-cFB
-#crabes femelles de couleur orange, avec le num¨¦ro 151-200
+CFB
+#crabes femelles appartenant Ã  l'espÃ¨ce de couleur orange (index 151-200)
 CFO <- CF[Female == Orange,]
 CFO
-#comparaison le param¨¨tre FL de crabe femelles de couleur bleue et orange
-boxplot(CFB$FL,CFO$FL,col = c("blue","orange"), main = "Comparaison de la variable FL selon l'esp¨¨ce")
-#comparaison le param¨¨tre RW de crabe femelles de couleur bleue et orange
-boxplot(CFB$RW,CFO$RW,col = c("blue","orange"), main = "Comparaison de la variable RW selon l'esp¨¨ce")
-#comparaison le param¨¨tre CL de crabe femelles de couleur bleue et orange
-boxplot(CFB$CL,CFO$CL,col = c("blue","orange"), main = "Comparaison de la variable CL selon l'esp¨¨ce")
-#comparaison le param¨¨tre CW de crabe femelles de couleur bleue et orange
-boxplot(CFB$CW,CFO$CW,col = c("blue","orange"), main = "Comparaison de la variable CW selon l'esp¨¨ce")
-#comparaison le param¨¨tre BD de crabe femelles de couleur bleue et orange
-boxplot(CFB$BD,CFO$BD,col = c("blue","orange"), main = "Comparaison de la variable BD selon l'esp¨¨ce")
+#comparer le paramÃ¨tre FL de crabe femelle  en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CFB$FL,CFO$FL,col = c("blue","orange"), main = "Femelles - Comparaison de la variable FL selon l'espÃ¨ce")
+#comparer le paramÃ¨tre RW de crabe femelle  en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CFB$RW,CFO$RW,col = c("blue","orange"), main = "Femelles - Comparaison de la variable RW selon l'espÃ¨ce")
+#comparer le paramÃ¨tre CL de crabe femelle  en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CFB$CL,CFO$CL,col = c("blue","orange"), main = "Femelles - Comparaison de la variable CL selon l'espÃ¨ce")
+#comparer le paramÃ¨tre CW de crabe femelle  en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CFB$CW,CFO$CW,col = c("blue","orange"), main = "Femelles - Comparaison de la variable CW selon l'espÃ¨ce")
+#comparer le paramÃ¨tre BD de crabe femelle  en fonction de l'espÃ¨ce (bleue ou orange)
+boxplot(CFB$BD,CFO$BD,col = c("blue","orange"), main = "Femelles - Comparaison de la variable BD selon l'espÃ¨ce")
 
 
-#etudier en sexe
-#crabes de couleur bleue, avec le num¨¦ro: 1-100
+#etudier selon le sexe
+#crabes de couleur bleue (index: 1-100)
 CB <- crabsquant[Blue,]
 CB
-#crabes males de couleur bleue, avec le num¨¦ro 1-50
+#crabes males de couleur bleue (index 1-50)
 CBM <- na.omit(CB[Male,])
 CBM
-#crabes femelles de couleur bleue, avec le num¨¦ro 51-100
+#crabes femelles de couleur bleue (index 51-100)
 CBF <- na.omit(CB[Female,])
 CBF
-#comparaison le param¨¨tre FL de crabe male et femelle de couleur bleue
-boxplot(CBM$FL,CBF$FL,col = c("blue","blue"), main = "Comparaison de la variable FL selon le sex")
-#comparaison le param¨¨tre RW de crabe male et femelle de couleur bleue
-boxplot(CBM$RW,CBF$RW,col = c("blue","blue"), main = "Comparaison de la variable RW selon le sex")
-#comparaison le param¨¨tre CL de crabe male et femelle de couleur bleue
-boxplot(CBM$CL,CBF$CL,col = c("blue","blue"), main = "Comparaison de la variable CL selon le sex")
-#comparaison le param¨¨tre CW de crabe male et femelle de couleur bleue
-boxplot(CBM$CW,CBF$CW,col = c("blue","blue"), main = "Comparaison de la variable CW selon le sex")
-#comparaison le param¨¨tre BD de crabe male et femelle de couleur bleue
-boxplot(CBM$BD,CBF$BD,col = c("blue","blue"), main = "Comparaison de la variable BD selon le sex")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce bleue en fonction du sexe (male/femelle)
+boxplot(CBM$FL,CBF$FL,col = c("blue","blue"), main = "EspÃ¨ce Bleue - Comparaison de la variable FL selon le sexe")
+#comparer le paramÃ¨tre RW des crabes d'espÃ¨ce bleue en fonction du sexe (male/femelle)
+boxplot(CBM$RW,CBF$RW,col = c("blue","blue"), main = "EspÃ¨ce Bleue - Comparaison de la variable RW selon le sexe")
+#comparer le paramÃ¨tre CL des crabes d'espÃ¨ce bleue en fonction du sexe (male/femelle)
+boxplot(CBM$CL,CBF$CL,col = c("blue","blue"), main = "EspÃ¨ce Bleue - Comparaison de la variable CL selon le sexe")
+#comparer le paramÃ¨tre CW des crabes d'espÃ¨ce bleue en fonction du sexe (male/femelle)
+boxplot(CBM$CW,CBF$CW,col = c("blue","blue"), main = "EspÃ¨ce Bleue - Comparaison de la variable CW selon le sexe")
+#comparer le paramÃ¨tre BD des crabes d'espÃ¨ce bleue en fonction du sexe (male/femelle)
+boxplot(CBM$BD,CBF$BD,col = c("blue","blue"), main = "EspÃ¨ce Bleue - Comparaison de la variable BD selon le sexe")
 
-#crabes de couleur orange, avec lenum¨¦ro: 101-200
+#crabes de couleur orange (index 101-200)
 CO <- crabsquant[Orange,]
 CO
-#crabes males de couleur bleue, avec le num¨¦ro 1-50
+#crabes males de couleur bleue (index 1-50)
 COM <- na.omit(CO[Male,])
 COM
-#crabes femelles de couleur bleue, avec le num¨¦ro 51-100
+#crabes femelles de couleur bleue (index 51-100)
 COF <- na.omit(CO[Female,])
 COF
-#comparaison le param¨¨tre FL de crabe male et femelle de couleur orange
-boxplot(COM$FL,COF$FL,col = c("orange","orange"), main = "Comparaison de la variable FL selon le sex")
-#comparaison le param¨¨tre RW de crabe male et femelle de couleur orange
-boxplot(COM$RW,COF$RW,col = c("orange","orange"), main = "Comparaison de la variable RW selon le sex")
-#comparaison le param¨¨tre CL de crabe male et femelle de couleur orange
-boxplot(COM$CL,COF$CL,col = c("orange","orange"), main = "Comparaison de la variable CL selon le sex")
-#comparaison le param¨¨tre CW de crabe male et femelle de couleur orange
-boxplot(COM$CW,COF$CW,col = c("orange","orange"), main = "Comparaison de la variable CW selon le sex")
-#comparaison le param¨¨tre BD de crabe male et femelle de couleur orange
-boxplot(COM$BD,COF$BD,col = c("orange","orange"), main = "Comparaison de la variable BD selon le sex")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce orange en fonction du sexe (male/femelle)
+boxplot(COM$FL,COF$FL,col = c("orange","orange"), main = "EspÃ¨ce Orange - Comparaison de la variable FL selon le sexe")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce orange en fonction du sexe (male/femelle)
+boxplot(COM$RW,COF$RW,col = c("orange","orange"), main = "EspÃ¨ce Orange - Comparaison de la variable RW selon le sexe")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce orange en fonction du sexe (male/femelle)
+boxplot(COM$CL,COF$CL,col = c("orange","orange"), main = "EspÃ¨ce Orange - Comparaison de la variable CL selon le sexe")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce orange en fonction du sexe (male/femelle)
+boxplot(COM$CW,COF$CW,col = c("orange","orange"), main = "EspÃ¨ce Orange - Comparaison de la variable CW selon le sexe")
+#comparer le paramÃ¨tre FL des crabes d'espÃ¨ce orange en fonction du sexe (male/femelle)
+boxplot(COM$BD,COF$BD,col = c("orange","orange"), main = "EspÃ¨ce Orange - Comparaison de la variable BD selon le sexe")
 
 
 #1.2.2
-#corr¨¦lation 
-#selon le r¨¦sultat, on voit que il existe une forte corr¨¦lation entre des variables car la corr¨¦lation entre deux diff¨¦rents variables est presque ¨¦gale ¨¤ 1.
+#corrÃ©lation 
+#selon le rÃ©sultat, on voit qu'il existe une forte corrÃ©lation entre des variables car la corrÃ©lation entre deux diffÃ©rentes variables est presque Ã©gale Ã  1.
 cor(crabsquant)
-
