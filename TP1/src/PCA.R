@@ -52,7 +52,7 @@ corr.acp <- corr.acp[,-c(1)] # ne prendre que les variables quantitatives
 corr.acp
 corr.acp.centered = scale(corr.acp, center = TRUE, scale = FALSE) # centrer les données en colonne
 corr.acp.centered
-corr.acp.covar = cov.wt(corr.acp.centered, method = "ML") # calcul de matrice de covariance avec centrage automatique
+corr.acp.covar = cov.wt(corr.acp.centered, method = "ML") # calcul de matrice de covariance avec centrage et réduction automatique
 corr.acp.covar
 corr.acp.covar.diago = eigen(corr.acp.covar$cov) # diagonaliser la covariance (pas les moyennes)
 val_propres = corr.acp.covar.diago$values # valeurs propres = quantités d'inertie expliquée
@@ -74,3 +74,4 @@ pourcentage_inertie
 # 2. Calculer les composantes principales ; en déduire la représentation des quatre individus dans le premier plan factoriel.
 ACP = corr.acp.centered %*% vec_propres
 ACP # coordonnées des points sur le nouveau repère des composantes principales = combinaisons linéaires des anciens axes
+
