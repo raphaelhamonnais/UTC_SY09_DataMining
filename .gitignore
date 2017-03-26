@@ -1,4 +1,14 @@
 # Created by .ignore support plugin (hsz.mobi)
 /.idea
+
+# Do not take R temporary files
 *.Rhistory
 *.RData
+
+# Do not take files that LaTeX creates automatically
+*/rapport/*.aux
+*/rapport/*.log
+*/rapport/*.out
+*/rapport/*.pdf
+*/rapport/*.synctex.gz
+*/rapport/*.toc
