@@ -60,13 +60,13 @@ dev.off()
 plot(crabsquant,col=c("black","red")[crabs$sex]) # => aucune différenciation visible
 dev.off()
 
-#Etudier selon l'espèce
 
+
+#Etudier selon l'espèce
 Crabs_Orange <- crabsquant[Orange_Indexes,]
 Crabs_Orange
 Crabs_Blue <- crabsquant[Blue_Indexes,]
 Crabs_Blue
-
 
 #crabes males, (index 1-50 et 101-150)
 Crabs_Male <- crabsquant[Male_Indexes,]
@@ -122,6 +122,18 @@ boxplot(Crabs_Female_and_Blue$BD, Crabs_Female_and_Orange$BD, col = c("blue","or
 
 
 #etudier selon le sexe
+
+#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
+boxplot(Crabs_Male$FL, Crabs_Female$FL, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable FL selon le sexe")
+#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
+boxplot(Crabs_Male$RW, Crabs_Female$RW, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable RW selon le sexe")
+#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
+boxplot(Crabs_Male$CL, Crabs_Female$CL, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable CL selon le sexe")
+#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
+boxplot(Crabs_Male$CW, Crabs_Female$CW, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable CW selon le sexe")
+#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
+boxplot(Crabs_Male$BD, Crabs_Female$BD, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable BD selon le sexe")
+
 #comparer le paramètre FL des crabes d'espèce bleue en fonction du sexe (male/femelle)
 boxplot(Crabs_Male_and_Blue$FL, Crabs_Female_and_Blue$FL, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Espèce Bleue - Comparaison de la variable FL selon le sexe")
 #comparer le paramètre RW des crabes d'espèce bleue en fonction du sexe (male/femelle)
@@ -145,16 +157,6 @@ boxplot(Crabs_Male_and_Orange$CW, Crabs_Female_and_Orange$CW, col = c("grey","wh
 boxplot(Crabs_Male_and_Orange$BD, Crabs_Female_and_Orange$BD, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Espèce Orange - Comparaison de la variable BD selon le sexe")
 
 
-#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
-boxplot(Crabs_Male$FL, Crabs_Female$FL, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable FL selon le sexe")
-#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
-boxplot(Crabs_Male$RW, Crabs_Female$RW, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable RW selon le sexe")
-#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
-boxplot(Crabs_Male$CL, Crabs_Female$CL, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable CL selon le sexe")
-#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
-boxplot(Crabs_Male$CW, Crabs_Female$CW, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable CW selon le sexe")
-#comparer le paramètre FL des crabes (toutes espèces confondues) en fonction du sexe (male/femelle)
-boxplot(Crabs_Male$BD, Crabs_Female$BD, col = c("grey","white"), names = c("Mâle","Femelle"), main = "Comparaison de la variable BD selon le sexe")
 
 
 #1.2.2
@@ -165,18 +167,22 @@ cor(crabsquant)
 cor(Crabs_Orange)
 cor(Crabs_Blue)
 cor(Crabs_Blue, Crabs_Orange)
-cor(Crabs_Male, Crabs_Female)
+cor(Crabs_Male, Crabs_Female) # set le moins corrélé
 cor(Crabs_Male_and_Blue, Crabs_Female_and_Blue)
 cor(Crabs_Male_and_Blue, Crabs_Female_and_Orange)
 cor(Crabs_Male_and_Orange, Crabs_Female_and_Orange)
 cor(Crabs_Male_and_Orange, Crabs_Female_and_Blue)
 
-# Question : Quelle en est vraisemblablement la cause?
+# Question : Quelle en est vraisemblablement la cause? 
+# ???? // TODO demander prof
 # Simplement des variables quantitatives possèdent des valeurs dans une petit intervale (de 0 à 54 environ) et que les variations dans cet intervalle sont légères ?
 
 # Quel traitement est-il possible d’appliquer aux données pour s’affranchir de ce phénomène ?
 # ACP => cf. cours
 
+
+
+# 2.3 ACP sur crabs
 
 crabsquant
 crabsquant.centered = scale(crabsquant, center = TRUE, scale = FALSE) # centrer les données en colonne
@@ -193,6 +199,17 @@ pourcentage_inertie = crabs.acp.valeurs.propres / sum(crabs.acp.valeurs.propres)
 pourcentage_inertie
 crabs.acp = crabsquant.centered %*% crabs.acp.vecteurs.propres
 crabs.acp
+
+# avec fonctions R
+#acptest = princomp(crabsquant)
+#summary(acptest)
+#acptest$scores
+#acptest$loadings
+
+# Que constatez vous ? 
+pourcentage_inertie # composante 1 donne 98,25 % de l'inertie
+# TODO expliquer phénomère à la lumière de question 1.2
+
 
 plot(crabs.acp[,1], col = c("blue","orange")[crabs$sp]) # juste ACP 1 ne dit pas grand chose
 
@@ -212,9 +229,17 @@ plot(crabs.acp[,3]~crabs.acp[,1], col = c("blue","orange")[crabs$sp]) # 1 et 3 b
 plot(crabs.acp[,1]~crabs.acp[,2], col = c("blue","orange")[crabs$sp]) # moyen pour espèce
 plot(crabs.acp[,1]~crabs.acp[,3], col = c("blue","orange")[crabs$sp]) # 1 et 3 bien pour espèce
 
-
 # Autres composantes ne disent pas grand chose
 plot(crabs.acp[,1]~crabs.acp[,4], col = c("blue","orange")[crabs$sp]) # ne dit rien d'intéressant mais c'est normal vu le pourcentage d'inertie expliquée
 plot(crabs.acp[,1]~crabs.acp[,4], col = c("black","red")[crabs$sex]) # ne dit rien d'intéressant mais c'est normal vu le pourcentage d'inertie expliquée
 plot(crabs.acp[,1]~crabs.acp[,5], col = c("blue","orange")[crabs$sp]) # ne dit rien d'intéressant mais c'est normal vu le pourcentage d'inertie expliquée
 plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit rien d'intéressant mais c'est normal vu le pourcentage d'inertie expliquée
+
+
+
+# Trouver une solution pour améliorer affichage graphique TODO
+
+# idée : trouver les variables qui influencent le plus le vecteur propre de la premiere composante et les enlever des données
+#   - mais ne change pas grand chose, et puis on perd beaucoup de données
+
+# idée 2 : pondérer à la hausse ou à la baisse certaines variables => problème => comment les choisir
