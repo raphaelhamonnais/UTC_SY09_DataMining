@@ -51,3 +51,7 @@ plot(acp$scores[,1]~acp$scores[,7], col = c("blue","orange")[Pima$z])
 
 
 
+
+Pima$z
+class(Pima$z)
+
