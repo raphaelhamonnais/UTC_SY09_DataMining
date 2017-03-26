@@ -200,11 +200,7 @@ pourcentage_inertie
 crabs.acp = crabsquant.centered %*% crabs.acp.vecteurs.propres
 crabs.acp
 
-# avec fonctions R
-#acptest = princomp(crabsquant)
-#summary(acptest)
-#acptest$scores
-#acptest$loadings
+
 
 # Que constatez vous ? 
 pourcentage_inertie # composante 1 donne 98,25 % de l'inertie
@@ -240,6 +236,14 @@ plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit ri
 # Trouver une solution pour améliorer affichage graphique TODO
 
 # idée : trouver les variables qui influencent le plus le vecteur propre de la premiere composante et les enlever des données
-#   - mais ne change pas grand chose, et puis on perd beaucoup de données
+#   - perd des données
 
 # idée 2 : pondérer à la hausse ou à la baisse certaines variables => problème => comment les choisir
+
+# avec fonctions R
+acptest = princomp(crabsquant)
+summary(acptest)
+acptest$scores
+acptest$loadings
+biplot(acptest, col = c("blue","orange")[crabs$RW])
+biplot(acptest, choices = c(2,3)) # TODO comment mettre de la couleur ??
