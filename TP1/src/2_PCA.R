@@ -56,7 +56,7 @@ corr.acp.covar = cov.wt(corr.acp.centered, method = "ML") # calcul de matrice de
 corr.acp.covar
 corr.acp.covar.diago = eigen(corr.acp.covar$cov) # diagonaliser la covariance (pas les moyennes)
 val_propres = corr.acp.covar.diago$values # valeurs propres = quantités d'inertie expliquée
-vec_propres = corr.acp.covar.diago$vectors # vecteurs propres = vecteurs qui portent/expliquent les axes factoriels
+vec_propres = -(corr.acp.covar.diago$vectors) # vecteurs propres = vecteurs qui portent/expliquent les axes factoriels
 # normalement matrice de covariance = corr.acp.covar.diago$vectors * corr.acp.covar.diago$values * t(corr.acp.covar.diago$vectors)
 vec_propres %*% diag(val_propres) %*% t(vec_propres)
 corr.acp.covar$cov
@@ -75,3 +75,31 @@ pourcentage_inertie
 ACP = corr.acp.centered %*% vec_propres
 ACP # coordonnées des points sur le nouveau repère des composantes principales = combinaisons linéaires des anciens axes
 
+#3. Tracer la présentation des trois variables dans le premier plan factoriel 
+#Nommer chaque ligne des quatre composants principales
+rownames(ACP) <- c("Cor1", "Cor4", "Cor5", "Cor6", "Cor7", "Cor8")
+ACP
+#Vue que les pourcentages d'inertie expliquée par chaque axes sont 66.095613, 24.786460, 5.610544, 3.507382,
+#les pourcentages d'inertie expliquée par les sous-espaces principaux sont 66.095613, 90.882073, 96.492618, 100
+#donc le nuage initial est pratiquement dans un espace de dimension 3
+#Dessiner le premier plan factoriel entre composant1 et composant2
+plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe2")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(ACP[,1], ACP[,2])
+
+#Dessiner le premier plan factoriel entre composant1 et composant3
+plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe3")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(ACP[,1], ACP[,3])
+
+#Dessiner le premier plan factoriel entre composant1 et composant4
+plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe4")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(ACP[,1], ACP[,4])
+
+
+#curve(sqrt(1-x^2),-1,1,add = TRUE)
+#curve(-sqrt(1-x^2),-1,1,add = TRUE)

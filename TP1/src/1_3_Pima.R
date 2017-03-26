@@ -1,4 +1,5 @@
 #1.3 Données Pima
+setwd("E:/study/UTC/GI05/SY09/UTC_SY09_TPs/TP1")
 Pima <- read.csv("data/Pima.csv",header = T)
 summary(Pima)
 plot(Pima)
@@ -19,3 +20,5 @@ plot(Pima$ped~Pima$bp)
 boxplot(Pima$ped~Pima$glu)
 
 cor(Pima)
+Pima$z
+class(Pima$z)

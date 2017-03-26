@@ -1,4 +1,4 @@
-# boxplot(x~y) diagramme en barre de x en fonction de y
+ # boxplot(x~y) diagramme en barre de x en fonction de y
 
 # factor = variable qualitative
 #   => qual ordinale (ordonée) ou nominale (simple nom)
