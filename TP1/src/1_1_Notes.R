@@ -1,4 +1,4 @@
- # boxplot(x~y) diagramme en barre de x en fonction de y
+# boxplot(x~y) diagramme en barre de x en fonction de y
 
 # factor = variable qualitative
 #   => qual ordinale (ordonée) ou nominale (simple nom)
@@ -124,9 +124,10 @@ cor_median_clean = na.omit(notes$correcteur.median)
 notes_median_clean = na.omit(notes$note.median)
 as.data.frame.matrix(table(cor_median_clean, notes_median_clean)) # difficilement utilisable
 classes_notes_median_clean = cut(notes_median_clean, 
-    breaks = c(-Inf, 6, 10, 14, 16, Inf), 
-    labels = c("0-5", "6-9", "10-13", "14-15", "16-20"), 
+    breaks = c(-Inf, 8, 12, 15, Inf), 
+    labels = c("0-7", "8-11", "12-15", "16-20"), 
     right = FALSE) # regrouper les notes en classes
+classes_notes_median_clean
 contingence_result_correcteur_median = as.data.frame.matrix(table(cor_median_clean, classes_notes_median_clean))
 #contingence_result_correcteur_median = as.data.frame.matrix(table(classes_notes_median_clean, cor_median_clean))
 contingence_result_correcteur_median
