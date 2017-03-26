@@ -140,9 +140,10 @@ cor_final_clean = na.omit(notes$correcteur.final)
 notes_final_clean = na.omit(notes$note.final)
 as.data.frame.matrix(table(cor_final_clean, notes_final_clean)) # difficilement utilisable
 classes_notes_final_clean = cut(notes_final_clean, 
-                                 breaks = c(-Inf, 6, 10, 14, 16, Inf), 
-                                 labels = c("0-5", "6-9", "10-13", "14-15", "16-20"), 
+                                 breaks = c(-Inf, 8, 13, 17, Inf), 
+                                 labels = c("0-5", "6-9", "10-13", "16-20"), 
                                  right = FALSE) # regrouper les notes en classes
 contingence_result_correcteur_final = as.data.frame.matrix(table(cor_final_clean, classes_notes_final_clean))
 contingence_result_correcteur_final
 chisq.test(contingence_result_correcteur_final) # p-value = 0.05737 => on accepte l'hypothèse d'indépendance mais de très peu
+
