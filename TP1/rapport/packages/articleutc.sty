@@ -1,4 +1,4 @@
-\ProvidesPackage{articleutc}
+\ProvidesPackage{packages/articleutc}
 
 % pour les polices accentuées francaises (avec pdfTeX)
 % décommenter pour pdflatex, commenter pour xelatex
@@ -94,7 +94,7 @@
 \RequirePackage{array}
 \RequirePackage{colortbl}
 \RequirePackage{ltxtable}
-\RequirePackage{subfigure}
+%\RequirePackage{subfigure}
 \RequirePackage{wrapfig}
 % pour les entetes et pieds de page
 \RequirePackage{fancyhdr}
@@ -118,7 +118,7 @@
 \renewcommand{\footrulewidth}{0pt}%
 
 \fancyhead[RO,LE]{\footnotesize{\textit{\@title}}}
-\fancyfoot[RE,LO]{\footnotesize{\textit{\@author}}}
+%\fancyfoot[RE,LO]{\footnotesize{\textit{\@author}}}
 \fancyfoot[RO,LE]{\footnotesize{\textit{\@licencechoice}}}
 \fancyheadoffset[L]{\decallagetitre}
 \fancyfootoffset[L]{\decallagetitre}
@@ -257,7 +257,7 @@
 \fancyfoot[R]{\footnotesize{\textit{\@title}}}
 \fancyfoot[C]{\thepage}
 \fancyfoot[R]{\footnotesize{\textit{\@title}}}
-\fancyfoot[L]{\footnotesize{\textit{\@author~---~\@uv\\\@licencechoice}}}
+%\fancyfoot[L]{\footnotesize{\textit{\@author~---~\@uv\\\@licencechoice}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
