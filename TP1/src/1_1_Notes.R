@@ -68,6 +68,7 @@ length(formation_origine) == length(resultats_sans_echange) # = TRUE => même lo
 # tableau de contingence
 contingence_result_formation = as.data.frame.matrix(table(formation_origine, resultats_sans_echange))
 contingence_result_formation
+t(t(apply(contingence_result_formation, MARGIN = 1, sum)))
 # on remarque que beaucoup de cases du tableau n'ont pas un effectif supérieur ou égal à 5, les conditions pour le test du Chi 2 ne sont donc pas réunies.
 # On va quand meme le faire pour voir ce que ça donne
 chisq.test(contingence_result_formation)
@@ -76,12 +77,30 @@ chisq.test(contingence_result_formation)
 # donc les conditions du test n'étant pas respectée précédement, nous nous intéressement seulement aux population qui remplissent les conditions, à savoir BAC, CPGE, DUT
 contingence_result_formation_BAC_DUT_CPGE = rbind(contingence_result_formation[4,], contingence_result_formation[6,], contingence_result_formation[8,])
 contingence_result_formation_BAC_DUT_CPGE
+# respecter les conditions du test du chi deux
+contingence_result_formation_BAC_DUT_CPGE[,6] = contingence_result_formation_BAC_DUT_CPGE[,6] + contingence_result_formation_BAC_DUT_CPGE[,7]
+contingence_result_formation_BAC_DUT_CPGE[,2] = contingence_result_formation_BAC_DUT_CPGE[,1] + contingence_result_formation_BAC_DUT_CPGE[,2]
+contingence_result_formation_BAC_DUT_CPGE = contingence_result_formation_BAC_DUT_CPGE[,-7]
+contingence_result_formation_BAC_DUT_CPGE = contingence_result_formation_BAC_DUT_CPGE[,-1]
+names(contingence_result_formation_BAC_DUT_CPGE) = c("F-Fx", "E", "D", "C", "B-A")
+contingence_result_formation_BAC_DUT_CPGE
 chisq.test(contingence_result_formation_BAC_DUT_CPGE)
-# Bien que certains effectifs sont en dessous de 5, on obtient quand même un test du Chi2 significatif avec p-value = 0.0006389
+# on obtient un test du Chi2 significatif avec p-value = 0.000288077
 # => on peut donc rejeter l'hypothèse d'indépendance => la formation d'origine des étudiants a un impact sur leur résultat final
 
+# Visualisation
+options(digits = 10)
+contingence_result_formation_BAC_DUT_CPGE_percentage = contingence_result_formation_BAC_DUT_CPGE / sum(contingence_result_formation_BAC_DUT_CPGE) * 100
+contingence_result_formation_BAC_DUT_CPGE_percentage
+boxplot(contingence_result_formation_BAC_DUT_CPGE[1,])
+contingence_result_formation_BAC_DUT_CPGE_percentage
+dput(head(contingence_result_formation_BAC_DUT_CPGE_percentage))
+plot.new()
 
-
+barplot(as.matrix(contingence_result_formation_BAC_DUT_CPGE_percentage), beside = TRUE,
+        col = c("light green", "light blue", "grey"),
+        legend = rownames(contingence_result_formation_BAC_DUT_CPGE),
+        xlab = "Résultats obtenus", ylab = "Pourcentage d'étudiants")
 
 
 ### Lien Resultat et Spécialité des étudiants (GB, GI, ...)
