@@ -53,7 +53,7 @@
 
 \chapter{Statistique descriptive}
 
-\section{Notes SY02 au semestre de printemps 2016}
+\section{Notes de SY02 au semestre de printemps 2016}
 
 \subsection{Analyse descriptive}
 
@@ -113,7 +113,7 @@ Nous utiliserons le test d'indépendance du $\chi^2$ qui permet de vérifier l'i
 
 
 
-\paragraph{Lien statistique entre le résultat et le diplôme d'origine des étudiants}
+\subsubsection{Lien statistique entre le résultat et le diplôme d'origine des étudiants}
 La première étape fut de nettoyer les données en supprimant les 6 étudiants dont le statut vaut \textit{Echange} car leur diplôme d'origine n'est pas renseigné.\\
 Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeur de la variable \textit{resultat} le nombre d'élèves ayant obtenu ce résultat en fonction de leur diplôme d'origine~: on obtient un effectif pour chaque couple \textit{diplôme d'origine}/\textit{résultat}.
 
@@ -125,14 +125,14 @@ Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeu
 		\captionsetup{justification=centering, margin=1cm}
 		\includegraphics[width=0.65\linewidth]{img/1-1-2-Contingence-Result-Diplome-Origine}
 		\caption{\scriptsize Tableau de contingence entre résultats et diplôme d'origine}
-		\label{fig:tab-contingence-diplome-resultat}
+		\label{fig:tab_contingence_diplome_resultat}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.5\linewidth}
 		\centering
 		\captionsetup{justification=centering, margin=1cm}
 		\includegraphics[width=0.5\linewidth]{img/1-1-2-Effectif-Diplome-Origine}
 		\caption{\scriptsize Effectif total par diplôme}
-		\label{fig:effectif-total-par-diplome}
+		\label{fig:effectif_total_par_diplome}
 	\end{subfigure}%
 	\caption{
 		\small Effectifs de la population par diplôme d'origine et tableau de contingence entre les variables \textit{résultat} et \textit{diplôme d'origine}.
@@ -140,22 +140,52 @@ Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeu
 	\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine}%
 \end{figure}
 
-On remarque immédiatement que les conditions du test ne sont pas respectées~: il a y une majorité des effectifs qui sont inférieurs à 5 dans le tableau de contingence  (cf. figure \ref{fig:tab-contingence-diplome-resultat}). Et c'est tout à fait normal si l'on regarde les effectifs d'étudiants (figure \ref{fig:effectif-total-par-diplome}) en fonction de leur diplôme d'origine dans la population totale~: seuls les diplômes BAC (étudiant venant de tronc commun), DUT et CPGE sont convenablement représentés.
+On remarque immédiatement que les conditions du test ne sont pas respectées~: il a y une majorité des effectifs qui sont inférieurs à 5 dans le tableau de contingence  (cf. figure \ref{fig:tab_contingence_diplome_resultat}). Et c'est tout à fait normal si l'on regarde les effectifs d'étudiants (figure \ref{fig:effectif_total_par_diplome}) en fonction de leur diplôme d'origine dans la population totale~: seuls les diplômes BAC (étudiant venant de tronc commun), DUT et CPGE sont convenablement représentés.
 On peut tout de même effectuer le test du $\chi^2$ tout en sachant que les conditions ne sont pas respectées, afin de vérifier l'importance de ces conditions. On obtient alors une \textit{p-value} égale à $0.2572$. On conserve donc l'hypothèse $H_{0}$ d'indépendance des variables, tout en sachant que le résultat et probablement faux.
 
-\subparagraph{Correction des effectifs}
+\paragraph{Correction des effectifs}
 Afin de respecter les conditions du test de $\chi^2$, nous n'avons gardé que les lignes correspondant aux diplômes d'origines de type \textit{BAC}, \textit{DUT} et \textit{CPGE}. Il a aussi fallut regrouper les deux premières et deux dernières classes de \textit{résultat} en sommant les effectifs des élèves ayant obtenu \textit{F} ou \textit{Fx} et ceux ayant eu \textit{A} ou \textit{B}.\\
 On obtient ainsi un nouveau tableau de contingence~:
+
 \begin{figure}[h]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=0.3\linewidth]{img/1-1-2-Contingence-Result-Diplome-Corrigee}
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Diplome-Corrigee}
+		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre les variables \textit{résultat} et \textit{diplôme d'origine}.}
+		\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine_corrigee}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-1-2-Ratio-resultat-diplome}
+		\caption{\scriptsize Effectif total par diplôme}
+		\label{fig:ratio_resultats_diplome}
+	\end{subfigure}%
 	\caption{
-		\small Tableau de contingence \textbf{corrigé} entre les variables \textit{résultat} et \textit{diplôme d'origine}.
+		\small Tableau de contingence \textbf{corrigé} et visualisation des fréquences entre les variables \textit{résultat} et \textit{diplôme d'origine}.
 	}
-	\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine_corrigee}%
+	\label{fig:tab_frequence_et_contingence_corriges_resultats_diplome_origine}%
 \end{figure}
+Les conditions du test sont alors réunies et on obtient une \textit{p-value} égale à $0.000288$. On rejette donc l'hypothèse $H_{0}$ d'indépendance avec confiance~: le diplôme d'origine d'un étudiant a un impact significatif sur son résultat final à l'UV de statistiques SY02. On voit bien sur le graphique en barre représentant les fréquence d'obtention d'un résultat en fonction du diplôme d'origine (cf. figure \ref{fig:ratio_resultats_diplome}) qu'un peu plus de 15\% des élèves ayant comme dernier diplôme le BAC ont obtenu \textit{A} ou \textit{B} tandis que seulement 2\% d'entre-eux n'ont pas réussi l'UV. On remarque aussi que la courbe est croissante~: plus le résultat est bon, plus la fréquence d'obtention augmente. Pour les élèves provenant de DUT ou CPGE par contre c'est l'inverse~: moins le résultat est bon, plus la fréquence augmente.
 
-Les conditions du test sont alors réunies et on obtient une \textit{p-value} égale à $0.000288$. On rejette donc l'hypothèse $H_{0}$ d'indépendance avec confiance~: le diplôme d'origine d'un étudiant a un impact significatif sur son résultat final à l'UV de statistiques SY02.
+
+\subsubsection{Lien statistique entre le résultat et la spécialité des étudiants}
+
+
+
+\subsubsection{Lien statistique entre le résultat et la niveau des étudiants}
+
+
+
+\subsubsection{Lien statistique entre le résultat et les correcteurs}
+
+
+
+
+\section{Données Crabs}
+
 
 \end{document}
