@@ -249,6 +249,9 @@ plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit ri
 #
 
 # avec fonctions R
+
+
+
 acptest = princomp(crabsquant)
 summary(acptest)
 acptest$scores
@@ -259,3 +262,12 @@ biplot(acptest, choices = c(2,3)) # TODO comment mettre de la couleur ??
 
 prc <- prcomp(crabsquant, center=T, scale=T, retx=T)
 biplot(prc)
+
+
+
+# enlever effet taille avec % par rapport à crabsquant$CL
+crabsquant_freq = crabsquant / crabsquant$CL * 100
+crabsquant_freq[1,]
+crabsquant[1,]
+acp_moins_taille = princomp(crabsquant_freq)
+biplot(acp_moins_taille)
