@@ -21,16 +21,14 @@
 tab_contingeance = table(notes$specialite, notes$resultat) # tableau de contingeance pour chaque spécialité
 barplot(tab_contingeance, beside = T) # diagramme en baton des resultats par branche
 
-# ------------------------------
-# 1.1 Notes
-# ------------------------------
+
 notes <- read.csv("data/sy02-p2016.csv", na.strings="", header=T)
 # summary(notes)
 notes$nom <- factor(notes$nom, levels=notes$nom)
 notes$niveau <- factor(notes$niveau, ordered=T)
 notes$resultat <- factor(notes$resultat, levels=c("F","Fx","E","D","C","B","A"),ordered=T)
 
-# Question 1 : analyse générale 
+################### Question 1 : analyse générale ###################
 dim(notes) # volume
 
 # outil pour la corrélation de deux variables quantitatives
@@ -47,9 +45,8 @@ boxplot(notes$note.totale~notes$dernier.diplome.obtenu) # lié
 
 
 
-# Question 2
-
-### Lien Resultat et formation d'origine des étudiants (dernier.diplome.obtenu)
+################### Question 2 :analyse statistique  ############
+###### Lien Resultat et formation d'origine des étudiants (dernier.diplome.obtenu) ######
 t(t(summary(notes$dernier.diplome.obtenu)))
 # On a des NA, quels sont-ils ?
 notes$statut[which(is.na(notes$dernier.diplome.obtenu))] # résultat = [1] Echange Echange Echange Echange Echange Echange
@@ -89,21 +86,26 @@ chisq.test(contingence_result_formation_BAC_DUT_CPGE)
 # => on peut donc rejeter l'hypothèse d'indépendance => la formation d'origine des étudiants a un impact sur leur résultat final
 
 # Visualisation
-options(digits = 10)
-contingence_result_formation_BAC_DUT_CPGE_percentage = contingence_result_formation_BAC_DUT_CPGE / sum(contingence_result_formation_BAC_DUT_CPGE) * 100
-contingence_result_formation_BAC_DUT_CPGE_percentage
-boxplot(contingence_result_formation_BAC_DUT_CPGE[1,])
+options(digits = 6)
+contingence_result_formation_BAC_DUT_CPGE
+a = sum(contingence_result_formation_BAC_DUT_CPGE[1,])
+a
+contingence_result_formation_BAC_DUT_CPGE_percentage = contingence_result_formation_BAC_DUT_CPGE
+contingence_result_formation_BAC_DUT_CPGE_percentage[1,] = contingence_result_formation_BAC_DUT_CPGE[1,] / sum(contingence_result_formation_BAC_DUT_CPGE[1,]) * 100
+contingence_result_formation_BAC_DUT_CPGE_percentage[2,] = contingence_result_formation_BAC_DUT_CPGE[2,] / sum(contingence_result_formation_BAC_DUT_CPGE[2,]) * 100
+contingence_result_formation_BAC_DUT_CPGE_percentage[3,] = contingence_result_formation_BAC_DUT_CPGE[3,] / sum(contingence_result_formation_BAC_DUT_CPGE[3,]) * 100
 contingence_result_formation_BAC_DUT_CPGE_percentage
 dput(head(contingence_result_formation_BAC_DUT_CPGE_percentage))
-plot.new()
+
 
 barplot(as.matrix(contingence_result_formation_BAC_DUT_CPGE_percentage), beside = TRUE,
         col = c("light green", "light blue", "grey"),
         legend = rownames(contingence_result_formation_BAC_DUT_CPGE),
-        xlab = "Résultats obtenus", ylab = "Pourcentage d'étudiants")
+        xlab = "Résultats obtenus", ylab = "Pourcentage d'étudiants par diplôme")
 
 
-### Lien Resultat et Spécialité des étudiants (GB, GI, ...)
+
+###### Lien Resultat et Spécialité des étudiants (GB, GI, ...) ######
 t(t(summary(notes$specialite))) # pas de NA mais on remarque des classes avec peu d'effectif, il va donc falloir les supprimer pour faire un test de Chi2
 
 contingence_resut_speciality = as.data.frame.matrix(table(notes$specialite, notes$resultat))
@@ -117,34 +119,56 @@ filtered_contingence_resut_speciality = rbind(
   contingence_resut_speciality[6,]
 )
 filtered_contingence_resut_speciality
-chisq.test(filtered_contingence_resut_speciality) # p-value = 0.4853 largement supérieur à 0,05 donc on accepte avec grande confiance l'yphothèse d'un
-plot(filtered_contingence_resut_speciality) # ?????????? comment modéliser graphiquement ?
+filtered_contingence_resut_speciality[,1] = filtered_contingence_resut_speciality[,1] + filtered_contingence_resut_speciality[,2]
+filtered_contingence_resut_speciality[,3] = filtered_contingence_resut_speciality[,3] + filtered_contingence_resut_speciality[,4]
+filtered_contingence_resut_speciality[,6] = filtered_contingence_resut_speciality[,6] + filtered_contingence_resut_speciality[,7]
+filtered_contingence_resut_speciality = filtered_contingence_resut_speciality[,-c(2,4,7)]
+names(filtered_contingence_resut_speciality) = c("F-Fx", "E-D", "C", "B-A")
+filtered_contingence_resut_speciality
+chisq.test(filtered_contingence_resut_speciality) # p-value = 0.4673856 largement supérieur à 0,05 donc on accepte avec grande confiance l'hypothèse H0
+barplot(as.matrix(filtered_contingence_resut_speciality), beside = T)#, legend = rownames(filtered_contingence_resut_speciality))
 
 
-### Lien Resultat et leur niveau (GX 1 à 6)
-t(t(summary(notes$niveau))) 
+###### Lien Resultat et leur niveau (GX 1 à 6) #########
+t(t(summary(notes$niveau)))
 contingence_resut_niveau = as.data.frame.matrix(table(notes$niveau, notes$resultat))
 contingence_resut_niveau
 chisq.test(contingence_resut_niveau) # condition non remplie, p-value = 0.0003518 => rejet hypothèse indépendance
 filtered_contingence_resut_niveau = rbind(
-  contingence_resut_niveau[1,], 
+  contingence_resut_niveau[1,],
   contingence_resut_niveau[2,], 
   contingence_resut_niveau[4,]
 )
 filtered_contingence_resut_niveau
+filtered_contingence_resut_niveau[,1] = filtered_contingence_resut_niveau[,1] + filtered_contingence_resut_niveau[,2] + filtered_contingence_resut_niveau[,3]
+filtered_contingence_resut_niveau[,5] = filtered_contingence_resut_niveau[,5] + filtered_contingence_resut_niveau[,6]
+filtered_contingence_resut_niveau = filtered_contingence_resut_niveau[, -c(2,3,6)]
+names(filtered_contingence_resut_niveau) = c("F-Fx-E", "D", "C-B", "A")
+filtered_contingence_resut_niveau
 chisq.test(filtered_contingence_resut_niveau) # p-value = 0.002587 => rejet hypothèse indépendance, plus le niveau monte (plus le temps passe pour l'étudiant), plus il semble difficile de réussir l'UV
 
+filtered_contingence_resut_niveau_frequence[1,] = filtered_contingence_resut_niveau[1,] / sum(filtered_contingence_resut_niveau[1,]) * 100
+filtered_contingence_resut_niveau_frequence[2,] = filtered_contingence_resut_niveau[2,] / sum(filtered_contingence_resut_niveau[2,]) * 100
+filtered_contingence_resut_niveau_frequence[3,] = filtered_contingence_resut_niveau[3,] / sum(filtered_contingence_resut_niveau[3,]) * 100
+filtered_contingence_resut_niveau_frequence
+sum(filtered_contingence_resut_niveau_frequence[1,4:7])
+barplot(
+  as.matrix(filtered_contingence_resut_niveau_frequence), 
+  col = c("light green", "light blue", "grey"),
+  beside = T, 
+  legend = row.names(filtered_contingence_resut_niveau_frequence),
+  xlab = "Résultats obtenus", ylab = "Pourcentage d'étudiants par niveau")
 
 
-### Lien Resultat et Correcteur
+###### Lien Resultat et Correcteur ##########
 t(t(summary(notes$correcteur.median)))
 t(t(summary(notes$note.median)))
 cor_median_clean = na.omit(notes$correcteur.median)
 notes_median_clean = na.omit(notes$note.median)
 as.data.frame.matrix(table(cor_median_clean, notes_median_clean)) # difficilement utilisable
 classes_notes_median_clean = cut(notes_median_clean, 
-    breaks = c(-Inf, 8, 12, 15, Inf), 
-    labels = c("0-7", "8-11", "12-15", "16-20"), 
+    breaks = c(-Inf, 8, 11, 14, Inf), 
+    labels = c("0-7", "8-10", "11-13", "14-20"), 
     right = FALSE) # regrouper les notes en classes
 classes_notes_median_clean
 contingence_result_correcteur_median = as.data.frame.matrix(table(cor_median_clean, classes_notes_median_clean))
@@ -160,9 +184,10 @@ cor_final_clean = na.omit(notes$correcteur.final)
 notes_final_clean = na.omit(notes$note.final)
 as.data.frame.matrix(table(cor_final_clean, notes_final_clean)) # difficilement utilisable
 classes_notes_final_clean = cut(notes_final_clean, 
-                                 breaks = c(-Inf, 8, 13, 17, Inf), 
-                                 labels = c("0-5", "6-9", "10-13", "16-20"), 
-                                 right = FALSE) # regrouper les notes en classes
+                                  breaks = c(-Inf, 8, 11, 14, Inf), 
+                                  labels = c("0-7", "8-10", "11-13", "14-20"), 
+                                  right = FALSE) # regrouper les notes en classes
+contingence_result_correcteur_final = contingence_result_correcteur_final[,-2]
 contingence_result_correcteur_final = as.data.frame.matrix(table(cor_final_clean, classes_notes_final_clean))
 contingence_result_correcteur_final
 chisq.test(contingence_result_correcteur_final) # p-value = 0.05737 => on accepte l'hypothèse d'indépendance mais de très peu
