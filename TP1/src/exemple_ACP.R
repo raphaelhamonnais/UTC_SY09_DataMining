@@ -31,7 +31,7 @@ notes_covariance_diag
 valeurs_propres <- notes_covariance_diag$values
 valeurs_propres
 #vecteurs propres
-vecteurs_propres <- -(notes_covariance_diag$vectors)
+vecteurs_propres <- (notes_covariance_diag$vectors)
 vecteurs_propres
 
 #la matrice des composantes principales
