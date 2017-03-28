@@ -75,7 +75,7 @@ Crabs_Male
 Crabs_Male_and_Blue <- Crabs_Male[Male_Indexes == Blue_Indexes,]
 Crabs_Male_and_Blue
 #crabes males appartenant à l'espèce de couleur orange, (index 101-150)
-Crabs_Male_and_Orange <- Crabs_Male[! Male_Indexes == Blue_Indexes,] # TODO [Male_Indexes == Orange_Indexes] ne marche pas, pourquoi ???
+Crabs_Male_and_Orange <- Crabs_Male[! Male_Indexes == Blue_Indexes,]
 Crabs_Male_and_Orange
 
 #comparer le paramètre FL en fonction de l'espèce (bleue ou orange)
@@ -176,6 +176,9 @@ cor(Crabs_Male_and_Orange, Crabs_Female_and_Blue)
 # Question : Quelle en est vraisemblablement la cause? 
 # ???? // TODO demander prof
 # Simplement des variables quantitatives possèdent des valeurs dans une petit intervale (de 0 à 54 environ) et que les variations dans cet intervalle sont légères ?
+# Données morphologiques donc logique qu'elles soient corrélées ??
+
+# réponse = effet taille (carac morphologique, indicateurs pays corrélés à leur taille/population, ....)
 
 # Quel traitement est-il possible d’appliquer aux données pour s’affranchir de ce phénomène ?
 # ACP => cf. cours
@@ -205,6 +208,9 @@ crabs.acp
 # Que constatez vous ? 
 pourcentage_inertie # composante 1 donne 98,25 % de l'inertie
 # TODO expliquer phénomère à la lumière de question 1.2
+# effet de taille toujours, ce qui explique le plus les différences entre les individus de l'échantillon est leur taille. 
+# Si l'individu est gros, ses mesures seront importantes, s'il est  plus petit, ses mesures vont diminuer aussi
+#
 
 
 plot(crabs.acp[,1], col = c("blue","orange")[crabs$sp]) # juste ACP 1 ne dit pas grand chose
@@ -240,10 +246,16 @@ plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit ri
 
 # idée 2 : pondérer à la hausse ou à la baisse certaines variables => problème => comment les choisir
 
+#
+
 # avec fonctions R
 acptest = princomp(crabsquant)
 summary(acptest)
 acptest$scores
 acptest$loadings
+biplot(acptest)
 biplot(acptest, col = c("blue","orange")[crabs$RW])
 biplot(acptest, choices = c(2,3)) # TODO comment mettre de la couleur ??
+
+prc <- prcomp(crabsquant, center=T, scale=T, retx=T)
+biplot(prc)
