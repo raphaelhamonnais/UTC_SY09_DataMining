@@ -1,3 +1,6 @@
+install.packages("plotrix")
+library("plotrix")
+
 notes <- read.csv("data/sy02-p2016.csv", na.strings="", header=T)
 notes$nom <- factor(notes$nom, levels=notes$nom)
 notes$niveau <- factor(notes$niveau, ordered=T)
@@ -56,7 +59,7 @@ corr.acp.covar = cov.wt(corr.acp.centered, method = "ML") # calcul de matrice de
 corr.acp.covar
 corr.acp.covar.diago = eigen(corr.acp.covar$cov) # diagonaliser la covariance (pas les moyennes)
 val_propres = corr.acp.covar.diago$values # valeurs propres = quantités d'inertie expliquée
-vec_propres = -(corr.acp.covar.diago$vectors) # vecteurs propres = vecteurs qui portent/expliquent les axes factoriels
+vec_propres = corr.acp.covar.diago$vectors # vecteurs propres = vecteurs qui portent/expliquent les axes factoriels
 # normalement matrice de covariance = corr.acp.covar.diago$vectors * corr.acp.covar.diago$values * t(corr.acp.covar.diago$vectors)
 vec_propres %*% diag(val_propres) %*% t(vec_propres)
 corr.acp.covar$cov
@@ -71,11 +74,10 @@ val_propres
 pourcentage_inertie = val_propres / sum(val_propres) * 100
 pourcentage_inertie
 
-# 2. Calculer les composantes principales ; en déduire la représentation des quatre individus dans le premier plan factoriel.
+# 2. Calculer les composantes principales ; en déduire la représentation des six individus dans le premier plan factoriel.
 ACP = corr.acp.centered %*% vec_propres
 ACP # coordonnées des points sur le nouveau repère des composantes principales = combinaisons linéaires des anciens axes
 
-#3. Tracer la présentation des trois variables dans le premier plan factoriel 
 #Nommer chaque ligne des quatre composants principales
 rownames(ACP) <- c("Cor1", "Cor4", "Cor5", "Cor6", "Cor7", "Cor8")
 ACP
@@ -86,20 +88,27 @@ ACP
 plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe2")
 abline(h=0,v=0)
 #Ajouter des points dans le premier plan factoriel 
-text(ACP[,1], ACP[,2])
+text(ACP[,1], ACP[,2], labels = c("Cor1", "Cor4", "Cor5", "Cor6", "Cor7", "Cor8"))
 
 #Dessiner le premier plan factoriel entre composant1 et composant3
 plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe3")
 abline(h=0,v=0)
 #Ajouter des points dans le premier plan factoriel 
-text(ACP[,1], ACP[,3])
+text(ACP[,1], ACP[,3], labels = c("Cor1", "Cor4", "Cor5", "Cor6", "Cor7", "Cor8"))
 
 #Dessiner le premier plan factoriel entre composant1 et composant4
 plot(-2:2,-2:2,type = "n", xlab = "Axe1", ylab = "Axe4")
 abline(h=0,v=0)
 #Ajouter des points dans le premier plan factoriel 
-text(ACP[,1], ACP[,4])
+text(ACP[,1], ACP[,3], labels = c("Cor1", "Cor4", "Cor5", "Cor6", "Cor7", "Cor8"))
 
 
-#curve(sqrt(1-x^2),-1,1,add = TRUE)
-#curve(-sqrt(1-x^2),-1,1,add = TRUE)
+
+#3.Tracer la présentation des quatre variables dans le premier plan factoriel 
+plot(-1:1, -1:1, type = "n", xlab = "Axe1", ylab = "Axe2")
+abline(h=0,v=0)
+draw.circle(0,0,1)
+text(cor_acp[,1], cor_acp[,2])
+
+
+
