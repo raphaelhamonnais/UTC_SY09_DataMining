@@ -112,3 +112,30 @@ text(cor_acp[,1], cor_acp[,2])
 
 
 
+
+# Question 2.1.3
+# formule page 41 tout en bas
+# Xj transposé = j ème colonne, = coordonées de individus sur le j ème axe
+# C alpha = coordonnées des individus suivant le apha-ième axe de l'ACP
+# les Xj sont centrés en colonnes et du coup les C alpha aussi => moyenne égale à 0
+
+# Calcul des covariances entre les variables initiales (x) et le composantes principales trouvées (c)
+x = corr.acp
+lambda = val_propres
+c = ACP
+x
+lambda
+c
+var1_comp1 = 1/sd(x[,1]) * 1/sqrt(lambda[1]) * (t(x[,1]) %*% diag(1/6, nrow = 6, ncol = 6) %*% c[,1])
+var2_comp1 = 1/sd(x[,2]) * 1/sqrt(lambda[1]) * (t(x[,2]) %*% diag(1/6, nrow = 6, ncol = 6) %*% c[,1])
+var1_comp2 = 1/sd(x[,1]) * 1/sqrt(lambda[2]) * (t(x[,1]) %*% diag(1/6, nrow = 6, ncol = 6) %*% c[,2])
+var2_comp2 = 1/sd(x[,2]) * 1/sqrt(lambda[2]) * (t(x[,2]) %*% diag(1/6, nrow = 6, ncol = 6) %*% c[,2])
+covar_entre_var_et_compo = c(var1_comp1, var1_comp2, var2_comp1, var2_comp2)
+covar_entre_var_et_compo
+#curve(sqrt(1-x^2),-1,1,add = TRUE)
+#curve(-sqrt(1-x^2),-1,1,add = TRUE)
+
+
+a = princomp(corr.acp)
+a$scores == ACP
+biplot(princomp(corr.acp))
