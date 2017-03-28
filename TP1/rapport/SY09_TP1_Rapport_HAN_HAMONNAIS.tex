@@ -63,12 +63,12 @@
 Le jeu de données contient des informations relatives aux 296 étudiants inscrits à l’UV SY02 au semestre de printemps 2016 ainsi que les résultats qu'ils ont obtenus. On a donc 296 mesures (individus de la population) représentés par onze variables~: 8 qualitatives et 3 quantitatives.\\
 Liste des variables qualitatives~:
 \begin{itemize}
-	\item \textbf{nom} : nom de l'étudiant, au format texte (nons anonymisés, au format "Etu1, Etu2,~...").
+	\item \textbf{nom} : nom de l'étudiant, au format texte (nons anonymisés, au format "\textit{Etu1, Etu2,~...}").
 	\item \textbf{specialite} : spécialité de l'étudiant, $\in$ \{GB, GI, GM, GP, GSM, GSU, HuTech, ISS, TC\}.
-	\item \textbf{niveau} : le numéro du semestre actuel de l'étudiant, $ \in \{1,2,3,4,5,6\} $.
+	\item \textbf{niveau} : le numéro du semestre actuel de l'étudiant, $\in \{1,2,3,4,5,6\}$.
 	\item \textbf{statut} : vaut $ \{UTC,Echange\} $ selon que c'est un étudiant de l'UTC ou bien un étudiant originaire d'une autre université effectuant une partie de ses études à l'UTC.
-	\item \textbf{dernier.diplome.obtenu} : le dernier diplôme obtenu par l'étudiant, $\in$ \{AUTRE 1ER CYCLE, AUTRE 2E CYCLE AUTRE DIPLOME SUPERIEUR, BAC, BTS, CPGE, DEUG, DUT, ETRANGER SECONDAIRE, ETRANGER SUPERIEUR, INGENIEUR, LICENCE, NA's\}.
-	\item \textbf{correcteur.median} et \textbf{correcteur.final} : le correcteur ayant corrigé la copie (nons anonymisés au format "Cor 1,~...").
+	\item \textbf{dernier.diplome.obtenu} : le dernier diplôme obtenu par l'étudiant, $\in$ \{\textsc{autre 1er cycle, autre 2e cycle, autre diplome superieur, bac, bts, cpge, deug, dut, etranger secondaire, etranger superieur, ingenieur, licence, na's}\}.
+	\item \textbf{correcteur.median} et \textbf{correcteur.final} : le correcteur ayant corrigé la copie (nons anonymisés au format "\textit{Cor 1,~...}").
 	\item \textbf{resultat} Le résultat de l'étudiant, de \textit{A} à \textit{F} ou \textit{ABS} s'il a été absent à l'un des deux examens (final ou médian). \textit{F} et \textit{Fx} signifient que l'étudiant n'a pas obtenu l'UV, les autres notes qu'il l'a obtenue.
 \end{itemize}
 Liste des variables quantitatives~:
@@ -102,7 +102,7 @@ On considère que les données ont été préalablement nettoyées en enlevant t
 
 \paragraph{Procédure}
 
-Nous utiliserons le test d'indépendance du $\chi^2$ qui permet de vérifier l'indépendance de deux variables X et Y : 
+Nous utilisons le test d'indépendance du $\chi^2$ qui permet de vérifier l'indépendance de deux variables X et Y : 
 
 \begin{itemize}
 	\item Hypothèse nulle $H_{0}$~: les deux variables X et Y sont indépendantes.
@@ -110,6 +110,8 @@ Nous utiliserons le test d'indépendance du $\chi^2$ qui permet de vérifier l'i
 	\item On rejette l'hypothèse nulle lorsque \textit{p-value} est inférieure ou égale à 0,05. La valeur \textit{p-value} représente la probabilité d'obtenir la même valeur (ou une valeur encore plus extrême) du test si l'hypothèse nulle était vraie.
 	\item Toutes les cases du tableau de contingence doivent avoir une valeur supérieure ou égale à 5. Le tableau de contingence est un tableau à double entrée représentant les effectifs partiels des observations en fonction des variables X en ligne et Y en colonne.
 \end{itemize}
+
+
 
 
 
@@ -124,7 +126,7 @@ Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeu
 		\centering
 		\captionsetup{justification=centering, margin=1cm}
 		\includegraphics[width=0.65\linewidth]{img/1-1-2-Contingence-Result-Diplome-Origine}
-		\caption{\scriptsize Tableau de contingence entre résultats et diplôme d'origine}
+		\caption{\scriptsize Tableau de contingence entre résultat et diplôme d'origine}
 		\label{fig:tab_contingence_diplome_resultat}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.5\linewidth}
@@ -147,45 +149,181 @@ On peut tout de même effectuer le test du $\chi^2$ tout en sachant que les cond
 Afin de respecter les conditions du test de $\chi^2$, nous n'avons gardé que les lignes correspondant aux diplômes d'origines de type \textit{BAC}, \textit{DUT} et \textit{CPGE}. Il a aussi fallut regrouper les deux premières et deux dernières classes de \textit{résultat} en sommant les effectifs des élèves ayant obtenu \textit{F} ou \textit{Fx} et ceux ayant eu \textit{A} ou \textit{B}.\\
 On obtient ainsi un nouveau tableau de contingence~:
 
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=0.3\linewidth]{img/1-1-2-Contingence-Result-Diplome-Corrigee}
+	\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et diplôme d'origine.}
+	\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine_corrigee}
+\end{figure}
+Les conditions du test sont alors réunies et on obtient une \textit{p-value} égale à $0.000288$. On rejette donc l'hypothèse $H_{0}$ d'indépendance avec confiance~: le diplôme d'origine d'un étudiant a un impact significatif sur son résultat final à l'UV de statistiques SY02.
+
+Voici une représentation graphique de la fréquence des résultats en fonction du diplôme d'origine~:
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/1-1-2-Ratio-resultat-diplome}
+	\caption{\scriptsize Fréquence par diplôme d'origine et résultat}
+	\label{fig:ratio_resultats_diplome}
+\end{figure}
+
+On remarque que 34\% des élèves ayant comme dernier diplôme le BAC ont obtenu \textit{A} ou \textit{B} tandis que seulement 14\% d'entre-eux n'ont pas réussi l'UV. On remarque aussi que la courbe est croissante~: plus le résultat est bon, plus la fréquence d'obtention augmente. C'est l'inverse pour les élèves provenant de DUT ou CPGE~: moins le résultat est bon, plus la fréquence d'élèves obtenant ce résultat augmente (environ 40\% des élèves en provenance d'un DUT ou de CPGE n'ont pas obtenu l'UV).
+
+
+\subsubsection{Lien statistique entre le résultat et la spécialité des étudiants}
+
+La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP, GSM, GSU, HuTech, ISS, ou TC. En s'intéressant à l'effectif de chaque classe (cf. figure \ref{fig:effectif_specialité}), on remarque de suite qu'il va falloir en considérer quelques unes seulement pour respecter les conditions du test.
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/1-1-2-Effectf-specialite}
+	\caption{\scriptsize Effectif par spécialité}
+	\label{fig:effectif_specialité}
+\end{figure}
+
+Les classes telles que \textit{HuTech}, \textit{ISS}, \textit{TC} voire même \textit{GP} ne sont pas assez représentées pour être en mesure de respecter les conditions du tests d'indépendance du $\chi^2$.
+
+Voici les deux tableaux de contingence obtenus, le premier sur toutes les données (cf. figure \ref{fig:tab_contingence_diplome_specialite_origine}), le second (cf. figure \ref{fig:tab_contingence_diplome_specialite_corrige}) en sélectionnant certaines classes de la variable \textit{spécialité} puis en regroupant les effectifs de certaines classes de la variable \textit{résultat}.
+
 \begin{figure}[h]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.5\linewidth}
 		\centering
 		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Diplome-Corrigee}
-		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre les variables \textit{résultat} et \textit{diplôme d'origine}.}
-		\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine_corrigee}
+		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Specialite-Origine}
+		\caption{\scriptsize Tableau de contingence entre résultat et spécialité}
+		\label{fig:tab_contingence_diplome_specialite_origine}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.5\linewidth}
 		\centering
 		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=1\linewidth]{img/1-1-2-Ratio-resultat-diplome}
-		\caption{\scriptsize Effectif total par diplôme}
-		\label{fig:ratio_resultats_diplome}
+		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Specialite-Corrige}
+		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et spécialité}
+		\label{fig:tab_contingence_diplome_specialite_corrige}
 	\end{subfigure}%
 	\caption{
-		\small Tableau de contingence \textbf{corrigé} et visualisation des fréquences entre les variables \textit{résultat} et \textit{diplôme d'origine}.
+		\small Tableaux de contingence entre résultats et spécialité.
 	}
-	\label{fig:tab_frequence_et_contingence_corriges_resultats_diplome_origine}%
+	\label{fig:tabs_contingence_resultats_specialite}%
 \end{figure}
-Les conditions du test sont alors réunies et on obtient une \textit{p-value} égale à $0.000288$. On rejette donc l'hypothèse $H_{0}$ d'indépendance avec confiance~: le diplôme d'origine d'un étudiant a un impact significatif sur son résultat final à l'UV de statistiques SY02. On voit bien sur le graphique en barre représentant les fréquence d'obtention d'un résultat en fonction du diplôme d'origine (cf. figure \ref{fig:ratio_resultats_diplome}) qu'un peu plus de 15\% des élèves ayant comme dernier diplôme le BAC ont obtenu \textit{A} ou \textit{B} tandis que seulement 2\% d'entre-eux n'ont pas réussi l'UV. On remarque aussi que la courbe est croissante~: plus le résultat est bon, plus la fréquence d'obtention augmente. Pour les élèves provenant de DUT ou CPGE par contre c'est l'inverse~: moins le résultat est bon, plus la fréquence augmente.
+
+Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_diplome_specialite_origine} et sur le tableau \ref{fig:tab_contingence_diplome_specialite_corrige} donnent respectivement les résultats suivants~:
+\begin{itemize}
+	\item Tableau de contingence d'origine
+	\\ \textit{p-value} = 0.02087781.
+	\\ On réfute (à tort) l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité}.
+	
+	\item Tableau de contingence corrigé
+	\\ \textit{p-value} = 0.4673856.
+	\\ On accepte l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité} avec confiance.
+\end{itemize}
+
+Conclusion~: la spécialité d'un étudiant n'a pas d'impact sur son résultat.
 
 
-\subsubsection{Lien statistique entre le résultat et la spécialité des étudiants}
+\subsubsection{Lien statistique entre le résultat et lr niveau des étudiants}
+
+Le niveau des étudiants correspond à leur semestre actuel de branche, de 1 à 6 (deux semestres par an sur un cursus de trois ans).
+
+Voici les deux tableaux de contingences obtenus, le premier (cf. figure \ref{fig:tab_contingence_diplome_niveau_origine}) sans regroupement de classes et le second (cf. figure \ref{fig:tab_contingence_diplome_niveau_corrige}) en regroupant les classes \textit{F-Fx-E} et \textit{C-B} et en ne considérant pas les étudiants de niveau 3,5 et 6 (effectif trop peu important).
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Niveau-Origine}
+		\caption{\scriptsize Tableau de contingence entre résultat et niveau}
+		\label{fig:tab_contingence_diplome_niveau_origine}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Niveau-Corrige}
+		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et niveau}
+		\label{fig:tab_contingence_diplome_niveau_corrige}
+	\end{subfigure}%
+	\caption{
+		\small Tableaux de contingence entre résultats et niveau.
+	}
+	\label{fig:tabs_contingence_resultats_niveau}%
+\end{figure}
 
 
+Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_diplome_niveau_origine} et sur le tableau \ref{fig:tab_contingence_diplome_niveau_corrige} donnent respectivement les résultats suivants~:
+\begin{itemize}
+	\item Tableau de contingence d'origine
+	\\ \textit{p-value} = 0.0003517831.
+	\\ On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
+	
+	\item Tableau de contingence corrigé
+	\\ \textit{p-value} = 0.003523739.
+	\\ On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
+\end{itemize}
 
-\subsubsection{Lien statistique entre le résultat et la niveau des étudiants}
+Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exemple dans la figure \ref{fig:frequence_resultats_niveau} que plus le niveau de l'étudiant augmente, moins il a de chance d'obtenir l'UV. 42\% de \textit{F} ou \textit{Fx} pour les étudiants de niveau 4 contre 7\% seulement pour ceux de niveau 1. A l'opposé, ces derniers sont 80\% à obtenir l'UV avec un résultat entre \textit{D} et \textit{A} contre 45\% pour les étudiants de niveau 4. Les étudiants de niveau 2 se situent au milieu, avec 60\% pour un résultat compris entre \textit{D} et \textit{A} et 27\% de non obtention de l'UV.
 
-
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/1-1-2-Ratio-resultat-niveau}
+	\caption{\scriptsize Fréquence d'obtention d'un résultat en fonction du niveau de l'étudiant}
+	\label{fig:frequence_resultats_niveau}
+\end{figure}
 
 \subsubsection{Lien statistique entre le résultat et les correcteurs}
 
+Selon toute vraisemblance, le correcteur ne devrait pas influer sur le résultat d'un étudiant à l'UV. Nous allons tout de même nous en assurer. Le principe est le même que précédemment~: construire le tableau de contingence, regrouper des classes au besoin pour respecter les conditions du test du $\chi^2$ et effectuer ce test afin de déterminer si les variables sont indépendantes ou non.
 
+Voici le premier tableau de contingence obtenu entre les variable \textit{notes médian} et \textit{correcteur médian}~:
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.9\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Origine}
+	\caption{\scriptsize Tableau de contingence entre les notes du médian et les correcteur}
+	\label{fig:frequence_resultats_niveau}
+\end{figure}
+
+Ce tableau est inutilisable pour le test d'indépendance du $\chi^2$. Il a donc fallut regrouper les observation en classes.\\
+Voici le second tableau de contingence obtenu après regroupement~:
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=.2\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Corrige}
+	\caption{\scriptsize Tableau de contingence \textbf{après regroupement} entre les notes du médian et les correcteur}
+	\label{fig:frequence_resultats_niveau}
+\end{figure}
+
+Le test du $\chi^2$ effectué sur le second tableau de contingence donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H{0}$ d'indépendance. Le même principe a été appliqué sur le couple de variable \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve ici aussi l'hypothèse $H{0}$ d'indépendance. En conclusion, les notes obtenues au médian et au final conditionnant le résultat, on peut affirmer que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
+
+\section{Données Crabs}
+
+
+
+\section{Données Pima}
+
+
+
+
+\chapter{Analyse en composantes principales}
+
+
+\section{Exercice théorique}
+
+
+\section{Utilisation des outils R}
 
 
 \section{Données Crabs}
+
+\section{Données Pima}
+
 
 
 \end{document}
