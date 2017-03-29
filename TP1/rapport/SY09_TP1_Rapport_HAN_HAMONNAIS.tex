@@ -57,13 +57,13 @@
 
 \subsection{Analyse descriptive}
 
-\paragraph{Description des données}
+\subsubsection{Description des données}
 
 
 Le jeu de données contient des informations relatives aux 296 étudiants inscrits à l’UV SY02 au semestre de printemps 2016 ainsi que les résultats qu'ils ont obtenus. On a donc 296 mesures (individus de la population) représentés par onze variables~: 8 qualitatives et 3 quantitatives.\\
 Liste des variables qualitatives~:
 \begin{itemize}
-	\item \textbf{nom} : nom de l'étudiant, au format texte (nons anonymisés, au format "\textit{Etu1, Etu2,~...}").
+	\item \textbf{nom} : nom de l'étudiant, au format texte (noms anonymisés, au format "\textit{Etu1, Etu2,~...}").
 	\item \textbf{specialite} : spécialité de l'étudiant, $\in$ \{GB, GI, GM, GP, GSM, GSU, HuTech, ISS, TC\}.
 	\item \textbf{niveau} : le numéro du semestre actuel de l'étudiant, $\in \{1,2,3,4,5,6\}$.
 	\item \textbf{statut} : vaut $ \{UTC,Echange\} $ selon que c'est un étudiant de l'UTC ou bien un étudiant originaire d'une autre université effectuant une partie de ses études à l'UTC.
@@ -79,7 +79,7 @@ Liste des variables quantitatives~:
 \end{itemize}
 
 
-\paragraph{Données manquantes}
+\subsubsection{Données manquantes}
 On remarque qu'il manque certaines informations dans les données (R le spécifie avec le mot clé "\textit{NA's}" pour \textit{Not Available} en anglais).
 \begin{itemize}
 	\item Correcteur du médian et/ou du final~: élève absent au médian et/ou au final.
@@ -89,7 +89,7 @@ On remarque qu'il manque certaines informations dans les données (R le spécifi
 \end{itemize}
 
 
-\paragraph{Intuitions statistiques~: liens supposés entre les variables}
+\subsubsection{Intuitions statistiques~: liens supposés entre les variables}
 De manière logique, on pourrait penser que les notes entre le médian et le final sont liées, un élève bon au médian étant plus à même de réussir le final et inversement. De même, la formation d'origine de l'étudiant devrait fortement influencer l'obtention de l'UV. Un étudiant venant de tronc commun (diplôme d'origine BAC) a logiquement plus de change de réussir qu'un élève venant de DUT. Le correcteur ne devrait logiquement pas influencer les notes, la notion d'équité entre les copies étant très importante.
 
 
@@ -97,10 +97,10 @@ De manière logique, on pourrait penser que les notes entre le médian et le fin
 
 \subsection{Etude des liens statistique entre les variables}
 
-\paragraph{Pré-requis}
+\subsubsection{Pré-requis}
 On considère que les données ont été préalablement nettoyées en enlevant tous les étudiants absents, c'est à dire qui n'ont pas eu l'UV pour cause d'absence accidentelle ou d'abandon pur et simple.
 
-\paragraph{Procédure}
+\subsubsection{Procédure}
 
 Nous utilisons le test d'indépendance du $\chi^2$ qui permet de vérifier l'indépendance de deux variables X et Y : 
 
@@ -300,9 +300,148 @@ Voici le second tableau de contingence obtenu après regroupement~:
 	\label{fig:frequence_resultats_niveau}
 \end{figure}
 
-Le test du $\chi^2$ effectué sur le second tableau de contingence donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H{0}$ d'indépendance. Le même principe a été appliqué sur le couple de variable \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve ici aussi l'hypothèse $H{0}$ d'indépendance. En conclusion, les notes obtenues au médian et au final conditionnant le résultat, on peut affirmer que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
+Le test du $\chi^2$ effectué sur le second tableau de contingence donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H{0}$ d'indépendance. Le même principe a été appliqué sur le couple de variable \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve ici aussi l'hypothèse $H{0}$ d'indépendance.
+
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=.5\linewidth]{img/1-1-2-Boxplot-note-resultat}
+	\caption{\scriptsize Distribution des résultats obtenus en fonction de la note finale}
+	\label{fig:boxplot_note_resultat}
+\end{figure}
+
+Les notes obtenues au médian et au final étant fortement corrélées au résultat obtenu (cf. figure \ref{fig:boxplot_note_resultat}), on peut conclure en affirmant que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
+
 
 \section{Données Crabs}
+
+\subsection{Analyse descriptive}
+
+\subsubsection{Description des données}
+
+Le jeu de données présente 200 crabes classés en fonction de leur espèce et de leur sexe. Chaque individu est aussi décrit par 5 caractéristiques morphologiques quantitatives.
+\\
+Liste des variables qualitatives~:
+\begin{itemize}
+	\item \textbf{sex}~: le sexe du crabe, \textit{M} pour mâle, \textit{F} pour femelle.
+	\item \textbf{sp}~: espèce à laquelle appartient un individu, \textit{O} pour \textit{Orange}, \textit{B} pour \textit{Bleu}.
+\end{itemize}
+Liste des variables quantitatives~:
+\begin{itemize}
+	\item \textbf{FL}~: taille de la frontale.
+	\item \textbf{RW}~: largeur de la queue.
+	\item \textbf{CL}~: longueur de la coquille.
+	\item \textbf{CW}~: largeur de la coque.
+	\item \textbf{BD}~: la profondeur du corps.
+\end{itemize}
+Il existe aussi une autre variable numérique, purement utilitaire, qui est l'index~:
+\begin{itemize}
+	\item \textbf{[1-50]}~: mâles d'espèce bleue.
+	\item \textbf{[51-100]}~: femelles d'espèce bleue.
+	\item \textbf{[101-150]}~: mâles d'espèce orange.
+	\item \textbf{[151-200]}~: femelles d'espèce orange.
+\end{itemize}
+
+
+\subsubsection{Données morphologiques}
+
+Les deux figures suivantes présentent les distributions des variables morphologiques en fonction de l'espèce (figure \ref{fig:morphemetriques_en_fonction_espece}) et du sexe (figure \ref{fig:morphemetriques_en_fonction_sexe}).\\
+
+
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-espece-bd.png}
+		\caption{\scriptsize Variable BD}
+		\label{fig:1_2_1_espece_bd}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-espece-cl.png}
+		\caption{\scriptsize Variable CL}
+		\label{fig:1_2_1_espece_cl}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-espece-cw.png}
+		\caption{\scriptsize Variable CW}
+		\label{fig:1_2_1_espece_cw}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-espece-fl.png}
+		\caption{\scriptsize Variable FL}
+		\label{fig:1_2_1_espece_fl}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-espece-rw.png}
+		\caption{\scriptsize Variable RW}
+		\label{fig:1_2_1_espece_rw}
+	\end{subfigure}%
+	\caption{
+		\small Distributions des variables morphométriques en fonction de l'espèce.
+	}
+	\label{fig:morphemetriques_en_fonction_espece}%
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-sex-bd.png}
+		\caption{\scriptsize Variable BD}
+		\label{fig:1_2_1_sex_bd}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-sex-cl.png}
+		\caption{\scriptsize Variable CL}
+		\label{fig:1_2_1_sex_cl}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-sex-cw.png}
+		\caption{\scriptsize Variable CW}
+		\label{fig:1_2_1_sex_cw}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-sex-fl.png}
+		\caption{\scriptsize Variable FL}
+		\label{fig:1_2_1_sex_fl}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/1-2-1-sex-rw.png}
+		\caption{\scriptsize Variable RW}
+		\label{fig:1_2_1_sex_rw}
+	\end{subfigure}%
+	\caption{
+		\small Distributions des variables morphométriques en fonction du sexe.
+	}
+	\label{fig:morphemetriques_en_fonction_sexe}%
+\end{figure}
+
+Clairement, aucune de ces variables ne permet de séparer les individus en fonction de leur sexe ou de leur espèce. Comparer les populations de même sexe mais d'espèce différente, de même espèce mais de sexe différent ou encore de sexe et espèce différents donne des résultats similaires. Aucune de ces variables, prise individuellement, ne nous permet d'identifier le sexe ou l'espèce d'un individu.
+
+
+\subsubsection{Corrélation}
 
 
 
