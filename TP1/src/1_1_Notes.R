@@ -37,7 +37,7 @@ dim(notes) # volume
 
 boxplot(notes$niveau~notes$resultat) # ne semble pas très lié, et beaucoup de GX02 à cause de la médiane sur la valeur 2
 boxplot(notes$note.totale~notes$specialite) # légèrement lié, mais attention au nombre d'étudiants dans chaque catégorie (ex : HuTech = un seul étudiant)
-boxplot(notes$note.totale~notes$resultat) # lié, logique...
+boxplot(notes$note.totale~notes$resultat, ylab = "Note totale sur 20", xlab = "Résultat obtenu") # lié, logique...
 plot(notes$note.median,notes$note.final) # peu lié
 boxplot(notes$note.median~notes$correcteur.median) # un peu lié mais à étudier
 boxplot(notes$note.final~notes$correcteur.final) # un peu lié mais à étudier
@@ -86,7 +86,6 @@ chisq.test(contingence_result_formation_BAC_DUT_CPGE)
 # => on peut donc rejeter l'hypothèse d'indépendance => la formation d'origine des étudiants a un impact sur leur résultat final
 
 # Visualisation
-options(digits = 6)
 contingence_result_formation_BAC_DUT_CPGE
 a = sum(contingence_result_formation_BAC_DUT_CPGE[1,])
 a
