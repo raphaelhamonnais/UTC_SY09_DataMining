@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,11pt]{report}
 \usepackage{natbib}
 \usepackage{subcaption}
 \usepackage{cleveref}
@@ -7,6 +7,7 @@
 \usepackage{sidecap}
 \usepackage{array}
 \usepackage[linewidth=1pt]{mdframed}
+\usepackage{float}
 
 
 \usepackage{packages/Sweave} %package d'affichage des codes R
@@ -21,6 +22,10 @@
 \usepackage{rotating}
 \usepackage{hyperref}
 \usepackage{listings}
+
+\usepackage{setspace}
+
+\onehalfspacing
 
 
 
@@ -80,7 +85,7 @@ Liste des variables quantitatives~:
 
 
 \subsubsection{Données manquantes}
-On remarque qu'il manque certaines informations dans les données (R le spécifie avec le mot clé "\textit{NA's}" pour \textit{Not Available} en anglais).
+On remarque qu'il manque certaines informations dans les données (R le spécifie avec le mot clé "\textit{NA's}" pour \textit{Not Available} en anglais)~:
 \begin{itemize}
 	\item Correcteur du médian et/ou du final~: élève absent au médian et/ou au final.
 	\item Dernier diplôme obtenu~: donnée manquante pour les étudiants en échange.
@@ -119,7 +124,8 @@ Nous utilisons le test d'indépendance du $\chi^2$ qui permet de vérifier l'ind
 La première étape fut de nettoyer les données en supprimant les 6 étudiants dont le statut vaut \textit{Echange} car leur diplôme d'origine n'est pas renseigné.\\
 Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeur de la variable \textit{resultat} le nombre d'élèves ayant obtenu ce résultat en fonction de leur diplôme d'origine~: on obtient un effectif pour chaque couple \textit{diplôme d'origine}/\textit{résultat}.
 
-\begin{figure}[h]
+
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.5\linewidth}
@@ -142,15 +148,17 @@ Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeu
 	\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine}%
 \end{figure}
 
-On remarque immédiatement que les conditions du test ne sont pas respectées~: il a y une majorité des effectifs qui sont inférieurs à 5 dans le tableau de contingence  (cf. figure \ref{fig:tab_contingence_diplome_resultat}). Et c'est tout à fait normal si l'on regarde les effectifs d'étudiants (figure \ref{fig:effectif_total_par_diplome}) en fonction de leur diplôme d'origine dans la population totale~: seuls les diplômes BAC (étudiant venant de tronc commun), DUT et CPGE sont convenablement représentés.
+On remarque immédiatement que les conditions du test ne sont pas respectées~: il a y une majorité des effectifs qui sont inférieurs à 5 dans le tableau de contingence  (\autoref{fig:tab_contingence_diplome_resultat}). Et c'est tout à fait normal si l'on regarde les effectifs d'étudiants (\autoref{fig:effectif_total_par_diplome}) en fonction de leur diplôme d'origine dans la population totale~: seuls les diplômes BAC (étudiant venant de tronc commun), DUT et CPGE sont convenablement représentés.
 On peut tout de même effectuer le test du $\chi^2$ tout en sachant que les conditions ne sont pas respectées, afin de vérifier l'importance de ces conditions. On obtient alors une \textit{p-value} égale à $0.2572$. On conserve donc l'hypothèse $H_{0}$ d'indépendance des variables, tout en sachant que le résultat et probablement faux.
+
+
 
 \paragraph{Correction des effectifs}
 Afin de respecter les conditions du test de $\chi^2$, nous n'avons gardé que les lignes correspondant aux diplômes d'origines de type \textit{BAC}, \textit{DUT} et \textit{CPGE}. Il a aussi fallut regrouper les deux premières et deux dernières classes de \textit{résultat} en sommant les effectifs des élèves ayant obtenu \textit{F} ou \textit{Fx} et ceux ayant eu \textit{A} ou \textit{B}.\\
 On obtient ainsi un nouveau tableau de contingence~:
 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
 	\includegraphics[width=0.3\linewidth]{img/1-1-2-Contingence-Result-Diplome-Corrigee}
@@ -161,22 +169,23 @@ Les conditions du test sont alors réunies et on obtient une \textit{p-value} é
 
 Voici une représentation graphique de la fréquence des résultats en fonction du diplôme d'origine~:
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.5\linewidth]{img/1-1-2-Ratio-resultat-diplome}
+	\includegraphics[width=.4\linewidth]{img/1-1-2-Ratio-resultat-diplome}
 	\caption{\scriptsize Fréquence par diplôme d'origine et résultat}
 	\label{fig:ratio_resultats_diplome}
 \end{figure}
+
 
 On remarque que 34\% des élèves ayant comme dernier diplôme le BAC ont obtenu \textit{A} ou \textit{B} tandis que seulement 14\% d'entre-eux n'ont pas réussi l'UV. On remarque aussi que la courbe est croissante~: plus le résultat est bon, plus la fréquence d'obtention augmente. C'est l'inverse pour les élèves provenant de DUT ou CPGE~: moins le résultat est bon, plus la fréquence d'élèves obtenant ce résultat augmente (environ 40\% des élèves en provenance d'un DUT ou de CPGE n'ont pas obtenu l'UV).
 
 
 \subsubsection{Lien statistique entre le résultat et la spécialité des étudiants}
 
-La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP, GSM, GSU, HuTech, ISS, ou TC. En s'intéressant à l'effectif de chaque classe (cf. figure \ref{fig:effectif_specialité}), on remarque de suite qu'il va falloir en considérer quelques unes seulement pour respecter les conditions du test.
+La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP, GSM, GSU, HuTech, ISS, ou TC. En s'intéressant à l'effectif de chaque classe (\autoref{fig:effectif_specialité}), on remarque de suite qu'il va falloir en considérer quelques unes seulement pour respecter les conditions du test.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\includegraphics[width=.5\linewidth]{img/1-1-2-Effectf-specialite}
@@ -186,9 +195,9 @@ La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP
 
 Les classes telles que \textit{HuTech}, \textit{ISS}, \textit{TC} voire même \textit{GP} ne sont pas assez représentées pour être en mesure de respecter les conditions du tests d'indépendance du $\chi^2$.
 
-Voici les deux tableaux de contingence obtenus, le premier sur toutes les données (cf. figure \ref{fig:tab_contingence_diplome_specialite_origine}), le second (cf. figure \ref{fig:tab_contingence_diplome_specialite_corrige}) en sélectionnant certaines classes de la variable \textit{spécialité} puis en regroupant les effectifs de certaines classes de la variable \textit{résultat}.
+Voici les deux tableaux de contingence obtenus, le premier sur toutes les données (\autoref{fig:tab_contingence_diplome_specialite_origine}), le second (\autoref{fig:tab_contingence_diplome_specialite_corrige}) en sélectionnant certaines classes de la variable \textit{spécialité} puis en regroupant les effectifs de certaines classes de la variable \textit{résultat}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.5\linewidth}
@@ -225,13 +234,13 @@ Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_di
 Conclusion~: la spécialité d'un étudiant n'a pas d'impact sur son résultat.
 
 
-\subsubsection{Lien statistique entre le résultat et lr niveau des étudiants}
+\subsubsection{Lien statistique entre le résultat et le niveau des étudiants}
 
 Le niveau des étudiants correspond à leur semestre actuel de branche, de 1 à 6 (deux semestres par an sur un cursus de trois ans).
 
-Voici les deux tableaux de contingences obtenus, le premier (cf. figure \ref{fig:tab_contingence_diplome_niveau_origine}) sans regroupement de classes et le second (cf. figure \ref{fig:tab_contingence_diplome_niveau_corrige}) en regroupant les classes \textit{F-Fx-E} et \textit{C-B} et en ne considérant pas les étudiants de niveau 3,5 et 6 (effectif trop peu important).
+Voici les deux tableaux de contingences obtenus, le premier (\autoref{fig:tab_contingence_diplome_niveau_origine}) sans regroupement de classes et le second (\autoref{fig:tab_contingence_diplome_niveau_corrige}) en regroupant les classes \textit{F-Fx-E} et \textit{C-B} et en ne considérant pas les étudiants de niveau 3,5 et 6 (effectif trop peu important).
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.5\linewidth}
@@ -265,10 +274,9 @@ Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_di
 	\\ \textit{p-value} = 0.003523739.
 	\\ On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
 \end{itemize}
-
 Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exemple dans la figure \ref{fig:frequence_resultats_niveau} que plus le niveau de l'étudiant augmente, moins il a de chance d'obtenir l'UV. 42\% de \textit{F} ou \textit{Fx} pour les étudiants de niveau 4 contre 7\% seulement pour ceux de niveau 1. A l'opposé, ces derniers sont 80\% à obtenir l'UV avec un résultat entre \textit{D} et \textit{A} contre 45\% pour les étudiants de niveau 4. Les étudiants de niveau 2 se situent au milieu, avec 60\% pour un résultat compris entre \textit{D} et \textit{A} et 27\% de non obtention de l'UV.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\includegraphics[width=.5\linewidth]{img/1-1-2-Ratio-resultat-niveau}
@@ -279,40 +287,38 @@ Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exem
 \subsubsection{Lien statistique entre le résultat et les correcteurs}
 
 Selon toute vraisemblance, le correcteur ne devrait pas influer sur le résultat d'un étudiant à l'UV. Nous allons tout de même nous en assurer. Le principe est le même que précédemment~: construire le tableau de contingence, regrouper des classes au besoin pour respecter les conditions du test du $\chi^2$ et effectuer ce test afin de déterminer si les variables sont indépendantes ou non.
-
+\\
 Voici le premier tableau de contingence obtenu entre les variable \textit{notes médian} et \textit{correcteur médian}~:
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\includegraphics[width=.9\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Origine}
 	\caption{\scriptsize Tableau de contingence entre les notes du médian et les correcteur}
-	\label{fig:frequence_resultats_niveau}
+	\label{fig:contingence_resultats_correcteur}
 \end{figure}
 
 Ce tableau est inutilisable pour le test d'indépendance du $\chi^2$. Il a donc fallut regrouper les observation en classes.\\
 Voici le second tableau de contingence obtenu après regroupement~:
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
 	\includegraphics[width=.2\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Corrige}
 	\caption{\scriptsize Tableau de contingence \textbf{après regroupement} entre les notes du médian et les correcteur}
-	\label{fig:frequence_resultats_niveau}
+	\label{fig:contingence_resultats_correcteur_corrige}
 \end{figure}
 
 Le test du $\chi^2$ effectué sur le second tableau de contingence donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H{0}$ d'indépendance. Le même principe a été appliqué sur le couple de variable \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve ici aussi l'hypothèse $H{0}$ d'indépendance.
 
+Les notes obtenues au médian et au final étant fortement corrélées au résultat obtenu (\autoref{fig:boxplot_note_resultat}), on peut conclure en affirmant que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
 	\includegraphics[width=.5\linewidth]{img/1-1-2-Boxplot-note-resultat}
 	\caption{\scriptsize Distribution des résultats obtenus en fonction de la note finale}
 	\label{fig:boxplot_note_resultat}
 \end{figure}
-
-Les notes obtenues au médian et au final étant fortement corrélées au résultat obtenu (cf. figure \ref{fig:boxplot_note_resultat}), on peut conclure en affirmant que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
-
 
 \section{Données Crabs}
 
@@ -346,10 +352,10 @@ Il existe aussi une autre variable numérique, purement utilitaire, qui est l'in
 
 \subsubsection{Données morphologiques}
 
-Les deux figures suivantes présentent les distributions des variables morphologiques en fonction de l'espèce (figure \ref{fig:morphemetriques_en_fonction_espece}) et du sexe (figure \ref{fig:morphemetriques_en_fonction_sexe}).\\
+Les deux figures suivantes présentent les distributions des variables morphologiques en fonction de l'espèce (\autoref{fig:morphemetriques_en_fonction_espece}) et du sexe (\autoref{fig:morphemetriques_en_fonction_sexe}).\\
 
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.3\linewidth}
@@ -392,8 +398,9 @@ Les deux figures suivantes présentent les distributions des variables morpholog
 		\small Distributions des variables morphométriques en fonction de l'espèce.
 	}
 	\label{fig:morphemetriques_en_fonction_espece}%
-\end{figure}
-\begin{figure}[h]
+\end{figure}%
+
+\begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\begin{subfigure}[b]{0.3\linewidth}
@@ -438,11 +445,32 @@ Les deux figures suivantes présentent les distributions des variables morpholog
 	\label{fig:morphemetriques_en_fonction_sexe}%
 \end{figure}
 
-Clairement, aucune de ces variables ne permet de séparer les individus en fonction de leur sexe ou de leur espèce. Comparer les populations de même sexe mais d'espèce différente, de même espèce mais de sexe différent ou encore de sexe et espèce différents donne des résultats similaires. Aucune de ces variables, prise individuellement, ne nous permet d'identifier le sexe ou l'espèce d'un individu.
+Graphiquement, il semble difficile de séparer les individus en fonction de leur sexe ou de leur espèce. Comparer les populations de même sexe mais d'espèce différente, de même espèce mais de sexe différent ou encore de sexe et espèce différents donne des résultats similaires. Aucune de ces variables, prise individuellement, ne nous permet d'identifier le sexe ou l'espèce d'un individu.
+
+\subsection{Etude de la corrélation entre les variables morphologiques}
+
+La corrélation entre les cinq variables est très forte, comme le montre le tableau de corrélation suivant~:
+\newpage
+\begin{table}[h]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{Corrélations entre les variables quantitatives de la population de crabes.}
+	\begin{tabular}{rrrrrr}
+		\hline
+		& FL & RW & CL & CW & BD \\ 
+		\hline
+		FL & 1.00 & 0.91 & 0.98 & 0.96 & 0.99 \\ 
+		RW & 0.91 & 1.00 & 0.89 & 0.90 & 0.89 \\ 
+		CL & 0.98 & 0.89 & 1.00 & 1.00 & 0.98 \\ 
+		CW & 0.96 & 0.90 & 1.00 & 1.00 & 0.97 \\ 
+		BD & 0.99 & 0.89 & 0.98 & 0.97 & 1.00 \\ 
+		\hline
+	\end{tabular}
+\end{table}
 
 
-\subsubsection{Corrélation}
-
+La raison de cette forte corrélation est que les variables représentent des mesures morphométriques, c'est à dire des distances relevées sur les corps des crabes. Plus un crabe est grand, plus ces mesures vont grandir, et inversement.
+Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composantes principales sur les données. Les nouvelles variables identifiées auront alors une très faible corrélation entre elles. Il sera alors peut-être possible de différencier le sexe et l'espèce des individus en fonction de leur mesures morphométriques analysées en fonction des nouveaux axes trouvées lors de l'ACP (voir \autoref{sec:2_3_ACP_Crabs}).
 
 
 \section{Données Pima}
@@ -460,8 +488,11 @@ Clairement, aucune de ces variables ne permet de séparer les individus en fonct
 
 
 \section{Données Crabs}
+\label{sec:2_3_ACP_Crabs}
 
 \section{Données Pima}
+\label{sec:2_4_ACP_Pima}
+
 
 
 
