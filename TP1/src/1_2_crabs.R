@@ -79,15 +79,15 @@ Crabs_Male_and_Orange <- Crabs_Male[! Male_Indexes == Blue_Indexes,]
 Crabs_Male_and_Orange
 
 #comparer le paramètre FL en fonction de l'espèce (bleue ou orange)
-boxplot(Crabs_Blue$FL, Crabs_Orange$FL, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable FL selon l'espèce")
+boxplot(Crabs_Blue$FL, Crabs_Orange$FL, col = c("light blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable FL selon l'espèce")
 #comparer le paramètre RW en fonction de l'espèce (bleue ou orange)
-boxplot(Crabs_Blue$RW, Crabs_Orange$RW, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable RW selon l'espèce")
+boxplot(Crabs_Blue$RW, Crabs_Orange$RW, col = c("light blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable RW selon l'espèce")
 #comparer le paramètre CL en fonction de l'espèce (bleue ou orange)
-boxplot(Crabs_Blue$CL, Crabs_Orange$CL, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable CL selon l'espèce")
+boxplot(Crabs_Blue$CL, Crabs_Orange$CL, col = c("light blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable CL selon l'espèce")
 #comparer le paramètre CW en fonction de l'espèce (bleue ou orange)
-boxplot(Crabs_Blue$CW, Crabs_Orange$CW, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable CW selon l'espèce")
+boxplot(Crabs_Blue$CW, Crabs_Orange$CW, col = c("light blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable CW selon l'espèce")
 #comparer le paramètre BD en fonction de l'espèce (bleue ou orange)
-boxplot(Crabs_Blue$BD, Crabs_Orange$BD, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable BD selon l'espèce")
+boxplot(Crabs_Blue$BD, Crabs_Orange$BD, col = c("light blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Comparaison de la variable BD selon l'espèce")
 
 #comparer le paramètre FL de crabe male en fonction de l'espèce (bleue ou orange)
 boxplot(Crabs_Male_and_Blue$FL, Crabs_Male_and_Orange$FL, col = c("blue","orange"), names = c("Esp. Bleue","Esp. Orange"), main = "Males - Comparaison de la variable FL selon l'espèce")
@@ -174,9 +174,6 @@ cor(Crabs_Male_and_Orange, Crabs_Female_and_Orange)
 cor(Crabs_Male_and_Orange, Crabs_Female_and_Blue)
 
 # Question : Quelle en est vraisemblablement la cause? 
-# ???? // TODO demander prof
-# Simplement des variables quantitatives possèdent des valeurs dans une petit intervale (de 0 à 54 environ) et que les variations dans cet intervalle sont légères ?
-# Données morphologiques donc logique qu'elles soient corrélées ??
 
 # réponse = effet taille (carac morphologique, indicateurs pays corrélés à leur taille/population, ....)
 
@@ -207,7 +204,6 @@ crabs.acp
 
 # Que constatez vous ? 
 pourcentage_inertie # composante 1 donne 98,25 % de l'inertie
-# TODO expliquer phénomère à la lumière de question 1.2
 # effet de taille toujours, ce qui explique le plus les différences entre les individus de l'échantillon est leur taille. 
 # Si l'individu est gros, ses mesures seront importantes, s'il est  plus petit, ses mesures vont diminuer aussi
 #
@@ -239,18 +235,7 @@ plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit ri
 
 
 
-# Trouver une solution pour améliorer affichage graphique TODO
-
-# idée : trouver les variables qui influencent le plus le vecteur propre de la premiere composante et les enlever des données
-#   - perd des données
-
-# idée 2 : pondérer à la hausse ou à la baisse certaines variables => problème => comment les choisir
-
-#
-
-# avec fonctions R
-
-
+# Trouver une solution pour améliorer affichage graphique
 
 acptest = princomp(crabsquant)
 summary(acptest)
@@ -258,12 +243,17 @@ acptest$scores
 acptest$loadings
 biplot(acptest)
 biplot(acptest, col = c("blue","orange")[crabs$RW])
-biplot(acptest, choices = c(2,3)) # TODO comment mettre de la couleur ??
+biplot(acptest, choices = c(2,3))
 
 prc <- prcomp(crabsquant, center=T, scale=T, retx=T)
 biplot(prc)
 
-
+# Pondérer une ou plusieur des variables responsables de l'effet de taille
+# Solution = pour chaque individu i, exprimer l'ensemble
+# des variables en poucentages de la valeur de l'observation CL
+# CL vaudra alors toujours 100% et n'aura plus une aussi grande dispersion qu'avant, dispersion qui en faisait une variable importante pour l'ACP
+# de même, CW qui semble être l'autre variable induisant un effet de taille possède des valeurs très proches de CL : sa dispersion sera elle aussi réduite
+# on va donc pouvoir analyser les données et dégager des composantes principales caractérisant autre chose que la taille, par exemple l'espèce et le sexe si c'est réellement des caractères qui influent sur les données morphométriques
 
 # enlever effet taille avec % par rapport à crabsquant$CL
 crabsquant_freq = crabsquant / crabsquant$CL * 100
