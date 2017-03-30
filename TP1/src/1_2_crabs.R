@@ -24,7 +24,8 @@ help(crabs)
 
 #faire un sommaire 
 summary(crabs)
-
+crabs$sp <- factor(crabs$sp, levels = c("B","O"))
+crabs$sex <- factor(crabs$sex, levels = c("F","M"))
 #dessiner les données en utilisant les fonctions plot() et boxplot()
 plot(crabs)
 boxplot(crabs)
@@ -163,6 +164,7 @@ boxplot(Crabs_Male_and_Orange$BD, Crabs_Female_and_Orange$BD, col = c("grey","wh
 #corrélation 
 #selon le résultat, on voit qu'il existe une forte corrélation entre des variables car la corrélation entre deux différentes variables est presque égale à 1.
 cor(crabsquant)
+xtable(cor(crabsquant))
 # on remarque dans les boxplot que la variable RW semble la plus discriminante et effectivement, c'est celle qui possède la corrélation la plus "faible", si tant est que 0,9 puisse être une corrélation dite "faible"
 cor(Crabs_Orange)
 cor(Crabs_Blue)
@@ -182,8 +184,10 @@ cor(Crabs_Male_and_Orange, Crabs_Female_and_Blue)
 
 
 
-# 2.3 ACP sur crabs
+############# 2.3 ACP sur crabs   ##########
 
+
+###### Fait à la main ###########
 crabsquant
 crabsquant.centered = scale(crabsquant, center = TRUE, scale = FALSE) # centrer les données en colonne
 crabsquant.centered
@@ -206,7 +210,6 @@ crabs.acp
 pourcentage_inertie # composante 1 donne 98,25 % de l'inertie
 # effet de taille toujours, ce qui explique le plus les différences entre les individus de l'échantillon est leur taille. 
 # Si l'individu est gros, ses mesures seront importantes, s'il est  plus petit, ses mesures vont diminuer aussi
-#
 
 
 plot(crabs.acp[,1], col = c("blue","orange")[crabs$sp]) # juste ACP 1 ne dit pas grand chose
@@ -235,18 +238,26 @@ plot(crabs.acp[,1]~crabs.acp[,5], col = c("black","red")[crabs$sex]) # ne dit ri
 
 
 
+
+###### Fait avec les fonctions de R ##########
+
+acp_sur_crabes = princomp(crabsquant)
+
+
+# Que constatez vous ? 
+options(digits = 4)
+summary(acp_sur_crabes) # composante 1 donne 98,25 % de l'inertie
+# effet de taille toujours, ce qui explique le plus les différences entre les individus de l'échantillon est leur taille. 
+# Si l'individu est gros, ses mesures seront importantes, s'il est  plus petit, ses mesures vont diminuer aussi
+acp_sur_crabes$scores
+acp_sur_crabes$loadings
+cor(crabsquant, acp_sur_crabes$scores)
+xtable(cor(crabsquant, acp_sur_crabes$scores), digits = 3)
+biplot(acp_sur_crabes) # toutes les variables d'origine sont corrélées positivement et s'expriment presque à 100% sur la composante 1
+biplot(acp_sur_crabes, choices = c(2,3))
+
+
 # Trouver une solution pour améliorer affichage graphique
-
-acptest = princomp(crabsquant)
-summary(acptest)
-acptest$scores
-acptest$loadings
-biplot(acptest)
-biplot(acptest, col = c("blue","orange")[crabs$RW])
-biplot(acptest, choices = c(2,3))
-
-prc <- prcomp(crabsquant, center=T, scale=T, retx=T)
-biplot(prc)
 
 # Pondérer une ou plusieur des variables responsables de l'effet de taille
 # Solution = pour chaque individu i, exprimer l'ensemble
@@ -256,8 +267,26 @@ biplot(prc)
 # on va donc pouvoir analyser les données et dégager des composantes principales caractérisant autre chose que la taille, par exemple l'espèce et le sexe si c'est réellement des caractères qui influent sur les données morphométriques
 
 # enlever effet taille avec % par rapport à crabsquant$CL
-crabsquant_freq = crabsquant / crabsquant$CL * 100
-crabsquant_freq[1,]
-crabsquant[1,]
-acp_moins_taille = princomp(crabsquant_freq)
+#crabsquant_norm_taille = crabsquant / ((crabsquant$CW+crabsquant$CL)/2) * 100
+crabsquant_norm_taille = crabsquant / (crabsquant$CW) * 100
+crabsquant_norm_taille = crabsquant / (crabsquant$CL) * 100
+# Comparer les valeurs avant et après correction pour le premier individu
+comparatif = rbind(crabsquant[1,], crabsquant_norm_taille[1,])
+row.names(comparatif) = c("Avant correction", "Après correction")
+comparatif
+xtable(comparatif)
+# ACP sur les nouvelles observations
+acp_moins_taille = princomp(crabsquant_norm_taille)
+# Correlation de la nouvelle ACP avec les variables d'origine
+summary(acp_moins_taille)
+cor(crabsquant, acp_moins_taille$scores)
 biplot(acp_moins_taille)
+
+
+library(rgl)
+blue = which(crabs$sp == "B")
+orange = which(! crabs$sp == "B")
+orange
+blue
+plot3d(acp_moins_taille$scores[,1:3], col = which(crabs$sex=="M" & crabs$sp=="O"))
+
