@@ -484,6 +484,180 @@ Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composan
 
 \section{Exercice théorique}
 
+Soient~:
+
+
+$D_p = \frac{1}{n}I_n$ la matrice de poids des $n$ individus (chaque individu possède une importance égale).
+
+
+$M = I_p$ la matrice de poids des $p$ variables (chaque variable possède une importance égale).
+
+
+\subsection{Axes factoriels de l'ACP et pourcentage d'inertie expliquée}
+
+\paragraph{Données de départ}
+Les données de départ, après avoir supprimé les correcteurs 2 et 3 qui n'ont respectivement pas corrigé le final et le médian, on obtient la matrice suivante~:
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& moy.median & std.median & moy.final & std.final \\ 
+		\hline
+		Cor1 & 10.71 & 3.90 & 10.94 & 4.58 \\ 
+		Cor4 & 10.23 & 3.04 & 13.43 & 4.34 \\ 
+		Cor5 & 10.98 & 4.41 & 11.83 & 3.97 \\ 
+		Cor6 & 11.50 & 4.30 & 13.41 & 4.88 \\ 
+		Cor7 & 10.12 & 4.03 & 11.90 & 4.44 \\ 
+		Cor8 & 10.74 & 4.65 & 11.40 & 4.87 \\ 
+	\end{tabular}
+\end{table}
+
+\paragraph{Centrage en colonnes}
+Soit $X$ la matrice précédente centrée en colonne~:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& moy.median & std.median & moy.final & std.final \\ 
+		\hline
+		Cor1 & -0.01 & -0.16 & -1.21 & 0.07 \\ 
+		Cor4 & -0.48 & -1.01 & 1.28 & -0.17 \\ 
+		Cor5 & 0.27 & 0.36 & -0.32 & -0.54 \\ 
+		Cor6 & 0.79 & 0.25 & 1.26 & 0.36 \\ 
+		Cor7 & -0.59 & -0.03 & -0.25 & -0.07 \\ 
+		Cor8 & 0.03 & 0.59 & -0.76 & 0.36 \\ 
+	\end{tabular}
+\end{table}
+Le centrage en colonne s'obtient en soustrayant à chaque valeur la moyenne de la colonne correspondante~: on obtient une somme de chaque colonne nulle.
+
+
+\paragraph{Matrice de covariance}
+On calcule la matrice $V$ de covariance entre les variables à l'aide de la formule $V = X^TD_{p}X = \frac{1}{6}X^TX$ ($n = 6$).
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& moy.median & std.median & moy.final & std.final \\ 
+		\hline
+		moy.median & 0.211 & 0.134 & 0.071 & 0.046 \\ 
+		std.median & 0.134 & 0.265 & -0.226 & 0.045 \\ 
+		moy.final & 0.071 & -0.226 & 0.908 & 0.013 \\ 
+		std.final & 0.046 & 0.045 & 0.013 & 0.099 \\ 
+	\end{tabular}
+\end{table}
+
+Remarquons que la commande R \texttt{cov.wt(X, method = 'ML')} donne le même résultat.
+
+\paragraph{Axes principaux d'inertie et inertie expliquée} On va ici utiliser la méthode R \texttt{eigen} afin de diagonaliser la matrice de covariance.
+On obtient les valeurs propres suivantes~:
+\[
+\lambda_1 = 0.9799,\quad
+\lambda_2 = 0.3675,\quad
+\lambda_3 = 0.0832 \quad et \quad 
+\lambda_4 = 0.0520
+\]
+Les vecteurs propres associés sont~:
+\[u_1 = 
+\begin{pmatrix}{}
+	-0.04 \\ 
+	 0.29 \\ 
+	-0.96 \\ 
+	-0.00 \\ 
+\end{pmatrix}\quad
+u_2 = 
+\begin{pmatrix}{}
+	-0.70 \\ 
+	-0.65 \\ 
+	-0.17 \\ 
+	-0.24 \\ 
+\end{pmatrix}\quad
+u_3 = 
+\begin{pmatrix}{}
+	-0.23 \\ 
+	-0.09 \\ 
+	-0.02 \\ 
+ 	 0.97 \\ 
+\end{pmatrix}\quad
+u_4 = 
+\begin{pmatrix}{}
+	 0.67 \\ 
+	-0.70 \\ 
+	-0.24 \\ 
+	 0.09 \\ 
+\end{pmatrix}
+\]
+
+
+Ces quatre vecteurs propres représentent les quatre axes factoriels de l'ACP définis par les quatre variables quantitatives. L'inertie expliquée par chacun des axes correspond à sa valeur propre associé.\\
+On obtient le tableau suivant~:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& $\lambda_1$ & $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\ 
+		\hline
+		Inertie expliquée & 0.98 & 0.37 & 0.08 & 0.05 \\ 
+		Pourcentage inertie expliquée & 66.10 & 24.79 & 5.61 & 3.51 \\ 
+	\end{tabular}
+\end{table}
+
+
+\subsection{Calcul composantes principales et représentation individus}
+
+Le calcul de la matrice $C$ des composantes principales se fait avec la formule $C = XMU = XU$ avec $U$ matrice des vecteurs propres en colonne et $M = I_p$~:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& Comp.1 & Comp.2 & Comp.3 & Comp.4 \\ 
+		\hline
+		Cor1 & 1.11 & 0.30 & 0.11 & 0.40 \\ 
+		Cor4 & -1.50 & 0.81 & 0.01 & 0.06 \\ 
+		Cor5 & 0.40 & -0.23 & -0.61 & -0.04 \\ 
+		Cor6 & -1.16 & -1.02 & 0.12 & 0.08 \\ 
+		Cor7 & 0.25 & 0.49 & 0.08 & -0.32 \\ 
+		Cor8 & 0.90 & -0.35 & 0.30 & -0.18 \\ 
+	\end{tabular}
+\end{table}
+
+Ce sont les coordonnées des observations dans le nouvel espace vectoriel dont les axes sont les vecteurs propres trouvés précédemment.
+
+Voici la représentation des individus (correcteurs) dans le premier plan factoriel (construit à partir des deux premiers axes factoriels)~:
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-1-2-individus-premier-plan-factoriel}
+	\caption{\scriptsize Individus (correcteurs) dans le premier plan factoriel de l'ACP}
+	\label{fig:individus_premier_plan_factoriel}
+\end{figure}
+
+
+\subsection{Représentation des variables d'origine dans le premier plan factoriel}
+
+Afin de représenter les variables d'origine dans le premier plan factoriel, on va tout d'abord calculer leur corrélation. C'est à dire calculer une mesure de la représentation des variables d'origine par les nouveaux axes trouvés à l'aide de l'ACP. Si par exemple la première variable a une corrélation égale à $|1|$ avec le premier axe factoriel, alors ils représentent exactement la même chose. Si à l'inverse la corrélation vaut $0$, on pourra dire que cette variable ne s'exprime absolument pas sur le premier axe factoriel.
+
+On calcule la matrice de corrélation à l'aide de la fonction \texttt{cor} de R~:
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& Comp.1 & Comp.2 & Comp.3 & Comp.4 \\ 
+		\hline
+		moy.median & -0.08 & -0.93 & -0.15 & 0.33 \\ 
+		std.median & 0.57 & -0.76 & -0.05 & -0.31 \\ 
+		moy.final & -0.99 & -0.11 & -0.01 & -0.06 \\ 
+		std.final & -0.00 & -0.46 & 0.89 & 0.06 \\ 
+	\end{tabular}
+\end{table}
+
+On reporte maintenant ces mesures sur le premier plan factoriel afin de représenter les variables d'origine sur ce dernier~:
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-1-2-variables-premier-plan-factoriel}
+	\caption{\scriptsize Variables dans le premier plan factoriel de l'ACP}
+	\label{fig:variables_premier_plan_factoriel}
+\end{figure}
+
 
 \section{Utilisation des outils R}
 
@@ -591,7 +765,7 @@ Tous les individus auront donc maintenant une valeur de 100 pour la variable \te
 
 
 
-Voici la représentation des données sur le nouveau plan factoriel déterminé par l'ACP. On remarque une séparation très claire du sexe et de l'espèce avec la formation de quatre clusters bien séparés.
+Voici la représentation des données sur le nouveau plan factoriel déterminé par l'ACP. On remarque une séparation très claire du sexe et de l'espèce avec la formation de quatre grappes de points (clusters) bien séparés.
 
 
 \begin{figure}[H]
