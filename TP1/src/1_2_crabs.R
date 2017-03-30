@@ -268,25 +268,27 @@ biplot(acp_sur_crabes, choices = c(2,3))
 
 # enlever effet taille avec % par rapport à crabsquant$CL
 #crabsquant_norm_taille = crabsquant / ((crabsquant$CW+crabsquant$CL)/2) * 100
-crabsquant_norm_taille = crabsquant / (crabsquant$CW) * 100
-crabsquant_norm_taille = crabsquant / (crabsquant$CL) * 100
+crabsquant_norm_taille_CW = crabsquant / (crabsquant$CW) * 100
+crabsquant_norm_taille_CL = crabsquant / (crabsquant$CL) * 100
 # Comparer les valeurs avant et après correction pour le premier individu
 comparatif = rbind(crabsquant[1,], crabsquant_norm_taille[1,])
 row.names(comparatif) = c("Avant correction", "Après correction")
 comparatif
 xtable(comparatif)
 # ACP sur les nouvelles observations
-acp_moins_taille = princomp(crabsquant_norm_taille)
+acp_moins_taille_CW = princomp(crabsquant_norm_taille_CW)
+acp_moins_taille_CL = princomp(crabsquant_norm_taille_CL)
 # Correlation de la nouvelle ACP avec les variables d'origine
-summary(acp_moins_taille)
-cor(crabsquant, acp_moins_taille$scores)
-biplot(acp_moins_taille)
+summary(acp_moins_taille_CL)
+cor(crabsquant, acp_moins_taille_CL$scores)
+biplot(acp_moins_taille_CL)
+
+plot(acp_moins_taille_CL$scores[,1:2], col=c("blue","orange")[crabs$sp], pch=c(21,24)[crabs$sex], xlab="Sexe\n<= Mâles | Femelles =>", ylab="Espèce")
+title(ylab = "<= Orange | Bleue =>", line = 2)
+plot(acp_moins_taille_CW$scores[,1:2], col=c("blue","orange")[crabs$sp], pch=c(21,24)[crabs$sex], xlab="Espèce\n<= Orange | Bleue =>", ylab="Sexe")
+title(ylab = "<= Mâles | Femelles =>", line = 2)
 
 
-library(rgl)
-blue = which(crabs$sp == "B")
-orange = which(! crabs$sp == "B")
-orange
-blue
-plot3d(acp_moins_taille$scores[,1:3], col = which(crabs$sex=="M" & crabs$sp=="O"))
+
+
 
