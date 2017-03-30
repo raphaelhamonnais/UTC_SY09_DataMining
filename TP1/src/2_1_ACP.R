@@ -120,7 +120,7 @@ text(ACP[,1], ACP[,4], labels = row.names(ACP))
 
 
 
-#3.Tracer la présentation des quatre variables dans le premier plan factoriel 
+########## 3.Tracer la présentation des quatre variables dans le premier plan factoriel ###########
 correl_var_acp = cor(corr.acp, ACP)
 correl_var_acp
 xtable(correl_var_acp)
@@ -146,6 +146,73 @@ var1_comp2 = 1/sd(x[,1]) * 1/sqrt(lambda[2]) * (t(x[,1]) %*% diag(1/6, nrow = 6,
 var2_comp2 = 1/sd(x[,2]) * 1/sqrt(lambda[2]) * (t(x[,2]) %*% diag(1/6, nrow = 6, ncol = 6) %*% c[,2])
 covar_entre_var_et_compo = c(var1_comp1, var1_comp2, var2_comp1, var2_comp2)
 covar_entre_var_et_compo
+
+
+
+
+############ 4. 
+# Calculer l’expression  somme de alpha=1 à k de la alpha-ième composante * le 
+# alpha-imème vecteur propre transposé pour k = 1, 2, 3. A quoi correspond cette somme lorsque k = 4 ?
+
+
+vec_propres
+vec_propres[,1]
+t(vec_propres[,1])
+as.matrix(vec_propres[,1])
+t(as.matrix(vec_propres[,1]))
+ACP[,1] %*% t(vec_propres[,1])
+corr.acp.centered
+ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2])
+ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2]) + ACP[,3] %*% t(vec_propres[,3])
+ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2]) + ACP[,3] %*% t(vec_propres[,3]) + ACP[,4] %*% t(vec_propres[,4])
+corr.acp.centered
+
+
+# From Benjamin Quost : 
+# Il faut bien transformer les vecteurs propres en objet de type "matrice" 
+# (pour le produit matriciel), mais ils seront naturellement sous forme de matrice ligne dès le départ. 
+# En revanche, les composantes principales, qui sont également à manipuler sous forme d'objet "matrice",
+# devront être mis sous forme colonne via la méthode de transposition t().
+
+ACP[,1] %*% t(as.matrix(vec_propres[,1]))
+corr.acp.centered
+ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[,2]))
+ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[,2])) + ACP[,3] %*% t(as.matrix(vec_propres[,3]))
+ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[,2])) + ACP[,3] %*% t(as.matrix(vec_propres[,3])) + ACP[,4] %*% t(as.matrix(vec_propres[,4]))
+corr.acp.centered
+
+ACP = as.matrix(ACP)
+ACP
+t(t(ACP[,1]))
+t(t(ACP[,1])) %*% t(as.matrix(vec_propres[,1]))
+
+acp = princomp(corr.acp.centered)
+a = t(t(acp$scores[,1])) %*% t(acp$loadings[,1])  
+for (i in 2:2) {
+  a = a + t(t(acp$scores[,i])) %*% t(acp$loadings[,i])  
+}
+a
+corr.acp.centered
+acp$scores[,1] %*% t(acp$loadings[,1])
+acp$loadings
+
+######### 5 - représenter les individus possédant des valeurs manquantes ##############
+correcteurs
+corr.acp.with.na = correcteurs
+corr.acp.with.na[2,4] = mean(corr.acp.with.na[-2,4])
+corr.acp.with.na[2,5] = mean(corr.acp.with.na[-2,5])
+corr.acp.with.na[3,2] = mean(corr.acp.with.na[-3,2])
+corr.acp.with.na[3,3] = mean(corr.acp.with.na[-3,3])
+row.names(corr.acp.with.na) = t(corr.acp.with.na[,1])
+corr.acp.with.na = corr.acp.with.na[,-1] # suppression colonne 1 qualitatif
+corr.acp.with.na
+xtable(corr.acp.with.na)
+
+acp2 = princomp(corr.acp.with.na)
+plot(-2:2,-2:2,type = "n", xlab = "Comp.1", ylab = "Comp.2")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(acp2$scores[,1], acp2$scores[,2], labels = row.names(acp2$scores))
 
 
 

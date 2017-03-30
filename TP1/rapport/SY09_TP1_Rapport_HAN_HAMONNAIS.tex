@@ -24,6 +24,7 @@
 \usepackage{listings} % pour hightlight code
 
 \usepackage{setspace}
+\usepackage{ulem} % \sout{Texte à barrer} \xout{Texte à hachurer} \uwave{Texte à souligner par une vaguelette}
 
 \onehalfspacing
 
@@ -659,7 +660,67 @@ On reporte maintenant ces mesures sur le premier plan factoriel afin de représe
 \end{figure}
 
 
+
+\subsection{Reconstitution de la matrice originelle $X$ centrée en colonne}
+
+On obtient $C$ avec la formule $C = XMU$ ($X$ matrice des observations centrées en colonne, $M = I_p$ et $U$ matrice des vecteurs propres représentant les axes factoriels obtenus après ACP).
+\begin{align*}
+C &= XMU \\
+\Longleftrightarrow \quad CU^T &= XMUU^T \qquad or\ MUU^T = I_p \\
+\Longleftrightarrow \quad CU^T &= X
+\end{align*}
+
+
+\begin{itemize}
+	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=1$~: matrice $X$ d'origine exprimée en fonction du $1^{er}$ axe factoriel
+	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=2$~: matrice $X$ d'origine exprimée en fonction des 2 premiers axes factoriels
+	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=3$~: matrice $X$ d'origine exprimée en fonction des 3 premiers axes factoriels
+	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=4$~: matrice $X$ d'origine
+\end{itemize}
+
+
+\textcolor{red}{
+\sout{La somme $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ est donc égale à la matrice centrée en colonne $X$ d'origine exprimée en fonction des $k$ premiers axes factoriels de l'ACP. Ces axes factoriels sont au final une combinaison linéaire des variables d'origines. On exprime donc les individus en fonction d'une multiplication par un scalaire de chaque variable d'origine (un scalaire pour chaque variable).}}\\
+\textcolor{OliveGreen}{TODO Normalement on devrait reconstruire la matrice X d'origine colonne par colonne}
+
+
+
+
+
+\subsection{Représenter les individus possédant des valeurs manquantes}
+
+Nous allons représenter les individus possédant des valeurs manquantes avec la méthode d'imputation par la moyenne~: chaque valeur non renseignée sera remplacée par la moyenne de la variable correspondante.
+
+On obtient la matrice (non centrée en colonne) suivante~:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrr}
+		& moy.median & std.median & moy.final & std.final \\ 
+		\hline
+		Cor1 & 10.71 & 3.90 & 10.94 & 4.58 \\ 
+		Cor2 & 12.01 & 3.71 & 12.21 & 4.39 \\ 
+		Cor3 & 10.90 & 4.01 & 12.57 & 3.65 \\ 
+		Cor4 & 10.23 & 3.04 & 13.43 & 4.34 \\ 
+		Cor5 & 10.98 & 4.41 & 11.83 & 3.97 \\ 
+		Cor6 & 11.50 & 4.30 & 13.41 & 4.88 \\ 
+		Cor7 & 10.12 & 4.03 & 11.90 & 4.44 \\ 
+		Cor8 & 10.74 & 4.65 & 11.40 & 4.87 \\ 
+	\end{tabular}
+\end{table}
+
+L'ACP effectuée avec la fonction \texttt{princomp} donne la représentation suivante des individus sur le premier plan factoriel~:
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-1-5-individus-with-na-premier-plan-factoriel}
+	\caption{\scriptsize Individus (dont les correcteurs 2 et 3 précédemment supprimés) dans le premier plan factoriel de l'ACP}
+	\label{fig:individus_with_na_premier_plan_factoriel}
+\end{figure}
+
+
 \section{Utilisation des outils R}
+
 
 
 \section{Données Crabs}
@@ -765,7 +826,7 @@ Tous les individus auront donc maintenant une valeur de 100 pour la variable \te
 
 
 
-Voici la représentation des données sur le nouveau plan factoriel déterminé par l'ACP. On remarque une séparation très claire du sexe et de l'espèce avec la formation de quatre grappes de points (clusters) bien séparés.
+Voici la représentation des données sur le nouveau plan factoriel déterminé par l'ACP. On remarque une séparation très claire du sexe et de l'espèce avec la formation de quatre grappes de points bien séparées.
 
 
 \begin{figure}[H]
@@ -791,9 +852,10 @@ Voici la représentation des données sur le nouveau plan factoriel déterminé 
 	\label{fig:biplots_crabs_corrected}%
 \end{figure}
 
-Nous avons pu déduire la signification de ces clusters grâce à l'index des individus (voir \autoref{subsection:describe_crabs}). Et cela nous a aussi permis d'identifier la signification des axes du premier plan factoriel~: sexe et espèce. Remarquons que choisir \textit{CL} ou \textit{CW} comme base pour la normalisation des observation va simplement inverser les deux premiers axes factoriels. Enfin, n'oublions pas que la troisième composante principale représente 6\% de l'inertie expliquée~: une représentation en trois dimension serait surement intéressante, mais nous n'avons pas réussi à colorer les points de manière à pouvoir différencier les populations, donc la visualisation n'est malheureusement pas significative.
+La coloration (bleue ou orange) et la différenciation du type de point (triangle pour les mâles, rond pour les femelles) nous a permis d'identifier la signification des axes du premier plan factoriel~: sexe et espèce. Remarquons que choisir \textit{CL} ou \textit{CW} comme base pour la normalisation des observation va simplement inverser les deux premiers axes factoriels.
 
-Conclusion~: la suppression de l'effet de taille permet de véritablement discriminer les observations en fonction de l'espèce et du sexe des individus.
+
+Conclusion~: la suppression de l'effet de taille permet de véritablement discriminer les observations en fonction de l'espèce et du sexe des individus, et non plus seulement en fonction de leur taille.
 
 \section{Données Pima}
 \label{sec:2_4_ACP_Pima}
