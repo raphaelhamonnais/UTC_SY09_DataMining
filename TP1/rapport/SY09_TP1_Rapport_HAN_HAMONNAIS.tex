@@ -1,6 +1,6 @@
 \documentclass[a4paper,11pt]{report}
 \usepackage{natbib}
-\usepackage{subcaption}
+
 \usepackage{cleveref}
 \usepackage{packages/rapportutc}
 \usepackage[nottoc, notlof, notlot]{tocbibind}
@@ -8,12 +8,12 @@
 \usepackage{array}
 \usepackage[linewidth=1pt]{mdframed}
 \usepackage{float}
+\usepackage{subcaption}
 
 
 \usepackage{packages/Sweave} %package d'affichage des codes R
 \usepackage{amsmath, amsthm, amssymb, graphics, setspace} %packages de mathématiques
 \usepackage{calc,enumitem}  % Mise en forme l'environnement itemsize description etc.
-%\usepackage{subfigure, wrapfig} % pour avoir plusieurs figures alignées  
 \usepackage{color}
 \usepackage{ae,aecompl}
 \usepackage{pifont}
@@ -21,7 +21,7 @@
 \usepackage{comment}
 \usepackage{rotating}
 \usepackage{hyperref}
-\usepackage{listings}
+\usepackage{listings} % pour hightlight code
 
 \usepackage{setspace}
 
@@ -224,11 +224,11 @@ Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_di
 \begin{itemize}
 	\item Tableau de contingence d'origine
 	\\ \textit{p-value} = 0.02087781.
-	\\ On réfute (à tort) l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité}.
+	\\On réfute (à tort) l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité}.
 	
 	\item Tableau de contingence corrigé
 	\\ \textit{p-value} = 0.4673856.
-	\\ On accepte l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité} avec confiance.
+	\\On accepte l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité} avec confiance.
 \end{itemize}
 
 Conclusion~: la spécialité d'un étudiant n'a pas d'impact sur son résultat.
@@ -268,11 +268,11 @@ Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_di
 \begin{itemize}
 	\item Tableau de contingence d'origine
 	\\ \textit{p-value} = 0.0003517831.
-	\\ On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
+	\\On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
 	
 	\item Tableau de contingence corrigé
 	\\ \textit{p-value} = 0.003523739.
-	\\ On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
+	\\On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
 \end{itemize}
 Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exemple dans la figure \ref{fig:frequence_resultats_niveau} que plus le niveau de l'étudiant augmente, moins il a de chance d'obtenir l'UV. 42\% de \textit{F} ou \textit{Fx} pour les étudiants de niveau 4 contre 7\% seulement pour ceux de niveau 1. A l'opposé, ces derniers sont 80\% à obtenir l'UV avec un résultat entre \textit{D} et \textit{A} contre 45\% pour les étudiants de niveau 4. Les étudiants de niveau 2 se situent au milieu, avec 60\% pour un résultat compris entre \textit{D} et \textit{A} et 27\% de non obtention de l'UV.
 
@@ -325,6 +325,7 @@ Les notes obtenues au médian et au final étant fortement corrélées au résul
 \subsection{Analyse descriptive}
 
 \subsubsection{Description des données}
+\label{subsection:describe_crabs}
 
 Le jeu de données présente 200 crabes classés en fonction de leur espèce et de leur sexe. Chaque individu est aussi décrit par 5 caractéristiques morphologiques quantitatives.
 \\
@@ -448,6 +449,7 @@ Les deux figures suivantes présentent les distributions des variables morpholog
 Graphiquement, il semble difficile de séparer les individus en fonction de leur sexe ou de leur espèce. Comparer les populations de même sexe mais d'espèce différente, de même espèce mais de sexe différent ou encore de sexe et espèce différents donne des résultats similaires. Aucune de ces variables, prise individuellement, ne nous permet d'identifier le sexe ou l'espèce d'un individu.
 
 \subsection{Etude de la corrélation entre les variables morphologiques}
+\label{subsection:crabs_correlation_variables_quantitatives}
 
 La corrélation entre les cinq variables est très forte, comme le montre le tableau de corrélation suivant~:
 \newpage
@@ -468,8 +470,7 @@ La corrélation entre les cinq variables est très forte, comme le montre le tab
 	\end{tabular}
 \end{table}
 
-
-La raison de cette forte corrélation est que les variables représentent des mesures morphométriques, c'est à dire des distances relevées sur les corps des crabes. Plus un crabe est grand, plus ces mesures vont grandir, et inversement.
+De plus, toutes les variables sont corrélées positivement entre-elles. La raison est simple~: les observations représentent des mesures morphométriques, c'est à dire des distances relevées sur les corps des crabes. Plus un crabe est grand, plus ces mesures vont grandir, et inversement.
 Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composantes principales sur les données. Les nouvelles variables identifiées auront alors une très faible corrélation entre elles. Il sera alors peut-être possible de différencier le sexe et l'espèce des individus en fonction de leur mesures morphométriques analysées en fonction des nouveaux axes trouvées lors de l'ACP (voir \autoref{sec:2_3_ACP_Crabs}).
 
 
@@ -489,6 +490,136 @@ Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composan
 
 \section{Données Crabs}
 \label{sec:2_3_ACP_Crabs}
+
+\subsection{ACP sur les données initiales}
+
+Voici ci-dessous un tableau récapitulatif de l'ACP effectuée sur les données \texttt{crabsquant} sans traitement préalable.
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{ACP sur le jeu de données "crabs" (sans traitement préalable)}
+	\label{table:acp_crabs_initial_data}
+	\begin{tabular}{lrrrrr}
+		& Comp. 1 & Comp. 2 & Comp. 3 & Comp. 4 & Comp. 5 \\
+		Inertie expliquée & 11.83 & 1.14 & 1 & 0.37 & 0.28 \\
+		Pourcentage d'inertie expliquée & 98.25 & 0.91 & 0.70 & 0.09 & 0.05 \\
+		Pourcentage d'inertie expliquée cumulé & 98.25 & 99.16 & 99.86 & 99.95 & 100
+	\end{tabular}
+\end{table}
+
+On constate que la première composante représente 98.25\% des données à elle toute seule. Si on calcule la matrice de corrélation entre les nouvelles composantes principales et les variables d'origine (\autoref{table:correlation_crabs_acp}), on remarque alors que toutes les variables d'origine sont très fortement corrélées à la première composante principale.
+Tout particulièrement les variables \textit{CL} et \textit{CW}, c'est à dire la longueur et la largeur de la coquille des crabes.
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{Corrélations entre les variables d'origines et les composantes principales (données "crabs")}
+	\label{table:correlation_crabs_acp}
+	\begin{tabular}{lrrrrr}
+		& Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 \\ 
+		FL & -0.981 & -0.105 & 0.145 & 0.077 & 0.010 \\ 
+		RW & -0.909 & -0.383 & -0.161 & -0.021 & -0.015 \\ 
+		CL & -0.999 & 0.032 & 0.025 & -0.007 & -0.029 \\ 
+		CW & -0.997 & 0.042 & -0.062 & 0.006 & 0.017 \\ 
+		BD & -0.983 & -0.053 & 0.160 & -0.068 & 0.036 \\ 
+	\end{tabular}
+\end{table}
+
+On retrouve bien ici l'effet de taille observé précédemment dans la  \autoref{subsection:crabs_correlation_variables_quantitatives}. La représentation graphique de l'ACP obtenue avec la commande \texttt{biplot} (\autoref{fig:biplot_acp_crabs_plan_1_2}) confirme cette corrélation~: les variables \textit{CW} et \textit{CL} sont particulièrement bien exprimée par le premier axe factoriel, tout comme \textit{BD} et \textit{FL}. Seule la mesure \textit{RW} "s'émancipe" un peu est s'exprime légèrement sur le second axe factoriel.\\
+Une rapide analyse du tableau de corrélation (\autoref{table:correlation_crabs_acp}) nous indique d'ailleurs que les composantes 2 et 3 pourraient bien mieux représenter les variables \textit{FL}, \textit{RW} et \textit{BD}. Et effectivement, une représentation des individus sur le plan factoriel créé à partir du deuxième et troisième axe (\autoref{fig:biplot_acp_crabs_plan_2_3}), permet à priori de mieux discriminer la population de crabes selon leur espèce et leur sexe. Mais il ne faut pas oublier qu'en ne considérant pas la premier axe factoriel, on perd 98\% de l'inertie expliquée...
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\columnwidth]{img/2-3-1-biplot-acp-crabs-plan-1-2}
+		\caption{\scriptsize ACP crabs~: biplot du premier \\plan factoriel}
+		\label{fig:biplot_acp_crabs_plan_1_2}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\columnwidth]{img/2-3-1-biplot-acp-crabs-plan-2-3}
+		\caption{\scriptsize ACP crabs~: biplot du plan factoriel créé à partir des composantes 2 et 3}
+		\label{fig:biplot_acp_crabs_plan_2_3}
+	\end{subfigure}%
+	\caption{
+		\small Représentations de l'ACP des données \texttt{crabs} sur deux plans factoriels différents
+	}
+	\label{fig:biplots_crabs}%
+\end{figure}
+
+
+
+\subsection{Correction l'effet de taille}
+
+Afin de prendre en compte une plus grande partie de l'inertie expliquée, il va nous falloir corriger l'effet de taille. Le principe de l'ACP est d'identifier les axes présentant la plus grande dispersion possible, et l'ACP précédente a bien montré que la taille du crabe est le facteur le plus "dispersant". Il va donc falloir réduire au maximum cette dispersion afin donner plus d'importance aux autres mesures et peut-être identifier des facteurs morphologiques (autres que la taille) communs au sexe et/ou aux espèces.\\
+On a identifié les variables \textit{CL} et \textit{CW} comme étant les initiatrices principales de cet effet. Il suffit alors de réduire à 0 la dispersion de l'une de ces deux mesures. Une manière simple de faire cela est d'exprimer l'ensemble des autres variables en pourcentage de la mesure dont on veut réduire la dispersion. Nous avons ici choisit de réduire la dispersion de la mesure \textit{CL} (les effets de \textit{CL} et \textit{CW} sur l'ACP sont quasiment identiques, donc ici choisir l'une ou l'autre revient finalement au même, comme on peut le voir dans la \autoref{fig:biplot_acp_crabs_corrected_CW}).\\
+La méthode est donc, pour chaque individu, de diviser toutes les observations par la valeur de \textit{CL} puis de multiplier par 100. Le \autoref{table:comparatif_normalisation_crabs} montre bien le changement se produisant dans les observations.
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\caption{\scriptsize Comparatif des observations du premier individu avant et après correction de l'effet de taille}
+	\label{table:comparatif_normalisation_crabs}
+	\begin{tabular}{lrrrrr}
+		& FL & RW & CL & CW & BD \\ 
+		Avant correction & 8.10 & 6.70 & 16.10 & 19.00 & 7.00 \\ 
+		Après correction & 50.31 & 41.61 & 100.00 & 118.01 & 43.48 \\ 
+	\end{tabular}
+\end{table}
+
+Tous les individus auront donc maintenant une valeur de 100 pour la variable \textit{CL}~: sa dispersion sera nulle. L'ACP effectuée sur les nouvelles données ainsi corrigée (\autoref{table:acp_crabs_corrected_data}) est bien plus "équilibrée" dans le sens où la première composante principale ne représente pas 98\% des données mais 53\%, et qu'il faut prendre en compte les 3 premiers axes factoriels pour obtenir environ 95\% d'inertie expliquée.
+
+
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{ACP sur le jeu de données \texttt{crabs} \\(avec correction de l'effet de taille)}
+	\label{table:acp_crabs_corrected_data}
+	\begin{tabular}{lrrrrr}
+		& Comp. 1 & Comp. 2 & Comp. 3 & Comp. 4 & Comp. 5 \\
+		Inertie expliquée & 3.936 & 3.217 & 1.333 & 1.2302 & 0 \\
+		Pourcentage d'inertie expliquée & 53.2 & 35.5 & 6.1 & 5.19 & 0 \\
+		Pourcentage d'inertie expliquée cumulé & 53.2 & 88.7 & 94.8 & 100 & 100
+	\end{tabular}
+\end{table}
+
+
+
+Voici la représentation des données sur le nouveau plan factoriel déterminé par l'ACP. On remarque une séparation très claire du sexe et de l'espèce avec la formation de quatre clusters bien séparés.
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\columnwidth]{img/2-3-2-biplot-acp-crabs-corrected-CL}
+		\caption{\scriptsize ACP crabs~: correction de l'effet de taille en normalisant par rapport à la variable \textit{CL}}
+		\label{fig:biplot_acp_crabs_corrected_CL}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\columnwidth]{img/2-3-2-biplot-acp-crabs-corrected-CW}
+		\caption{\scriptsize ACP crabs~: correction de l'effet de taille en normalisant par rapport à la variable \textit{CW}}
+		\label{fig:biplot_acp_crabs_corrected_CW}
+	\end{subfigure}%
+	\caption{
+		\small Représentations de l'ACP des données \texttt{crabs} après correction de l'effet de taille
+	}
+	\label{fig:biplots_crabs_corrected}%
+\end{figure}
+
+Nous avons pu déduire la signification de ces clusters grâce à l'index des individus (voir \autoref{subsection:describe_crabs}). Et cela nous a aussi permis d'identifier la signification des axes du premier plan factoriel~: sexe et espèce. Remarquons que choisir \textit{CL} ou \textit{CW} comme base pour la normalisation des observation va simplement inverser les deux premiers axes factoriels. Enfin, n'oublions pas que la troisième composante principale représente 6\% de l'inertie expliquée~: une représentation en trois dimension serait surement intéressante, mais nous n'avons pas réussi à colorer les points de manière à pouvoir différencier les populations, donc la visualisation n'est malheureusement pas significative.
+
+Conclusion~: la suppression de l'effet de taille permet de véritablement discriminer les observations en fonction de l'espèce et du sexe des individus.
 
 \section{Données Pima}
 \label{sec:2_4_ACP_Pima}
