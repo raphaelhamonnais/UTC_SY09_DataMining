@@ -55,3 +55,20 @@ plot(acp$scores[,1]~acp$scores[,7], col = c("blue","orange")[Pima$z])
 Pima$z
 class(Pima$z)
 
+
+
+#########################  New ###################
+
+Pima <- read.csv("data/Pima.csv",header = T)
+Pima$z <- factor(Pima$z)
+summary(Pima)
+contingence_z_npreg = as.data.frame.matrix(table(Pima$z, Pima$npreg))
+contingence_z_npreg
+for (i in 13:17) {
+  contingence_z_npreg[,12] = contingence_z_npreg[,12] + contingence_z_npreg[,i]
+}
+contingence_z_npreg
+contingence_z_npreg = contingence_z_npreg[,-c(13:17)]
+contingence_z_npreg
+chisq.test(contingence_z_npreg)
+
