@@ -43,6 +43,10 @@ chisq.test(contingence_z_npreg)
 # Conclusion => enceinte = augmente risques de diabète. L'autre solution envisageable est que le diabète augmente la fertilité des femmes, mais cela semble moins logique
 
 
+
+
+
+
 ## Diabète vs. Glucose #########
 hist(Pima$glu)
 summary(Pima$glu)
@@ -101,3 +105,82 @@ barplot(
 #  => plis cutané mince => plus de fréquence de non diab / 
 #  => plis cutané épais => plus de fréquence de diab / 
 #  => plis cutané des diabétiques suit une courbe gaussienne
+
+
+#Diabète vs. indice de masse corporelle #
+#Faire des intervalles 
+class_bmi <- cut(Pima$bmi, breaks = c(-Inf,seq(26, 50, 5), Inf), right = FALSE)
+class_bmi
+#Faire la table de contingence 
+contingence_z_bmi = as.data.frame.matrix(table(Pima$z, class_bmi))
+#Renommer les lignes de la table de contingence 
+row.names(contingence_z_bmi) = c("Non diabétique", "Diabétique")
+contingence_z_bmi
+#Faire la test chi2
+chisq.test(contingence_z_bmi)
+#Faire la table en fréquence  
+contingence_z_bmi_freq = t(apply(contingence_z_bmi, MARGIN = 1, prop.table)*100)
+contingence_z_bmi_freq
+#faire la graphe "barplot"
+barplot(
+  as.matrix(contingence_z_bmi_freq), 
+  col = c("light green", "light blue"),
+  beside = T, 
+  legend = row.names(contingence_z_bmi_freq),
+  xlab = "Indice de masse corporelle ", ylab = "Fréquence"
+)
+#Conclusion:
+#Plus indice de masse corporelle est petit, plus de fréquence de non diabétique 
+#Plus indice de masse corporelle est grand, plus de fréquence de diabétique 
+
+###Diabète vs.fonction de pedigree du diabète###
+#Faire des intervalles 
+class_ped <- cut(Pima$ped, breaks = c(seq(0, 1.3, 0.2), Inf), right = FALSE)
+class_ped
+#Faire la table de contingence 
+contingence_z_ped = as.data.frame.matrix(table(Pima$z, class_ped))
+#Renommer les lignes de la table de contingence 
+row.names(contingence_z_ped) = c("Non diabétique", "Diabétique")
+contingence_z_ped
+#Faire la test chi2
+chisq.test(contingence_z_ped)
+#Faire la table en fréquence  
+contingence_z_ped_freq = t(apply(contingence_z_ped, MARGIN = 1, prop.table)*100)
+contingence_z_ped_freq
+#faire la graphe "barplot"
+barplot(
+  as.matrix(contingence_z_ped_freq), 
+  col = c("light green", "light blue"),
+  beside = T, 
+  legend = row.names(contingence_z_ped_freq),
+  xlab = "Fonction de pedigree du diabète", ylab = "Fréquence"
+)
+#Conclusion:
+#Fonction de pedigree non diabétique peut-être suivi une loi de chi2
+#Quand la valeur est entre [0.2, 0.4], on a la plus possibilité d'être diabétique et non diabétique  
+
+###Diabète vs. âge ###
+#Faire des intervalles  
+class_age <- cut(Pima$age, breaks = c(seq(20, 50, 5), Inf), right = FALSE)
+class_age
+#Faire la table de contingence 
+contingence_z_age = as.data.frame.matrix(table(Pima$z, class_age))
+#Renommer les lignes de la table de contingence 
+row.names(contingence_z_age) = c("Non diabétique", "Diabétique")
+contingence_z_age
+#Faire la test chi2
+chisq.test(contingence_z_age)
+#Faire la table en fréquence  
+contingence_z_age_freq = t(apply(contingence_z_age, MARGIN = 1, prop.table)*100)
+contingence_z_age_freq
+#faire la graphe "barplot"
+barplot(
+  as.matrix(contingence_z_age_freq), 
+  col = c("light green", "light blue"),
+  beside = T, 
+  legend = row.names(contingence_z_age_freq),
+  xlab = "âge", ylab = "Fréquence"
+)
+#Conclusion:
+#Plus la personne est jeune, plus la fréquence de non diabétique.
+#La fréquence d'être diabétique ne changé pas trop selon l'âge  
