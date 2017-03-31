@@ -129,8 +129,10 @@ plot(-1.5:1.5, -1.5:1.5, type = "n", xlab = "Comp .1", ylab = "Comp .2")
 abline(h=0,v=0)
 draw.circle(0,0,1)
 text(correl_var_acp[,1], correl_var_acp[,2], labels = row.names(correl_var_acp))
+# Avec fonction R s.corcircle
 s.corcircle(correl_var_acp, xax = 1, yax = 2)
-
+title(xlab = "Composante 1", line = 3)
+title(ylab = "Composante 2", line = 2)
 # Calcul à la main des covariances entre les variables initiales (x) et le composantes principales trouvées (c)
 # formule page 41 tout en bas
 # Xj transposé = j ème colonne, = coordonées de individus sur le j ème axe
