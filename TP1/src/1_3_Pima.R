@@ -1,17 +1,13 @@
 #1.3 Données Pima
 #setwd("E:/study/UTC/GI05/SY09/UTC_SY09_TPs/TP1")
 Pima <- read.csv("data/Pima.csv",header = T)
+Pima$z <- factor(Pima$z)
 #il y a huit variables: 
 summary(Pima)
 plot(Pima)
-Pima$z <- factor(Pima$z)
+
 dim(Pima)
-#supprimer la dernière colonne 
-#Pima <- Pima[,-ncol(Pima)]
-Pima
-#prendre les six premières lignes
-#head(Pima)
-#summary(Pima)
+
 
 hist(Pima$npreg)
 plot(density(Pima$glu))
@@ -26,46 +22,15 @@ boxplot(Pima$bmi~Pima$z, names =c("non diabétique", "diabétique"), ylab = "ind
 boxplot(Pima$ped~Pima$z, names =c("non diabétique", "diabétique"), ylab = "fonction de pedigree du diabète(ped)", xlab = "diabétique ou non(z)", main ="la relation entre ped et z")
 boxplot(Pima$age~Pima$z, names =c("non diabétique", "diabétique"), ylab = "âge(age)", xlab = "diabétique ou non(z)", main ="la relation entre age et z")
 
-Pima.quant <- Pima[,-ncol(Pima)]
-cor(Pima.quant)
 
 
-a = table(Pima$z[which(Pima$z == 1)], Pima$npreg[which(Pima$z == 1)])
-a = as.data.frame(table(Pima$z, Pima$npreg))
-a
-sum(a[1,])
-sum(a[2,])
-table(Pima$z, Pima$glu)
-plot(Pima$z~Pima$glu)
-table(Pima$z, Pima$bp)
-table(Pima$z, Pima$skin)
-table(Pima$z, Pima$bmi)
-table(Pima$z, Pima$ped)
-table(Pima$z, Pima$age)
+#### Corrélation pima quantitatif ######
+pima.quant <- Pima[,-ncol(Pima)]
+cor(pima.quant)
 
+#### Etude indépendance variables avec test khi 2 #########
 
-
-acp = princomp(Pima)
-acp
-biplot(acp)
-
-acp$scores
-plot(acp$scores[,2]~acp$scores[,1], col = c("blue","orange")[Pima$z])
-plot(acp$scores[,1]~acp$scores[,7], col = c("blue","orange")[Pima$z])
-
-
-
-
-Pima$z
-class(Pima$z)
-
-
-
-#########################  New ###################
-
-Pima <- read.csv("data/Pima.csv",header = T)
-Pima$z <- factor(Pima$z)
-summary(Pima)
+## Diabète vs. Grossesses #########
 contingence_z_npreg = as.data.frame.matrix(table(Pima$z, Pima$npreg))
 contingence_z_npreg
 for (i in 13:17) {
@@ -75,4 +40,6 @@ contingence_z_npreg
 contingence_z_npreg = contingence_z_npreg[,-c(13:17)]
 contingence_z_npreg
 chisq.test(contingence_z_npreg)
+# Conclusion => enceinte = augmente risques de diabète. L'autre solution envisageable est que le diabète augmente la fertilité des femmes, mais cela semble moins logique
+
 
