@@ -44,6 +44,72 @@ chisq.test(contingence_z_npreg)
 
 
 
+
+
+
+## Diabète vs. Glucose #########
+hist(Pima$glu)
+summary(Pima$glu)
+classes_glu = cut(Pima$glu, 
+        #breaks = c(-Inf, 90, 100, 110, 120, 130, 140, 150, 160, 175, Inf), 
+        breaks = c(-Inf, seq(90,160,10), 175, Inf), 
+#        labels = c("0-89", "90-99", "d", "100-119", "ed", "120-139", "140-159", "", ">= 160", "de"), 
+        right = FALSE) # regrouper en classes
+classes_glu
+contingence_z_glu = as.data.frame.matrix(table(Pima$z, classes_glu))
+contingence_z_glu
+row.names(contingence_z_glu) = c("Non diabétique", "Diabétique")
+contingence_z_glu
+chisq.test(contingence_z_glu)
+# Conclusion => taux de glucose élevé = diabétique
+
+
+
+## Diabète vs. BP pression artérielle #########
+hist(Pima$bp)
+summary(Pima$bp)
+classes_bp = cut(Pima$bp,
+                  breaks = c(-Inf, seq(51,100,10), Inf), 
+                  right = FALSE) # regrouper en classes
+classes_bp
+contingence_z_bp = as.data.frame.matrix(table(Pima$z, classes_bp))
+contingence_z_bp
+row.names(contingence_z_bp) = c("Non diabétique", "Diabétique")
+contingence_z_bp
+chisq.test(contingence_z_bp)
+# Conclusion => taux de glucose élevé = effet sur pression artérielle
+
+
+## Diabète vs. épaisseur du pli cutané au niveau du triceps #########
+hist(Pima$skin)
+summary(Pima$skin)
+classes_skin = cut(Pima$skin,
+                 breaks = c(-Inf, 15, seq(20,45,5), 49, Inf), 
+                 right = FALSE) # regrouper en classes
+classes_skin
+contingence_z_skin = as.data.frame.matrix(table(Pima$z, classes_skin))
+contingence_z_skin
+row.names(contingence_z_skin) = c("Non diabétique", "Diabétique")
+contingence_z_skin
+chisq.test(contingence_z_skin)
+contingence_z_skin_freq = t(apply(contingence_z_skin, MARGIN = 1, prop.table)*100)
+contingence_z_skin_freq
+barplot(
+  as.matrix(contingence_z_skin_freq), 
+  col = c("light green", "light blue"),
+  beside = T, 
+  legend = row.names(contingence_z_skin_freq),
+  xlab = "Epaisseur du pli cutané au niveau du triceps", ylab = "Fréquence"
+  )
+# Conclusion
+#  => plis cutané mince => plus de fréquence de non diab / 
+#  => plis cutané épais => plus de fréquence de diab / 
+#  => plis cutané des diabétiques suit une courbe gaussienne
+
+
+
+
+
 #diabète vs. indice #
 class_bmi <- cut(Pima$bmi, breaks = c(-Inf,seq(26, 50, 5), Inf))
 class_bmi
@@ -74,4 +140,3 @@ chisq.test(contingence_z_age)
 #barplot(as.matrix(contingence_z_age), beside = T)
 
 #conclusion: 
-
