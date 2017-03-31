@@ -452,6 +452,90 @@ Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composan
 
 \section{Données Pima}
 
+Les données Pima consistent en plusieurs mesures effectuée sur une population de femmes amérindiennes, le but étant d'observer les facteurs aggravant de diabète dans une population plus touchée que de moyenne par cette maladie.
+L'échantillon est composé 532 individus décrits par 8 variables différentes, toutes quantitatives sauf une qui détermine l'absence ou la présence d'une condition diabétique chez l'individu.
+
+\subsection{Analyse descriptive}
+
+\subsubsection{Liste des variables}
+
+Variables quantitatives~:
+\begin{itemize}
+	\item \textbf{npreg}~: nombre de grossesses.
+	\item \textbf{glu}~: taux plasmatique de glucose.
+	\item \textbf{bp}~: pression artérielle diastolique.
+	\item \textbf{skin}~: épaisseur du pli cutané au niveau du triceps.
+	\item \textbf{bmi}~: indice de masse corporelle.
+	\item \textbf{ped}~: fonction de pedigree du diabète, c'est à dire une mesure de l’influence génétique espérée des proches, affectés ou non par le diabète, sur le risque éventuel du sujet.
+	\item \textbf{age}~: l'age du sujet.
+\end{itemize}
+Variable qualitative~:
+\begin{itemize}
+	\item \textbf{z}~: diabétique si \textbf{z} = 2;
+\end{itemize}
+
+\subsubsection{Domaine de définition et statistiques descriptives des variables}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|l|l|l|l}
+		\hline
+		npreg &      glu &       bp &      skin &      bmi \\
+		\hline
+		Min.   : 0.000   & Min.   : 56.00   & Min.   : 24.00   & Min.   : 7.00   & Min.   :18.20  \\
+		1st Qu.: 1.000   & 1st Qu.: 98.75   & 1st Qu.: 64.00   & 1st Qu.:22.00   & 1st   Qu.:27.88  \\
+		Median : 2.000   & Median :115.00   & Median : 72.00   & Median :29.00   & Median :32.80  \\
+		Mean   : 3.517   & Mean   :121.03   & Mean   : 71.51   & Mean   :29.18   & Mean  :32.89  \\ 
+		3rd Qu.: 5.000   & 3rd Qu.:141.25   & 3rd Qu.: 80.00   & 3rd Qu.:36.00   & 3rd Qu.:36.90  \\
+		Max.   :17.000   & Max.   :199.00   & Max.   :110.00   & Max.   :99.00   & Max.   :67.10  \\
+	\end{tabular}
+	\begin{tabular}{l|l|l|}
+		\hline
+		ped &      age & z \\ 
+		\hline
+		Min.   :0.0850   & Min.   :21.00   & 1:355   \\ 
+		1st Qu.:0.2587   & 1st Qu.:23.00   & 2:177   \\ 
+		Median :0.4160   & Median :28.00   &  \\ 
+		Mean   :0.5030   & Mean   :31.61   &  \\ 
+		3rd Qu.:0.6585   & 3rd Qu.:38.00   &  \\ 
+		Max.   :2.4200   & Max.   :81.00   &  \\ 
+	\end{tabular}
+\end{table}
+
+
+La première chose importante à remarquer est la différence d'effectif entre les types d'individus~: nn a deux fois plus d'individus non diabétiques (355) que de diabétiques (177). Le choix des représentations graphiques et tests statistiques est important. Travailler sur le nombre avec par exemple des diagrammes en bâton donnera des résultat complètement faux. Des boîtes à moustache par contre seront plus à même de pointer des disparités entre les deux types d'individus.
+
+
+
+
+\subsection{Etude des liens statistique entre le facteur diabète \textit{z} et les autres variables}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -646,19 +730,8 @@ C &= XMU \\
 \end{align*}
 
 
-\begin{itemize}
-	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=1$~: matrice $X$ d'origine exprimée en fonction du $1^{er}$ axe factoriel
-	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=2$~: matrice $X$ d'origine exprimée en fonction des 2 premiers axes factoriels
-	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=3$~: matrice $X$ d'origine exprimée en fonction des 3 premiers axes factoriels
-	\item $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ avec $k=4$~: matrice $X$ d'origine
-\end{itemize}
 
-
-\textcolor{red}{
-\sout{La somme $\sum\limits_{\alpha=1}^k = c_\alpha u^T$ est donc égale à la matrice centrée en colonne $X$ d'origine exprimée en fonction des $k$ premiers axes factoriels de l'ACP. Ces axes factoriels sont au final une combinaison linéaire des variables d'origines. On exprime donc les individus en fonction d'une multiplication par un scalaire de chaque variable d'origine (un scalaire pour chaque variable).}}\\
-\textcolor{OliveGreen}{TODO Normalement on devrait reconstruire la matrice X d'origine colonne par colonne}
-
-
+La somme $\sum\limits_{\alpha=1}^k = c_\alpha u_{\alpha}^T$ est donc égale à une approximation de la matrice centrée en colonne $X$ d'origine, exprimée en fonction des $\alpha$ premiers axes factoriels de l'ACP. Pour $\alpha = k$, donc en prenant en compte 100\% de l'inertie expliquée, on obtient la matrice $X$ (centrée en colonne) d'origine.
 
 
 
