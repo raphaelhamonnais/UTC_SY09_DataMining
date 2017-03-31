@@ -1,36 +1,11 @@
 \documentclass[a4paper,11pt]{report}
-\usepackage{natbib}
 
-\usepackage{cleveref}
 \usepackage{packages/rapportutc}
-\usepackage[nottoc, notlof, notlot]{tocbibind}
-\usepackage{sidecap}
-\usepackage{array}
-\usepackage[linewidth=1pt]{mdframed}
-\usepackage{float}
-\usepackage{subcaption}
-
-
-\usepackage{packages/Sweave} %package d'affichage des codes R
-\usepackage{amsmath, amsthm, amssymb, graphics, setspace} %packages de mathématiques
-\usepackage{calc,enumitem}  % Mise en forme l'environnement itemsize description etc.
-\usepackage{color}
-\usepackage{ae,aecompl}
-\usepackage{pifont}
-\usepackage{chemist} %formule chimique 
-\usepackage{comment}
-\usepackage{rotating}
-\usepackage{hyperref}
-\usepackage{listings} % pour hightlight code
-
-\usepackage{setspace}
-\usepackage{ulem} % \sout{Texte à barrer} \xout{Texte à hachurer} \uwave{Texte à souligner par une vaguelette}
-
-\onehalfspacing
+\usepackage{packages/include-packages}
 
 
 
-%\usepackage{biblatex}
+\onehalfspacing % espacement interligne
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -751,8 +726,9 @@ Tout particulièrement les variables \textit{CL} et \textit{CW}, c'est à dire l
 	\captionsetup{justification=centering, margin=2cm}
 	\caption{Corrélations entre les variables d'origines et les composantes principales (données "crabs")}
 	\label{table:correlation_crabs_acp}
-	\begin{tabular}{lrrrrr}
+	\begin{tabular}{r|rrrrr}
 		& Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 \\ 
+		\hline
 		FL & -0.981 & -0.105 & 0.145 & 0.077 & 0.010 \\ 
 		RW & -0.909 & -0.383 & -0.161 & -0.021 & -0.015 \\ 
 		CL & -0.999 & 0.032 & 0.025 & -0.007 & -0.029 \\ 
@@ -800,8 +776,9 @@ La méthode est donc, pour chaque individu, de diviser toutes les observations p
 	\captionsetup{justification=centering, margin=4cm}
 	\caption{\scriptsize Comparatif des observations du premier individu avant et après correction de l'effet de taille}
 	\label{table:comparatif_normalisation_crabs}
-	\begin{tabular}{lrrrrr}
+	\begin{tabular}{r|rrrrr}
 		& FL & RW & CL & CW & BD \\ 
+		\hline
 		Avant correction & 8.10 & 6.70 & 16.10 & 19.00 & 7.00 \\ 
 		Après correction & 50.31 & 41.61 & 100.00 & 118.01 & 43.48 \\ 
 	\end{tabular}
