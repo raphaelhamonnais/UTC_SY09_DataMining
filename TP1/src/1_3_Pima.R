@@ -43,3 +43,35 @@ chisq.test(contingence_z_npreg)
 # Conclusion => enceinte = augmente risques de diabète. L'autre solution envisageable est que le diabète augmente la fertilité des femmes, mais cela semble moins logique
 
 
+
+#diabète vs. indice #
+class_bmi <- cut(Pima$bmi, breaks = c(-Inf,seq(26, 50, 5), Inf))
+class_bmi
+contingence_z_bmi = as.data.frame.matrix(table(Pima$z, class_bmi))
+contingence_z_bmi
+chisq.test(contingence_z_bmi)
+#conclusion:
+
+#diabete vs. 
+Pima$ped
+hist(Pima$ped)
+class_ped <- cut(Pima$ped, breaks = c(seq(0, 1.3, 0.2), Inf))
+class_ped
+contingence_z_ped = as.data.frame.matrix(table(Pima$z, class_ped))
+contingence_z_ped
+chisq.test(contingence_z_ped)
+#conclusion:
+
+####diabète vs. âge ###
+#Faire des intervalles  
+class_age <- cut(Pima$age, breaks = c(seq(20, 50, 5), Inf))
+class_age
+#Faire la table de contingence 
+contingence_z_age = as.data.frame.matrix(table(Pima$z, class_age))
+contingence_z_age
+#Faire la test chi2
+chisq.test(contingence_z_age)
+#barplot(as.matrix(contingence_z_age), beside = T)
+
+#conclusion: 
+
