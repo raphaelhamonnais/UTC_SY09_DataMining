@@ -170,6 +170,8 @@ as.matrix(vec_propres[,1])
 t(as.matrix(vec_propres[,1]))
 ACP[,1] %*% vec_propres[,1]
 corr.acp.centered
+# en fait c'est bon c'est normal d'avoir une approximation de X avec les k premiers vecteurs
+ACP[,1] %*% t(vec_propres[,1])
 ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2])
 ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2]) + ACP[,3] %*% t(vec_propres[,3])
 ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2]) + ACP[,3] %*% t(vec_propres[,3]) + ACP[,4] %*% t(vec_propres[,4])
