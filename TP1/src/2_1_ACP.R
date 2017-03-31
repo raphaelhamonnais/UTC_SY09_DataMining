@@ -1,6 +1,7 @@
 install.packages("plotrix")
 library("plotrix")
 library("xtable")
+library("ade4")
 
 notes <- read.csv("data/sy02-p2016.csv", na.strings="", header=T)
 notes$nom <- factor(notes$nom, levels=notes$nom)
@@ -127,7 +128,8 @@ xtable(correl_var_acp)
 plot(-1.5:1.5, -1.5:1.5, type = "n", xlab = "Comp .1", ylab = "Comp .2")
 abline(h=0,v=0)
 draw.circle(0,0,1)
-text(correl_var_acp[,1], correl_var_acp[,3], labels = row.names(correl_var_acp))
+text(correl_var_acp[,1], correl_var_acp[,2], labels = row.names(correl_var_acp))
+s.corcircle(correl_var_acp, xax = 1, yax = 2)
 
 # Calcul à la main des covariances entre les variables initiales (x) et le composantes principales trouvées (c)
 # formule page 41 tout en bas
@@ -155,12 +157,16 @@ covar_entre_var_et_compo
 # alpha-imème vecteur propre transposé pour k = 1, 2, 3. A quoi correspond cette somme lorsque k = 4 ?
 
 
+ 
+vec_propres = as.matrix(vec_propres)
+ACP = as.matrix(ACP)
 vec_propres
 vec_propres[,1]
+t(t(ACP[,1]))
 t(vec_propres[,1])
 as.matrix(vec_propres[,1])
 t(as.matrix(vec_propres[,1]))
-ACP[,1] %*% t(vec_propres[,1])
+ACP[,1] %*% vec_propres[,1]
 corr.acp.centered
 ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2])
 ACP[,1] %*% t(vec_propres[,1]) + ACP[,2] %*% t(vec_propres[,2]) + ACP[,3] %*% t(vec_propres[,3])
@@ -180,6 +186,7 @@ ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[
 ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[,2])) + ACP[,3] %*% t(as.matrix(vec_propres[,3]))
 ACP[,1] %*% t(as.matrix(vec_propres[,1])) + ACP[,2] %*% t(as.matrix(vec_propres[,2])) + ACP[,3] %*% t(as.matrix(vec_propres[,3])) + ACP[,4] %*% t(as.matrix(vec_propres[,4]))
 corr.acp.centered
+ACP %*% vec_propres # est bien égal à corr.acp.centered....
 
 ACP = as.matrix(ACP)
 ACP
