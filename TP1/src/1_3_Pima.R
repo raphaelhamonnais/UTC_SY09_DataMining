@@ -14,14 +14,14 @@ plot(density(Pima$glu))
 #sort(): pour faire l 'ordre des données
 plot(sort(Pima$bp))
 plot(Pima$ped~Pima$bp)
-boxplot(Pima$npreg~Pima$z, names =c("non diabétique", "diabétique"), ylab = "nombre de grossesse(npreg)", xlab = "diabétique ou non(z)", main ="la relation entre npreg et z")
-boxplot(Pima$glu~Pima$z, names =c("non diabétique", "diabétique"), ylab = "taux plasmatique de glucose(glu)", xlab = "diabétique ou non(z)", main ="la relation entre glu et z")
-boxplot(Pima$bp~Pima$z, names =c("non diabétique", "diabétique"), ylab = "pression artérielle diastolique(bp)", xlab = "diabétique ou non(z)", main ="la relation entre bp et z")
-boxplot(Pima$skin~Pima$z, names =c("non diabétique", "diabétique"), ylab = "épaisseur du pli cutané au niveau du triceps(skin)", xlab = "diabétique ou non(z)", main ="la relation entre skin et z")
-boxplot(Pima$bmi~Pima$z, names =c("non diabétique", "diabétique"), ylab = "indice de masse corporelle(bmi)", xlab = "diabétique ou non(z)", main ="la relation entre bmi et z")
-boxplot(Pima$ped~Pima$z, names =c("non diabétique", "diabétique"), ylab = "fonction de pedigree du diabète(ped)", xlab = "diabétique ou non(z)", main ="la relation entre ped et z")
-boxplot(Pima$age~Pima$z, names =c("non diabétique", "diabétique"), ylab = "âge(age)", xlab = "diabétique ou non(z)", main ="la relation entre age et z")
-
+boxplot(Pima$npreg~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Nombre de grossesse (npreg)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et nombre de grossesses")
+boxplot(Pima$glu~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Taux plasmatique de glucose (glu)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et taux de glucose")
+boxplot(Pima$bp~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Pression artérielle diastolique (bp)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et pression artérielle")
+boxplot(Pima$skin~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Épaisseur du pli cutané au niveau du triceps (skin)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et épaisseur pli cutané du triceps")
+boxplot(Pima$bmi~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Indice de masse corporelle( bmi)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et indice de masse corporelle")
+boxplot(Pima$ped~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Pedigree génétique du diabète (ped)", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et pédigree génétique")
+boxplot(Pima$age~Pima$z, names =c("Non diabétique", "Diabétique"), col = c("light green", "light blue"),ylab = "Age", xlab = "Diabétique ou non (z)", main ="Relation entre diabète et âge")
+plot(Pima$npreg~Pima$age)
 
 
 #### Corrélation pima quantitatif ######
@@ -39,7 +39,20 @@ for (i in 13:17) {
 contingence_z_npreg
 contingence_z_npreg = contingence_z_npreg[,-c(13:17)]
 contingence_z_npreg
+rownames(contingence_z_npreg) = c("Non diabétique", "Diabétique")
+colnames(contingence_z_npreg) = c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", ">10")
+contingence_z_npreg
 chisq.test(contingence_z_npreg)
+contingence_z_npreg_freq = t(apply(contingence_z_npreg, MARGIN = 1, prop.table)*100)
+contingence_z_npreg_freq
+barplot(
+  as.matrix(contingence_z_npreg_freq), 
+  col = c("light green", "light blue"),
+  beside = F, 
+  legend = row.names(contingence_z_npreg_freq),
+  xlab = "Nombre de grossesses", ylab = "Fréquence"
+)
+
 # Conclusion => enceinte = augmente risques de diabète. L'autre solution envisageable est que le diabète augmente la fertilité des femmes, mais cela semble moins logique
 
 
@@ -61,6 +74,15 @@ contingence_z_glu
 row.names(contingence_z_glu) = c("Non diabétique", "Diabétique")
 contingence_z_glu
 chisq.test(contingence_z_glu)
+contingence_z_glu_freq = t(apply(contingence_z_glu, MARGIN = 1, prop.table)*100)
+contingence_z_glu_freq
+barplot(
+  as.matrix(contingence_z_glu_freq), 
+  col = c("light green", "light blue"),
+  beside = F, 
+  legend = row.names(contingence_z_glu_freq),
+  xlab = "Taux de glucose", ylab = "Fréquence"
+)
 # Conclusion => taux de glucose élevé = diabétique
 
 
@@ -77,6 +99,15 @@ contingence_z_bp
 row.names(contingence_z_bp) = c("Non diabétique", "Diabétique")
 contingence_z_bp
 chisq.test(contingence_z_bp)
+contingence_z_bp_freq = t(apply(contingence_z_bp, MARGIN = 1, prop.table)*100)
+contingence_z_bp_freq
+barplot(
+  as.matrix(contingence_z_bp_freq), 
+  col = c("light green", "light blue"),
+  beside = F, 
+  legend = row.names(contingence_z_bp_freq),
+  xlab = "Pression artérielle", ylab = "Fréquence"
+)
 # Conclusion => taux de glucose élevé = effet sur pression artérielle
 
 
@@ -97,7 +128,7 @@ contingence_z_skin_freq
 barplot(
   as.matrix(contingence_z_skin_freq), 
   col = c("light green", "light blue"),
-  beside = T, 
+  beside = F, 
   legend = row.names(contingence_z_skin_freq),
   xlab = "Epaisseur du pli cutané au niveau du triceps", ylab = "Fréquence"
   )
@@ -125,7 +156,7 @@ contingence_z_bmi_freq
 barplot(
   as.matrix(contingence_z_bmi_freq), 
   col = c("light green", "light blue"),
-  beside = T, 
+  beside = F, 
   legend = row.names(contingence_z_bmi_freq),
   xlab = "Indice de masse corporelle ", ylab = "Fréquence"
 )
@@ -151,9 +182,9 @@ contingence_z_ped_freq
 barplot(
   as.matrix(contingence_z_ped_freq), 
   col = c("light green", "light blue"),
-  beside = T, 
+  beside = F, 
   legend = row.names(contingence_z_ped_freq),
-  xlab = "Fonction de pedigree du diabète", ylab = "Fréquence"
+  xlab = "Fonction de pédigree du diabète", ylab = "Fréquence"
 )
 #Conclusion:
 #Fonction de pedigree non diabétique peut-être suivi une loi de chi2
@@ -177,10 +208,47 @@ contingence_z_age_freq
 barplot(
   as.matrix(contingence_z_age_freq), 
   col = c("light green", "light blue"),
-  beside = T, 
+  beside = F, 
   legend = row.names(contingence_z_age_freq),
-  xlab = "âge", ylab = "Fréquence"
+  xlab = "Age", ylab = "Fréquence"
 )
 #Conclusion:
 #Plus la personne est jeune, plus la fréquence de non diabétique.
 #La fréquence d'être diabétique ne changé pas trop selon l'âge  
+
+
+
+
+
+
+
+
+
+## 2.ACP ##################
+
+
+pima.acp = princomp(pima.quant)
+summary(pima.acp)
+pima.acp$loadings
+pima.acp$scores
+correl_pima_acp = cor(pima.quant, pima.acp$scores)
+s.corcircle(correl_pima_acp, xax = 1, yax = 2)
+s.corcircle(correl_pima_acp, xax = 1, yax = 3)
+s.corcircle(correl_pima_acp, xax = 1, yax = 4)
+plot(pima.acp$scores[,1], pima.acp$scores[,2],
+     col=c("green","blue")[Pima$z],
+     xlab="Composante 1", 
+     ylab="Composante 2"
+)
+plot(pima.acp$scores[,1], pima.acp$scores[,3],
+     col=c("green","blue")[Pima$z],
+     xlab="Composante 1", 
+     ylab="Composante 3"
+)
+plot(pima.acp$scores[,1], pima.acp$scores[,4],
+     col=c("green","blue")[Pima$z],
+     xlab="Composante 1", 
+     ylab="Composante 4"
+)
+
+biplot(pima.acp)
