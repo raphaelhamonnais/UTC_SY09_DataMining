@@ -1,11 +1,43 @@
 \documentclass[a4paper,11pt]{report}
 
 \usepackage{packages/rapportutc}
-\usepackage{packages/include-packages}
+%\usepackage{packages/include-packages}
 
 
+%%%%%%%% Références %%%%%%%%
+\usepackage{cleveref}
+\usepackage{hyperref}
+\usepackage[nottoc, notlof, notlot]{tocbibind} % bibliographie http://tex.stackexchange.com/questions/71129/bibliography-in-table-of-contents
+\usepackage{natbib} % bibliographie
+
+%%%%%%%% Code informatique %%%%%%%%
+\usepackage{packages/Sweave} %package d'affichage des codes R
+\usepackage{listings} % pour hightlight code
+
+%%%%%%%% Formules mathématiques %%%%%%%%
+\usepackage{amsmath, amsthm, amssymb, graphics, setspace} %packages de mathématiques
+\usepackage{chemist} %formule chimique 
+
+%%%%%%%% Mise en forme %%%%%%%%
+% Mise en forme graphique
+\usepackage{graphicx,wrapfig,lipsum} % pour afficher des figures à côté du texte
+\usepackage[linewidth=1pt]{mdframed} % permet de générer et gérer des frames
+\usepackage{rotating} % rotations on tables, captions, text, ...
+% Mise en forme images et tableaux
+\usepackage{float} % permet de spécifier l'option "H" aux captions afin de les positionner de manière fixe
+\usepackage{subcaption} % permet d'afficher plusieurs images dans une caption
+\usepackage{array} % meilleurs "table" et "tabular"
+% Mise en forme texte
+\usepackage{setspace} % permet de spécifier l'espacement interligne
+\usepackage{ulem} % \sout{Texte à barrer} \xout{Texte à hachurer} \uwave{Texte à souligner par une vaguelette}
+\usepackage{calc,enumitem}  % Mise en forme l'environnement itemsize description etc.
+\usepackage{color} % utilisation de couleurs
+\usepackage{ae,aecompl} % Vir­tual fonts for T1 en­coded CMR-fonts
+\usepackage{pifont} % com­mands for Pi fonts (Ding­bats, Sym­bol, etc.)
+\usepackage{comment} % Selectively include/exclude portions of text \comment....\endcomment
 
 \onehalfspacing % espacement interligne
+\setlength{\parindent}{.5em} % indentation des retraits de première ligne
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -19,6 +51,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
 \renewcommand{\labelitemi}{\large\textcolor{tatoebagreen}{\fg}}
 \newgeometry{top=2.5cm,bottom=2cm,left=2cm,right=2cm}
 \groovypdtitre
@@ -478,6 +511,8 @@ Variable qualitative~:
 
 \begin{table}[H]
 	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{Résumé des variables composant le jeu de données \texttt{Pima}.}
 	\begin{tabular}{|l|l|l|l|l}
 		\hline
 		npreg &      glu &       bp &      skin &      bmi \\
@@ -503,38 +538,238 @@ Variable qualitative~:
 \end{table}
 
 
-La première chose importante à remarquer est la différence d'effectif entre les types d'individus~: nn a deux fois plus d'individus non diabétiques (355) que de diabétiques (177). Le choix des représentations graphiques et tests statistiques est important. Travailler sur le nombre avec par exemple des diagrammes en bâton donnera des résultat complètement faux. Des boîtes à moustache par contre seront plus à même de pointer des disparités entre les deux types d'individus.
+La première chose importante que nous remarquons est la différence d'effectif entre les types d'individus~: il y a deux fois plus d'individus non diabétiques (355) que de diabétiques (177). Le choix des représentations graphiques et tests statistiques est alors important. Travailler sur l'effectif simple avec par exemple des diagrammes en bâton donnera des résultat complètement faux. Des boîtes à moustache par contre seront plus à même de pointer des disparités entre les deux types d'individus.
 
 
+\paragraph{Corrélation entre les variables quantitatives}
+
+Cette étude de la corrélation \autoref{table:correlation-quant-pima}, sans prendre en compte le facteur diabète, ne nous apprend pas grand chose sinon que les variables sont peu corrélées entre-elles, mise à part l'âge et la grossesse. Ces deux dernières sont légèrement corrélées positivement~: plus la femme interrogée est âgé, plus il y a de chance qu'elle ait eu plusieurs grossesses dans sa vie.
+
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\caption{Corrélations entre les variables quantitatives du jeu de données \texttt{Pima}.}
+	\begin{tabular}{r|rrrrrrr}
+		& npreg & glu & bp & skin & bmi & ped & age \\ 
+		\hline
+		npreg & 1.000 & 0.125 & 0.205 & 0.095 & 0.009 & 0.007 & 0.641 \\ 
+		glu & 0.125 & 1.000 & 0.219 & 0.227 & 0.247 & 0.166 & 0.279 \\ 
+		bp & 0.205 & 0.219 & 1.000 & 0.226 & 0.307 & 0.008 & 0.347 \\ 
+		skin & 0.095 & 0.227 & 0.226 & 1.000 & 0.647 & 0.119 & 0.161 \\ 
+		bmi & 0.009 & 0.247 & 0.307 & 0.647 & 1.000 & 0.151 & 0.073 \\ 
+		ped & 0.007 & 0.166 & 0.008 & 0.119 & 0.151 & 1.000 & 0.072 \\ 
+		age & 0.641 & 0.279 & 0.347 & 0.161 & 0.073 & 0.072 & 1.000 \\ 
+	\end{tabular}
+	\label{table:correlation-quant-pima}
+\end{table}
 
 
 \subsection{Etude des liens statistique entre le facteur diabète \textit{z} et les autres variables}
 
+Pour étudier les liens statistiques entre le facteur diabète et les autres variables, voici la procédure que nous allons suivre~:
+\begin{itemize}
+	\item Effectuer des représentations de boîte à moustache de l'ensemble des variables en fonction du facteur diabète.
+	\item Valider statistiquement les observations graphiques avec un test du $\chi^2$ effectué sur le tableau de contingence vérifiant les conditions du test.
+	\item Représenter graphiquement le tableau de fréquence afin d'avoir une vision graphique de l'influence (ou de la non influence) du facteur diabète sur la variable étudiée. Le tableau de fréquence correspond au tableau de contingence exprimé en pourcentage de représentation d'une valeur par rapport à la population totale de la classe à laquelle elle appartient.
+\end{itemize}
+
+Note : la couleur verte représente la population non diabétique, la couleur bleu les individus souffrant de diabète. 
+
+\subsubsection{Représentation des variables en boîte à moustache en fonction du facteur diabète}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-grossesses}
+		\caption{\scriptsize Nombre de grossesses}
+		\label{fig:1-3-2-boxplot-diabete-grossesses}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-glucose}
+		\caption{\scriptsize Taux de glucose}
+		\label{fig:1-3-2-boxplot-diabete-glucose}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-pression-arterielle}
+		\caption{\scriptsize Pression artérielle}
+		\label{fig:1-3-2-boxplot-diabete-pression-arterielle}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-pli-cutane}
+		\caption{\scriptsize Epaisseur pli cutané}
+		\label{fig:1-3-2-boxplot-diabete-pli-cutane}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-indice-masse-corp}
+		\caption{\scriptsize Indice de masse corp.}
+		\label{fig:1-3-2-boxplot-diabete-indice-masse-corp}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-pedigree}
+		\caption{\scriptsize Pedigree génétique}
+		\label{fig:1-3-2-boxplot-diabete-pedigree}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-boxplot-diabete-age}
+		\caption{\scriptsize Age}
+		\label{fig:1-3-2-boxplot-diabete-age}
+	\end{subfigure}%
+	\caption{
+		\small Distributions des variables en fonction du diabète.
+	}
+	\label{fig:box_plot_diabete_pima}%
+\end{figure}
 
 
 
 
+Visuellement, il semblerait que le facteur diabète est lié à l'âge, au nombre de grossesses et au taux de glucose dans le sang. Les quatre autres variables ne semblent pas diverger de façon remarquable en fonction du diabète, même si quelques différences sont déjà notables.
 
 
 
+\subsubsection{Tests du $\chi^2$ d'indépendance des variables}
+
+\begin{itemize}
+	\item \textbf{Diabète vs. Nombre de grossesses}
+	\\ \textit{p-value} = 2.215e-08
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+	
+	\item \textbf{Diabète vs. Taux plasmatique de glucose}
+	\\ \textit{p-value} < 2.2e-16
+	\\ Conclusion~: les variables ne sont pas indépendantes, et c'est tout à fait logique, le diabète étant une maladie où le manque d'insuline \textthreequartersemdash\ hormone en charge de la régulation du glucose \textthreequartersemdash\ cause une élévation anormale du taux de ce dernier.
+	
+	\item \textbf{Diabète vs. Pression artérielle diastolique}
+	\\ \textit{p-value} = 0.0001862
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+	
+	\item \textbf{Diabète vs. Epaisseur du pli cutané au niveau du triceps}
+	\\ \textit{p-value} = 9.256e-06
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+	
+	\item \textbf{Diabète vs. Indice de masse corporelle}
+	\\ \textit{p-value} = 3.476e-11
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+	
+	\item \textbf{Diabète vs. Fonction de pedigree génétique du diabète}
+	\\ \textit{p-value} = 1.65e-05
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+	
+	\item \textbf{Diabète vs. Age}
+	\\ \textit{p-value} = 9.442e-14
+	\\ Conclusion~: les variables ne sont pas indépendantes.
+\end{itemize}
 
 
+Contrairement à ce qu'on pensait précédemment, on se rend compte que toutes les variables sont plus ou moins influencées par le facteur diabète. Pour certaines, comme le taux de glucose, cela se comprend facilement. Pour d'autres, l'explication est inconnue. Nous allons par la suite représenter graphiquement les tableaux de fréquence afin de comprendre l'effet du diabète sur ces variables et inversement.
+
+\subsubsection{Représentation graphique des tableaux de fréquence en fonction du facteur diabète}
 
 
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-grossesses}
+		\caption{\scriptsize Nombre de grossesses}
+		\label{fig:1-3-2-barplot-freq-diabete-grossesses}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-glucose}
+		\caption{\scriptsize Taux de glucose}
+		\label{fig:1-3-2-barplot-freq-diabete-glucose}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-pression-arterielle}
+		\caption{\scriptsize Pression artérielle}
+		\label{fig:1-3-2-barplot-freq-diabete-pression-arterielle}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-pli-cutane}
+		\caption{\scriptsize Epaisseur pli cutané}
+		\label{fig:1-3-2-barplot-freq-diabete-pli-cutane}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-ind-masse-corp}
+		\caption{\scriptsize Indice de masse corp.}
+		\label{fig:1-3-2-barplot-freq-diabete-ind-masse-corp}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-pedigree}
+		\caption{\scriptsize Pedigree génétique}
+		\label{fig:1-3-2-barplot-freq-diabete-pedigree}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.25\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/1-3-2-barplot-freq-diabete-age}
+		\caption{\scriptsize Age}
+		\label{fig:1-3-2-barplot-freq-diabete-age}
+	\end{subfigure}%
+	\caption{
+		\small Fréquences observées en fonction du facteur diabète.
+	}
+	\label{fig:bar_plot_freq_diabete_pima}%
+\end{figure}
 
 
+Rappel~: vert = non\ diabétique ; bleu = diabétique.
 
+Ces graphiques nous donnent deux informations~: la fréquence d'observation au sein d'une population diabétique ou non diabétique, mais aussi la différence de fréquence entre ces deux populations. C'est à notre sens cette deuxième information qui est la plus importante si on veut comprendre l'impact du facteur diabète sur les variables.
 
+\subsubsection{Analyses de l'interdépendance entre le diabète et les autres variables}
 
-
-
-
-
-
-
-
-
-
+\begin{itemize}
+	\item \textbf{Diabète vs. Nombre de grossesses}
+	\\ Pour un nombre de grossesses inférieur à 7, la différence de fréquence entre les deux populations n'est pas flagrante mais tends à défavoriser l'apparition de diabète. Par contre, à partir de 7 grossesses et plus, il y a une écrasante majorité d'individus atteints de diabète. Le fait d'être enceinte ou pas nous paraissant indépendant du diabète, notre conclusion est que c'est un nombre répété de grossesses qui va favoriser l'apparition du diabète (et non pas le diabète qui induit un nombre élevé de grossesses).
+		
+	\item \textbf{Diabète vs. Taux plasmatique de glucose}
+	\\ Comme dit précédemment, le manque d'insuline dans le corps implique un fort taux de glucose dans le sang. On peut dire que ce taux de glucose est un facteur indicatif de la présence ou de l'absence d'une condition diabétique.
+		
+	\item \textbf{Diabète vs. Pression artérielle diastolique}
+	\\ Ces deux facteurs sont liés, mais assez faiblement selon nous. Les individus diabétiques ont une légère tendance à avoir une pression artérielle plus élevée que les non diabétiques. Nous n'avons pas d'explication causale, à savoir est-ce le diabète qui favorise l'hypertension (et pourquoi) ou bien est-ce l'hypertension qui favorise le diabète~?
+		
+	\item \textbf{Diabète vs. Epaisseur du pli cutané au niveau du triceps}
+	\\ Les remarques sont les mêmes que pour la pression artérielle. On observe un effet du diabète, indiquant qu'un pli cutané plus épais est plus fréquent chez les diabétiques. Il nous semble aberrant que ce soit là la cause du diabète, aussi en déduit-on que c'est le facteur diabète qui induit cette augmentation d'épaisseur. L'explication est surement lié à l'augmentation de masse corporelle, comme on peut le voir juste après.
+		
+	\item \textbf{Diabète vs. Indice de masse corporelle}
+	\\ La différence de fréquence entre les deux populations diabétique et non diabétique est flagrante~: un indice élevé de masse corporelle est révélateur d'une condition diabétique. Et plus cet indice est élevé, plus les chance de diabète augmentent.
+		
+	\item \textbf{Diabète vs. Fonction de pedigree génétique du diabète}
+	\\ Plus cette fonction de pedigree génétique du diabète augmente, plus les risques de diabète sont vérifiés.
+		
+	\item \textbf{Diabète vs. Age}
+	\\ Le diabète tend à toucher majoritairement les personnes adultes et plus âgées. Les individus de moins de 25 ans sont très peu à présenter un diabète.
+\end{itemize}
 
 
 
@@ -720,7 +955,7 @@ On reporte maintenant ces mesures sur le premier plan factoriel afin de représe
 
 
 
-\subsection{Reconstitution de la matrice originelle $X$ centrée en colonne}
+\subsection{Reconstitution de la matrice originelle \textit{X} centrée en colonne}
 
 On obtient $C$ avec la formule $C = XMU$ ($X$ matrice des observations centrées en colonne, $M = I_p$ et $U$ matrice des vecteurs propres représentant les axes factoriels obtenus après ACP).
 \begin{align*}
@@ -909,6 +1144,8 @@ Conclusion~: la suppression de l'effet de taille permet de véritablement discri
 
 \section{Données Pima}
 \label{sec:2_4_ACP_Pima}
+
+
 
 
 
