@@ -484,6 +484,7 @@ Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composan
 
 
 \section{Données Pima}
+\label{section:pima-descriptif}
 
 Les données Pima consistent en plusieurs mesures effectuée sur une population de femmes amérindiennes, le but étant d'observer les facteurs aggravant de diabète dans une population plus touchée que de moyenne par cette maladie.
 L'échantillon est composé 532 individus décrits par 8 variables différentes, toutes quantitatives sauf une qui détermine l'absence ou la présence d'une condition diabétique chez l'individu.
@@ -1146,8 +1147,99 @@ Conclusion~: la suppression de l'effet de taille permet de véritablement discri
 \label{sec:2_4_ACP_Pima}
 
 
+On effectue l'analyse en composantes principales sur les variables quantitatives du jeu de données \texttt{Pima} et on obtient les résultats suivants.
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=1cm}
+	\begin{subfigure}[b]{0.45\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=0cm}
+		\includegraphics[width=1\columnwidth]{img/2-4-ACP-Pima-Pourcentage-Inertie-Expliquee}
+		\caption{\scriptsize ACP \texttt{Pima}~: Pourcentage d'inertie expliquée}
+		\label{fig:2-4-ACP-Pima-Pourcentage-Inertie-Expliquee}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.45\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=0cm}
+		\includegraphics[width=.8\columnwidth]{img/2-4-ACP-Pima-Axes-Factoriels}
+		\caption{\scriptsize ACP \texttt{Pima}~: Axes factoriels (vecteurs propres résultants de l'ACP)}
+		\label{fig:2-4-ACP-Pima-Axes-Factoriels}
+	\end{subfigure}%
+	\caption{
+		\small ACP sur \texttt{Pima}~: inertie expliquée et axes factoriels.
+	}
+	\label{fig:ACP-Pima-inertie-et-axes-factoriels}%
+\end{figure}
 
 
 
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{ACP sur \texttt{Pima}~: corrélation entre les variables d'origine et les nouveaux axes factoriels.}
+	\begin{tabular}{r|rrrrrrr}
+		& Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 & Comp.6 & Comp.7 \\ 
+		\hline
+		npreg & -0.16 & -0.36 & 0.32 & -0.46 & 0.01 & 0.73 & 0.00 \\ 
+		glu & -1.00 & 0.08 & 0.01 & 0.01 & 0.00 & 0.00 & -0.00 \\ 
+		bp & -0.28 & -0.83 & 0.21 & 0.44 & 0.04 & 0.00 & 0.00 \\ 
+		skin & -0.27 & -0.50 & -0.76 & -0.25 & 0.19 & -0.00 & -0.00 \\ 
+		bmi & -0.29 & -0.45 & -0.61 & 0.02 & -0.59 & 0.01 & -0.00 \\ 
+		ped & -0.17 & -0.01 & -0.08 & -0.07 & -0.08 & -0.04 & 0.98 \\ 
+		age & -0.33 & -0.53 & 0.45 & -0.63 & -0.04 & -0.05 & -0.00 \\ 
+	\end{tabular}
+	\label{table:correlation-acp-pima}
+\end{table}
+
+On voit que le premier plan factoriel représente environ 83\% de l'inertie expliquée, ce qui est encourageant.
+Par contre, on remarque aussi que les axes factoriels semblent être particulièrement représentatifs de certaines variables d'origine. Et c'est confirmé par la matrice de corrélation entre les variables d'origine et les nouveaux axes factoriels (voir \autoref{table:correlation-acp-pima}). Le premier axe factoriel est quasiment équivalent à la variable \texttt{glu}, le second à la variable \textit{bp}, le troisième représente plutôt les variables \texttt{skin} et \texttt{bmi}, le quatrième l'âge, le cinquième \texttt{bmi} encore et le sixième le nombre de grossesses. Le septième axe est le plus flagrant d'entre tous~: il est quasiment équivalent à la variable \texttt{ped} d'origine.
+
+L'ACP n'est pas concluante. Les sept composantes principales trouvées sont un reflet trop proche des sept variables initiales. Une représentation graphique des observations sur le premier plan factoriel ne permet pas de distinguer visuellement les groupes de patientes diabétiques et non diabétiques.
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.7\linewidth]{img/2-4-Pima-ACP-premier-plan-factoriel}
+	\caption{\scriptsize Représentation des données \texttt{Pima} sur le premier plan factoriel.\\ \tiny Rappel~: bleu pour diabétique, vert pour non diabétique}
+	\label{fig:2-4-Pima-ACP-premier-plan-factoriel}
+\end{figure}
+
+
+Nous avons fait une nouvelle ACP en changeant la matrice $D_p$ de poids des individus, en spécifiant que le poids d'un individu d'un groupe $g$ valait $\frac{1}{card(g)}$, afin de rééquilibrer le poids de chaque groupe.
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.7\linewidth]{img/2-4-Pima-ACP-dp-inertie-expliquee}
+	\caption{\scriptsize Inertie expliquée de l'ACP avec poids des individus normalisé en fonction de leur groupe}
+	\label{fig:2-4-Pima-ACP-dp-inertie-expliquee}
+\end{figure}
+
+On obtient la table de corrélation suivante entre les variables d'origine est les nouvelles composantes principales~:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrr}
+		& Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 & Comp.6 & Comp.7 \\ 
+		\hline
+		npreg & -0.54 & 0.67 & -0.01 & -0.28 & 0.20 & 0.26 & 0.16 \\ 
+		glu & -0.58 & -0.10 & -0.23 & 0.71 & 0.18 & 0.08 & 0.06 \\ 
+		bp & -0.60 & 0.05 & 0.37 & 0.11 & -0.70 & -0.01 & 0.15 \\ 
+		skin & -0.64 & -0.51 & 0.27 & -0.29 & 0.30 & -0.29 & 0.24 \\ 
+		bmi & -0.62 & -0.61 & 0.27 & -0.20 & 0.07 & 0.28 & -0.32 \\ 
+		ped & -0.27 & -0.27 & -0.83 & -0.26 & -0.25 & -0.01 & 0.03 \\ 
+		age & -0.68 & 0.58 & -0.04 & -0.07 & 0.03 & -0.35 & -0.31 \\ 
+	\end{tabular}
+\end{table}
+
+On remarque que la première composante principale est maintenant corrélée avec toutes les variables d'origine ou presque, la deuxième aussi et la troisièmes dans une moindre mesure.
+
+Au final, ce traitement des données ne change pas grand chose, les classes ne permettent pas de bien différencier les groupes de femmes diabétiques et non diabétiques.
+
+
+Peut-être serait-il plus pertinent de changer le poids des variables, et d'attribuer plus de poids à celles dont on a vu dans l'analyse descriptive (voir \autoref{section:pima-descriptif}) qu'elles ont un lien fort avec le facteur diabète.
 
 \end{document}

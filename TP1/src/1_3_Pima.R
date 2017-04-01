@@ -1,5 +1,4 @@
 #1.3 Données Pima
-#setwd("E:/study/UTC/GI05/SY09/UTC_SY09_TPs/TP1")
 Pima <- read.csv("data/Pima.csv",header = T)
 Pima$z <- factor(Pima$z)
 #il y a huit variables: 
@@ -232,6 +231,7 @@ summary(pima.acp)
 pima.acp$loadings
 pima.acp$scores
 correl_pima_acp = cor(pima.quant, pima.acp$scores)
+correl_pima_acp
 s.corcircle(correl_pima_acp, xax = 1, yax = 2)
 s.corcircle(correl_pima_acp, xax = 1, yax = 3)
 s.corcircle(correl_pima_acp, xax = 1, yax = 4)
@@ -252,3 +252,36 @@ plot(pima.acp$scores[,1], pima.acp$scores[,4],
 )
 
 biplot(pima.acp)
+
+
+
+
+
+
+# test en changeant poids individus ##############
+
+pima.quant.centered = scale(pima.quant, center = TRUE, scale = TRUE) # centrer les données en colonne
+cov.wt(pima.quant.centered, method = 'ML')
+
+Dp = diag(1, length(Pima$z),length(Pima$z))
+# calculer la matrice de poid des individus en fonction de leur effectif
+nb_non_diab = length(which(Pima$z == "1"))
+nb_diab = length(which(Pima$z == "2"))
+for (i in 1:length(Pima$z)) {
+  if ( i > nb_non_diab ) {
+    Dp[i,i] = 1/nb_diab
+  }
+  else {
+    Dp[i,i] = 1/nb_non_diab
+  }
+}
+
+V = t(pima.quant.centered) %*% Dp %*% pima.quant.centered
+
+pima.acp.dp = princomp(pima.quant, covmat = V)
+pima.acp.dp.comp = pima.quant.centered %*% pima.acp.dp$loadings
+plot(pima.acp.dp.comp[,1], pima.acp.dp.comp[,5], col=c("green","blue")[Pima$z])
+summary(pima.acp.dp)
+biplot(pima.acp.dp)
+xtable(cor(pima.quant.centered, pima.acp.dp$scores))
+s.corcircle(cor(pima.quant.centered, pima.acp.dp$scores), xax = 1, yax = 2)
