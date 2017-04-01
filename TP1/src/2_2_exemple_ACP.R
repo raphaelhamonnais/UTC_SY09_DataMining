@@ -1,5 +1,8 @@
 install.packages("plotrix")
+install.packages("xtable")
 library("plotrix")
+library("xtable")
+library("ade4")
 
 #un exemple dans le poly de page 43
 math <- t(t(c(6,8,6,14.5,14,11,5.5,13,9)))
@@ -36,6 +39,16 @@ valeurs_propres
 #vecteurs propres
 vecteurs_propres <- notes_covariance_diag$vectors
 vecteurs_propres
+
+# afficher les vecteurs propres en mode "matrice" mathématique
+for(iter in 1:dim(vecteurs_propres)[2]) {
+  print(iter)
+  print(xtable(as.matrix(vecteurs_propres[,iter])), floating=FALSE, tabular.environment="pmatrix", hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE) # print matrix
+}
+
+# les pourcentages d'inerties sont simplement la quantité / la somme de la quantité totale d'inertie
+pourcentage_inertie_expliquee = valeurs_propres / sum(valeurs_propres) * 100
+pourcentage_inertie_expliquee
 
 #la matrice des composantes principales
 ACP <- notes_centrage %*% vecteurs_propres
@@ -107,3 +120,34 @@ plot(-1:1, -1:1, type = "n", xlab = "Axe1", ylab = "Axe4")
 abline(h=0,v=0)
 draw.circle(0,0,1)
 text(cor[,1], cor[,4], labels = c("math", "scie", "fran", "lati", "d-m"))
+
+#Utiliser la fonction princomp() pour calculer les composantes principales 
+#On utilise la matrice de covariance pour calculer les composantes principales 
+PCA <- princomp(notes, cor = FALSE)
+PCA
+summary(PCA, loadings = TRUE)
+#les écarts-types des composantes principales 
+PCA$sdev
+#les vecteurs propres 
+PCA$loadings
+#les données des composantes principales
+PCA$scores
+
+#utiliser la fonction plot
+#Dessiner le premier plan factoriel entre composant1 et composant2
+plot(-9:10,-9:10,type = "n", xlab = "Axe1", ylab = "Axe2")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(PCA$scores[,1], PCA$scores[,2], labels = c("jean", "aline", "annie", "monique", "didier", "andre", "pierre", "brigitte", "evelyne"))
+
+#Dessiner le premier plan factoriel entre composant1 et composant3
+plot(-9:10,-9:10,type = "n", xlab = "Axe1", ylab = "Axe3")
+abline(h=0,v=0)
+#Ajouter des points dans le premier plan factoriel 
+text(PCA$scores[,1], PCA$scores[,3], labels = c("jean", "aline", "annie", "monique", "didier", "andre", "pierre", "brigitte", "evelyne"))
+
+#notes
+#utiliser la fonction biplot
+cor(notes, PCA$scores)
+biplot(PCA, choices = c(1,2))
+biplot(PCA, choices = c(1,3))
