@@ -41,7 +41,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\title{TP 1 - Statistique descriptive, Analyse en composantes principales}
+\title{TD 1 - Statistique descriptive, Analyse en composantes principales}
 \author{LU Han - HAMONNAIS Raphaël}
 \date{\today}
 
@@ -82,7 +82,7 @@ Liste des variables qualitatives~:
 	\item \textbf{niveau} : le numéro du semestre actuel de l'étudiant, $\in \{1,2,3,4,5,6\}$.
 	\item \textbf{statut} : vaut $ \{UTC,Echange\} $ selon que c'est un étudiant de l'UTC ou bien un étudiant originaire d'une autre université effectuant une partie de ses études à l'UTC.
 	\item \textbf{dernier.diplome.obtenu} : le dernier diplôme obtenu par l'étudiant, $\in$ \{\textsc{autre 1er cycle, autre 2e cycle, autre diplome superieur, bac, bts, cpge, deug, dut, etranger secondaire, etranger superieur, ingenieur, licence, na's}\}.
-	\item \textbf{correcteur.median} et \textbf{correcteur.final} : le correcteur ayant corrigé la copie (nons anonymisés au format "\textit{Cor 1,~...}").
+	\item \textbf{correcteur.median} et \textbf{correcteur.final} : le correcteur ayant corrigé la copie (noms anonymisés au format "\textit{Cor 1,~...}").
 	\item \textbf{resultat} Le résultat de l'étudiant, de \textit{A} à \textit{F} ou \textit{ABS} s'il a été absent à l'un des deux examens (final ou médian). \textit{F} et \textit{Fx} signifient que l'étudiant n'a pas obtenu l'UV, les autres notes qu'il l'a obtenue.
 \end{itemize}
 Liste des variables quantitatives~:
@@ -109,7 +109,7 @@ De manière logique, on pourrait penser que les notes entre le médian et le fin
 
 
 
-\subsection{Etude des liens statistiques entre les variables}
+\subsection{Étude des liens statistiques entre les variables}
 
 \subsubsection{Pré-requis}
 On considère que les données ont été préalablement nettoyées en enlevant tous les étudiants absents, c'est à dire qui n'ont pas eu l'UV pour cause d'absence accidentelle ou d'abandon pur et simple.
@@ -388,7 +388,7 @@ Les deux figures suivantes présentent les distributions des variables morpholog
 
 Graphiquement, il semble difficile de séparer les individus en fonction de leur sexe ou de leur espèce. Comparer les populations de même sexe mais d'espèce différente, de même espèce mais de sexe différent ou encore de sexe et espèce différents donne des résultats similaires. Aucune de ces variables, prise individuellement, ne nous permet d'identifier le sexe ou l'espèce d'un individu.
 
-\subsection{Etude de la corrélation entre les variables morphologiques}
+\subsection{Étude de la corrélation entre les variables morphologiques}
 \label{subsection:crabs_correlation_variables_quantitatives}
 
 La corrélation entre les cinq variables est très forte, comme le montre le tableau de corrélation suivant~:
@@ -494,7 +494,7 @@ Cette étude de la corrélation (voir \autoref{table:correlation-quant-pima}), s
 \end{table}
 
 
-\subsection{Etude des liens statistiques entre le facteur diabète \textit{z} et les autres variables}
+\subsection{Étude des liens statistiques entre le facteur diabète \textit{z} et les autres variables}
 
 Pour étudier les liens statistiques entre le facteur diabète et les autres variables, voici la procédure que nous allons suivre~:
 \begin{itemize}
@@ -861,7 +861,7 @@ Voici la représentation des individus (correcteurs) dans le premier plan factor
 Afin de représenter les variables d'origine dans le premier plan factoriel, on va tout d'abord calculer leur corrélation. C'est à dire calculer une mesure de la représentation des variables d'origine par les nouveaux axes trouvés à l'aide de l'ACP. Si par exemple la première variable a une corrélation égale à $|1|$ avec le premier axe factoriel, alors ils représentent exactement la même chose. Si à l'inverse la corrélation vaut $0$, on pourra dire que cette variable ne s'exprime absolument pas sur le premier axe factoriel.
 
 On calcule la matrice de corrélation à l'aide de la fonction \texttt{cor} de R~:
-\begin{table}[ht]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{r|rrrr}
 		& Comp.1 & Comp.2 & Comp.3 & Comp.4 \\ 
