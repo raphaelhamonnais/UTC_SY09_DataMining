@@ -1005,7 +1005,91 @@ L'ACP effectuée avec la fonction \texttt{princomp} donne la représentation sui
 
 \section{Utilisation des outils R}
 
+L'objectif est de se familiariser avec les fonctions de R permettant d'effectuer une ACP en utilisant le jeu de données de notes du polycopié de cours. Ce jeu de données contient les notes de neuf élèves dans les matières mathématique, sciences, français, latin et dessin.
 
+
+\subsection{ACP avec la fonction \texttt{princomp}}
+
+En effectuant l'ACP avec la fonction \texttt{princomp}, on obtient un objet de type \texttt{princomp} qui possède plusieurs attributs nous permettant de retrouver les différentes parties d'une ACP.
+
+\begin{itemize}
+	\item \textbf{valeurs propres}~: correspond à l'attribut \texttt{\$sdev}, les écart types de chaque composante.
+	\item \textbf{vecteurs propres}~: correspond à l'attribut \texttt{\$loadings}.
+	\item \textbf{composantes principales}~: correspond à l'attribut \texttt{\$scores}.
+\end{itemize}
+
+Appeler la méthode \texttt{summary} sur le résultat de l'ACP (voir \autoref{fig:2-2-2-summary-acp}) donne l'inertie expliquée de chacune des composantes, ainsi que leur pourcentage simple et cumulé.
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-2-2-summary-acp}
+	\caption{\scriptsize Résultat de \texttt{summary} sur l'objet d'ACP retourné par la fonction \texttt{princomp}}
+	\label{fig:2-2-2-summary-acp}
+\end{figure}
+
+\subsection{ACP~: fonctions \texttt{plot} et \texttt{biplot}}
+
+La fonction \texttt{plot} permet de représenter les résultats de l'ACP de différentes façon. Appeler \texttt{plot} sur l'objet ACP donne les pourcentages de variance pour chaque composante (voir \autoref{fig:2-2-2-plot-acp}). Si on appelle la méthode sur \texttt{ACP\$scores} alors on obtiendra la représentation des individus dans le premier plan factoriel (voir \autoref{fig:2-2-2-plot-acp-scores}). Si on veux utiliser d'autres composantes, il faudra le spécifier directement en choisissant les colonnes à utiliser dans la matrice des composantes principales. Et enfin, si on appelle \texttt{plot} sur \texttt{ACP\$loadings} on obtiendra la représentation des variables d'origine sur le premier plan factoriel (voir \autoref{fig:2-2-2-plot-acp-loadings}).
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.28\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-2-2-plot-acp}
+		\caption{\scriptsize Pourcentages de variance pour chaque composante.}
+		\label{fig:2-2-2-plot-acp}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.28\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-2-2-plot-acp-scores}
+		\caption{\scriptsize Individus sur le premier plan factoriel.}
+		\label{fig:2-2-2-plot-acp-scores}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.28\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-2-2-plot-acp-loadings}
+		\caption{\scriptsize Variables d'origine sur le premier plan factoriel.}
+		\label{fig:2-2-2-plot-acp-loadings}
+	\end{subfigure}%
+	\caption{Résultats de la fonction \texttt{plot}.}
+\end{figure}
+
+
+
+La fonction \texttt{biplot} redéfinie pour l'ACP va mélanger les deux représentations sur le premier plan factoriel (par défaut)~: on aura les individus ainsi que l'expression de la corrélation entre les anciennes variables et les composantes principales (voir \autoref{fig:2-2-2-biplot-acp}).
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=1cm}
+	\includegraphics[width=.5\linewidth]{img/2-2-2-biplot-composante-1-2}
+	\caption{\scriptsize Biplot par défaut sur le premier plan factoriel.}
+	\label{fig:2-2-2-biplot-acp}
+\end{figure}
+
+On remarque qu'il y a deux échelles de valeur pour chaque axe (haut et bas pour \textit{Comp.1} et gauche et droite pour \textit{Comp.2}). Les axes bas et gauche sont utiliser pour interpréter les corrélations entre les variables d'origine et les nouveaux axes factoriels. Les axes haut et droit mesurent les valeurs prises par les individus dans le nouveau plan factoriel.
+
+Options de la fonction \texttt{biplot}~:
+\begin{itemize}
+	\item \textbf{choices}~: un vecteur de longueur 2 spécifiant les composantes à utiliser. Par défaut ce sont les deux premières qui sont choisies
+	
+	\item \textbf{scale}~: réel comprit entre 0 et 1, permet d'adapter l'échelle des représentations entre les individus et les variables
+	\begin{itemize}
+		\item Les variables sont mise à l'échelle par $\lambda^{scale}$
+		\item Les observations sont mise à l'échelle par $\lambda^{1-scale}$
+		\item $\lambda$ représente les valeurs propres calculées par l'ACP
+	\end{itemize}
+
+	\item \textbf{pc.biplot}~: booléen, si \textit{vrai} utilise la représentation de Gabriel (1971)
+	\begin{itemize}
+		\item Les observations sont mises à l'échelle par $\sqrt{n}$ ($n$ est la taille de l'échantillon)
+		\item Alors le produit interne entre les variables donne une approximation des covariances et les distance entre les observations donnent une approximation de la distance de Mahalanobis
+	\end{itemize}
+\end{itemize}
 
 \section{Données Crabs}
 \label{sec:2_3_ACP_Crabs}

@@ -123,8 +123,10 @@ text(cor[,1], cor[,4], labels = c("math", "scie", "fran", "lati", "d-m"))
 
 #Utiliser la fonction princomp() pour calculer les composantes principales 
 #On utilise la matrice de covariance pour calculer les composantes principales 
+PCA = princomp(notes)
 PCA <- princomp(notes, cor = FALSE)
 PCA
+summary(PCA)
 summary(PCA, loadings = TRUE)
 #les écarts-types des composantes principales 
 PCA$sdev
@@ -134,20 +136,28 @@ PCA$loadings
 PCA$scores
 
 #utiliser la fonction plot
+plot(PCA)
 #Dessiner le premier plan factoriel entre composant1 et composant2
-plot(-9:10,-9:10,type = "n", xlab = "Axe1", ylab = "Axe2")
+plot(PCA$scores[,1], PCA$scores[,2], xlim = c(-11,11), ylim = c(-11,11), xlab = "Comp.1", ylab = "Comp.2")
 abline(h=0,v=0)
-#Ajouter des points dans le premier plan factoriel 
-text(PCA$scores[,1], PCA$scores[,2], labels = c("jean", "aline", "annie", "monique", "didier", "andre", "pierre", "brigitte", "evelyne"))
+text(PCA$scores[,1], PCA$scores[,2], labels = rownames(PCA$scores), cex= 0.7, pos=3) #Ajouter des points dans le premier plan factoriel 
+plot(PCA$scores, xlim = c(-11,11), ylim = c(-11,11))
+
 
 #Dessiner le premier plan factoriel entre composant1 et composant3
-plot(-9:10,-9:10,type = "n", xlab = "Axe1", ylab = "Axe3")
+plot(-11:11,-11:11,type = "n", xlab = "Comp.1", ylab = "Comp.3")
 abline(h=0,v=0)
 #Ajouter des points dans le premier plan factoriel 
 text(PCA$scores[,1], PCA$scores[,3], labels = c("jean", "aline", "annie", "monique", "didier", "andre", "pierre", "brigitte", "evelyne"))
 
+plot(PCA$loadings, xlim = c(-1,1), ylim = c(-1,1))
+abline(h=0,v=0)
+text(PCA$loadings, labels=rownames(PCA$loadings), cex= 0.7, pos=4)
 #notes
 #utiliser la fonction biplot
 cor(notes, PCA$scores)
+PCA$scores
+biplot(PCA)
+biplot(PCA, pc.biplot = T)
 biplot(PCA, choices = c(1,2))
 biplot(PCA, choices = c(1,3))
