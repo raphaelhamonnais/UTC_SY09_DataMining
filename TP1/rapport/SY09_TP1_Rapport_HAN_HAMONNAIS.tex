@@ -158,7 +158,7 @@ Nous avons ensuite créé le tableau de contingence, qui donne pour chaque valeu
 \end{figure}
 
 On remarque immédiatement que les conditions du test ne sont pas respectées~: il a y une majorité des effectifs qui sont inférieurs à 5 dans le tableau de contingence  (\autoref{fig:tab_contingence_diplome_resultat}). Et c'est tout à fait normal si l'on regarde les effectifs d'étudiants (\autoref{fig:effectif_total_par_diplome}) en fonction de leur diplôme d'origine dans la population totale~: seuls les diplômes BAC (étudiant venant de tronc commun), DUT et CPGE sont convenablement représentés.
-On peut tout de même effectuer le test du $\chi^2$ tout en sachant que les conditions ne sont pas respectées, afin de vérifier l'importance de ces conditions. On obtient alors une \textit{p-value} égale à $0.2572$. On conserve donc l'hypothèse $H_{0}$ d'indépendance des variables, tout en sachant que le résultat et probablement faux.
+On peut tout de même effectuer le test du $\chi^2$ tout en sachant que les conditions ne sont pas respectées, afin de vérifier l'importance de ces conditions. On obtient alors une \textit{p-value} égale à $0.2572$, nous amenant à conserver l'hypothèse $H_{0}$ d'indépendance des variables, tout en sachant que le résultat est probablement faux.
 
 
 
@@ -192,53 +192,17 @@ On remarque que 34\% des élèves ayant comme dernier diplôme le BAC ont obtenu
 
 \subsubsection{Lien statistique entre le résultat et la spécialité des étudiants}
 
-La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP, GSM, GSU, HuTech, ISS, ou TC. En s'intéressant à l'effectif de chaque classe (\autoref{fig:effectif_specialité}), on remarque de suite qu'il va falloir en considérer quelques unes seulement pour respecter les conditions du test.
+La spécialité des étudiants correspond à leur cursus actuel~: GB, GI, GM, GP, GSM, GSU, HuTech, ISS, ou TC. En s'intéressant à l'effectif de chaque classe, on remarque de suite qu'il va falloir en considérer quelques unes seulement pour respecter les conditions du test. Les classes telles que \textit{HuTech}, \textit{ISS}, \textit{TC} voire même \textit{GP} ne sont pas assez représentées pour être en mesure de respecter les conditions du tests d'indépendance du $\chi^2$.
 
 \begin{figure}[H]
 	\centering
-	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.5\linewidth]{img/1-1-2-Effectf-specialite}
-	\caption{\scriptsize Effectif par spécialité}
-	\label{fig:effectif_specialité}
+	\captionsetup{justification=centering, margin=1cm}
+	\includegraphics[width=0.2\linewidth]{img/1-1-2-Contingence-Result-Specialite-Corrige}
+	\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et spécialité}
+	\label{fig:tab_contingence_diplome_specialite_corrige}
 \end{figure}
 
-Les classes telles que \textit{HuTech}, \textit{ISS}, \textit{TC} voire même \textit{GP} ne sont pas assez représentées pour être en mesure de respecter les conditions du tests d'indépendance du $\chi^2$.
-
-Voici les deux tableaux de contingence obtenus, le premier sur toutes les données (\autoref{fig:tab_contingence_diplome_specialite_origine}), le second (\autoref{fig:tab_contingence_diplome_specialite_corrige}) en sélectionnant certaines classes de la variable \textit{spécialité} puis en regroupant les effectifs de certaines classes de la variable \textit{résultat}.
-
-\begin{figure}[H]
-	\centering
-	\captionsetup{justification=centering, margin=2cm}
-	\begin{subfigure}[b]{0.5\linewidth}
-		\centering
-		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Specialite-Origine}
-		\caption{\scriptsize Tableau de contingence entre résultat et spécialité}
-		\label{fig:tab_contingence_diplome_specialite_origine}
-	\end{subfigure}%
-	\begin{subfigure}[b]{0.5\linewidth}
-		\centering
-		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Specialite-Corrige}
-		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et spécialité}
-		\label{fig:tab_contingence_diplome_specialite_corrige}
-	\end{subfigure}%
-	\caption{
-		\small Tableaux de contingence entre résultats et spécialité.
-	}
-	\label{fig:tabs_contingence_resultats_specialite}%
-\end{figure}
-
-Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_diplome_specialite_origine} et sur le tableau \ref{fig:tab_contingence_diplome_specialite_corrige} donnent respectivement les résultats suivants~:
-\begin{itemize}
-	\item Tableau de contingence d'origine
-	\\ \textit{p-value} = 0.02087781.
-	\\On réfute (à tort) l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité}.
-	
-	\item Tableau de contingence corrigé
-	\\ \textit{p-value} = 0.4673856.
-	\\On accepte l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité} avec confiance.
-\end{itemize}
+Le test du $\chi^2$ effectué sur le tableau de contingence (voir \autoref{fig:tab_contingence_diplome_specialite_corrige}) donne une \textit{p-value} égale à 0.4673856. On accepte l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{spécialité} avec confiance.
 
 Conclusion~: la spécialité d'un étudiant n'a pas d'impact sur son résultat.
 
@@ -247,42 +211,16 @@ Conclusion~: la spécialité d'un étudiant n'a pas d'impact sur son résultat.
 
 Le niveau des étudiants correspond à leur semestre actuel de branche, de 1 à 6 (deux semestres par an sur un cursus de trois ans).
 
-Voici les deux tableaux de contingences obtenus, le premier (\autoref{fig:tab_contingence_diplome_niveau_origine}) sans regroupement de classes et le second (\autoref{fig:tab_contingence_diplome_niveau_corrige}) en regroupant les classes \textit{F-Fx-E} et \textit{C-B} et en ne considérant pas les étudiants de niveau 3,5 et 6 (effectif trop peu important).
-
 \begin{figure}[H]
 	\centering
-	\captionsetup{justification=centering, margin=2cm}
-	\begin{subfigure}[b]{0.5\linewidth}
-		\centering
-		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Niveau-Origine}
-		\caption{\scriptsize Tableau de contingence entre résultat et niveau}
-		\label{fig:tab_contingence_diplome_niveau_origine}
-	\end{subfigure}%
-	\begin{subfigure}[b]{0.5\linewidth}
-		\centering
-		\captionsetup{justification=centering, margin=1cm}
-		\includegraphics[width=0.5\linewidth]{img/1-1-2-Contingence-Result-Niveau-Corrige}
-		\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et niveau}
-		\label{fig:tab_contingence_diplome_niveau_corrige}
-	\end{subfigure}%
-	\caption{
-		\small Tableaux de contingence entre résultats et niveau.
-	}
-	\label{fig:tabs_contingence_resultats_niveau}%
+	\captionsetup{justification=centering, margin=1cm}
+	\includegraphics[width=0.2\linewidth]{img/1-1-2-Contingence-Result-Niveau-Corrige}
+	\caption{\scriptsize Tableau de contingence \textbf{corrigé} entre résultat et niveau}
+	\label{fig:tab_contingence_diplome_niveau_corrige}
 \end{figure}
 
+Le test du $\chi^2$ effectué sur le tableau de contingence \ref{fig:tab_contingence_diplome_niveau_corrige} donne une \textit{p-value} égale à 0.003523739. On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
 
-Les deux tests du $\chi^2$ effectués sur le tableau \ref{fig:tab_contingence_diplome_niveau_origine} et sur le tableau \ref{fig:tab_contingence_diplome_niveau_corrige} donnent respectivement les résultats suivants~:
-\begin{itemize}
-	\item Tableau de contingence d'origine
-	\\ \textit{p-value} = 0.0003517831.
-	\\On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
-	
-	\item Tableau de contingence corrigé
-	\\ \textit{p-value} = 0.003523739.
-	\\On réfute l'hypothèse $H_{0}$ d'indépendance des variables \textit{résultat} et \textit{niveau}.
-\end{itemize}
 Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exemple dans la figure \ref{fig:frequence_resultats_niveau} que plus le niveau de l'étudiant augmente, moins il a de chance d'obtenir l'UV. 42\% de \textit{F} ou \textit{Fx} pour les étudiants de niveau 4 contre 7\% seulement pour ceux de niveau 1. A l'opposé, ces derniers sont 80\% à obtenir l'UV avec un résultat entre \textit{D} et \textit{A} contre 45\% pour les étudiants de niveau 4. Les étudiants de niveau 2 se situent au milieu, avec 60\% pour un résultat compris entre \textit{D} et \textit{A} et 27\% de non obtention de l'UV.
 
 \begin{figure}[H]
@@ -296,30 +234,23 @@ Conclusion~: le niveau d'un étudiant impacte son résultat. On observe par exem
 \subsubsection{Lien statistique entre le résultat et les correcteurs}
 
 Selon toute vraisemblance, le correcteur ne devrait pas influer sur le résultat d'un étudiant à l'UV. Nous allons tout de même nous en assurer. Le principe est le même que précédemment~: construire le tableau de contingence, regrouper des classes au besoin pour respecter les conditions du test du $\chi^2$ et effectuer ce test afin de déterminer si les variables sont indépendantes ou non.
-\\
-Voici le premier tableau de contingence obtenu entre les variable \textit{notes médian} et \textit{correcteur médian}~:
 
-\begin{figure}[H]
-	\centering
-	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.9\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Origine}
-	\caption{\scriptsize Tableau de contingence entre les notes du médian et les correcteur}
-	\label{fig:contingence_resultats_correcteur}
-\end{figure}
 
-Ce tableau est inutilisable pour le test d'indépendance du $\chi^2$. Il a donc fallut regrouper les observation en classes.\\
-Voici le second tableau de contingence obtenu après regroupement~:
+Le test du $\chi^2$ effectué sur le tableau de contingence \textit{notes médian} / \textit{correcteurs médian} (voir \autoref{fig:contingence_resultats_correcteur_corrige}) donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H_{0}$ d'indépendance.
+\\Le même principe a été appliqué sur le couple de variables \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve là aussi l'hypothèse $H_{0}$ d'indépendance.
+
+
 \begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
 	\includegraphics[width=.2\linewidth]{img/1-1-2-Contingence-Result-Correcteur-Median-Corrige}
-	\caption{\scriptsize Tableau de contingence \textbf{après regroupement} entre les notes du médian et les correcteur}
+	\caption{\scriptsize Tableau de contingence \textbf{après regroupement} entre les notes du médian et les correcteurs}
 	\label{fig:contingence_resultats_correcteur_corrige}
 \end{figure}
 
-Le test du $\chi^2$ effectué sur le second tableau de contingence donne une \textit{p-value} égale à 0.499. On conserve donc l'hypothèse $H{0}$ d'indépendance. Le même principe a été appliqué sur le couple de variable \textit{note final} et \textit{correcteur final} à la différence qu'il y a trois classes au lieu de 4 afin de respecter les conditions du test. La \textit{p-value} obtenue vaut 0.115. On conserve ici aussi l'hypothèse $H{0}$ d'indépendance.
 
-Les notes obtenues au médian et au final étant fortement corrélées au résultat obtenu (\autoref{fig:boxplot_note_resultat}), on peut conclure en affirmant que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
+
+Les notes du médian et du final étant fortement corrélées au résultat obtenu (\autoref{fig:boxplot_note_resultat}), on peut conclure en affirmant que les variables \textit{correcteur} et \textit{résultat} sont indépendantes.
 
 \begin{figure}[H]
 	\centering
@@ -465,8 +396,7 @@ La corrélation entre les cinq variables est très forte, comme le montre le tab
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
 	\caption{Corrélations entre les variables quantitatives de la population de crabes.}
-	\begin{tabular}{rrrrrr}
-		\hline
+	\begin{tabular}{r|rrrrr}
 		& FL & RW & CL & CW & BD \\ 
 		\hline
 		FL & 1.00 & 0.91 & 0.98 & 0.96 & 0.99 \\ 
@@ -474,19 +404,18 @@ La corrélation entre les cinq variables est très forte, comme le montre le tab
 		CL & 0.98 & 0.89 & 1.00 & 1.00 & 0.98 \\ 
 		CW & 0.96 & 0.90 & 1.00 & 1.00 & 0.97 \\ 
 		BD & 0.99 & 0.89 & 0.98 & 0.97 & 1.00 \\ 
-		\hline
 	\end{tabular}
 \end{table}
 
 De plus, toutes les variables sont corrélées positivement entre-elles. La raison est simple~: les observations représentent des mesures morphométriques, c'est à dire des distances relevées sur les corps des crabes. Plus un crabe est grand, plus ces mesures vont grandir, et inversement.
-Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composantes principales sur les données. Les nouvelles variables identifiées auront alors une très faible corrélation entre elles. Il sera alors peut-être possible de différencier le sexe et l'espèce des individus en fonction de leur mesures morphométriques analysées en fonction des nouveaux axes trouvées lors de l'ACP (voir \autoref{sec:2_3_ACP_Crabs}).
+Pour s'affranchir de ce phénomène, on pourra pratiquer une analyse en composantes principales sur les données. Les nouvelles composantes identifiées devraient présenter une faible corrélation entre elles. Il sera alors peut-être possible de différencier le sexe et l'espèce des individus en fonction de leur mesures morphométriques (voir \autoref{sec:2_3_ACP_Crabs}).
 
 
 \section{Données Pima}
 \label{section:pima-descriptif}
 
-Les données Pima consistent en plusieurs mesures effectuée sur une population de femmes amérindiennes, le but étant d'observer les facteurs aggravant de diabète dans une population plus touchée que de moyenne par cette maladie.
-L'échantillon est composé 532 individus décrits par 8 variables différentes, toutes quantitatives sauf une qui détermine l'absence ou la présence d'une condition diabétique chez l'individu.
+Les données Pima consistent en plusieurs mesures effectuées sur une population de femmes amérindiennes, le but étant d'observer les facteurs aggravant le diabète dans une population plus touchée que la moyenne par cette maladie.
+L'échantillon est composé 532 individus décrits par 8 variables différentes, toutes quantitatives sauf une qui détermine l'absence ou la présence de diabète chez l'individu.
 
 \subsection{Analyse descriptive}
 
@@ -504,10 +433,10 @@ Variables quantitatives~:
 \end{itemize}
 Variable qualitative~:
 \begin{itemize}
-	\item \textbf{z}~: diabétique si \textbf{z} = 2;
+	\item \textbf{z}~: diabétique si \textbf{z} = 2.
 \end{itemize}
 
-\subsubsection{Domaine de définition et statistiques descriptives des variables}
+\subsubsection{Domaine de définition des variables}
 
 \begin{table}[H]
 	\centering
@@ -538,12 +467,12 @@ Variable qualitative~:
 \end{table}
 
 
-La première chose importante que nous remarquons est la différence d'effectif entre les types d'individus~: il y a deux fois plus d'individus non diabétiques (355) que de diabétiques (177). Le choix des représentations graphiques et tests statistiques est alors important. Travailler sur l'effectif simple avec par exemple des diagrammes en bâton donnera des résultat complètement faux. Des boîtes à moustache par contre seront plus à même de pointer des disparités entre les deux types d'individus.
+La première chose importante que nous remarquons est la différence d'effectif entre les types d'individus~: il y a deux fois plus d'individus non diabétiques (355) que de diabétiques (177). Le choix des représentations graphiques et tests statistiques est alors important. Travailler sur l'effectif simple avec par exemple des diagrammes en bâton donnera des résultat complètement faux. Des boîtes à moustache par contre seront plus à même de pointer des disparités entre les deux groupes d'individus.
 
 
 \paragraph{Corrélation entre les variables quantitatives}
 
-Cette étude de la corrélation \autoref{table:correlation-quant-pima}, sans prendre en compte le facteur diabète, ne nous apprend pas grand chose sinon que les variables sont peu corrélées entre-elles, mise à part l'âge et la grossesse. Ces deux dernières sont légèrement corrélées positivement~: plus la femme interrogée est âgé, plus il y a de chance qu'elle ait eu plusieurs grossesses dans sa vie.
+Cette étude de la corrélation (voir \autoref{table:correlation-quant-pima}), sans prendre en compte le facteur diabète, ne nous apprend pas grand chose sinon que les variables sont peu corrélées entre-elles, mise à part l'âge et la grossesse. Ces deux dernières sont légèrement corrélées positivement~: plus la femme interrogée est âgé, plus il y a de chance qu'elle ait eu plusieurs grossesses dans sa vie.
 
 
 \begin{table}[H]
@@ -570,13 +499,13 @@ Cette étude de la corrélation \autoref{table:correlation-quant-pima}, sans pre
 Pour étudier les liens statistiques entre le facteur diabète et les autres variables, voici la procédure que nous allons suivre~:
 \begin{itemize}
 	\item Effectuer des représentations de boîte à moustache de l'ensemble des variables en fonction du facteur diabète.
-	\item Valider statistiquement les observations graphiques avec un test du $\chi^2$ effectué sur le tableau de contingence vérifiant les conditions du test.
-	\item Représenter graphiquement le tableau de fréquence afin d'avoir une vision graphique de l'influence (ou de la non influence) du facteur diabète sur la variable étudiée. Le tableau de fréquence correspond au tableau de contingence exprimé en pourcentage de représentation d'une valeur par rapport à la population totale de la classe à laquelle elle appartient.
+	\item Valider statistiquement les observations graphiques avec un test du $\chi^2$ effectué sur le tableau de contingence correspondant au couple de variable ( et vérifiant les conditions du test).
+	\item Représenter graphiquement le tableau de fréquence afin d'avoir une vision graphique de l'influence (ou de la non influence) du facteur diabète sur la variable étudiée. Le tableau de fréquence correspond au tableau de contingence exprimé en pourcentage de représentation d'une valeur par rapport à la population totale du groupe (diabétique / non diabétique) à laquelle elle appartient.
 \end{itemize}
 
 Note : la couleur verte représente la population non diabétique, la couleur bleu les individus souffrant de diabète. 
 
-\subsubsection{Représentation des variables en boîte à moustache en fonction du facteur diabète}
+\subsubsection{Représentation des variables en fonction du facteur diabète}
 
 \begin{figure}[H]
 	\centering
@@ -640,7 +569,7 @@ Note : la couleur verte représente la population non diabétique, la couleur bl
 
 
 
-Visuellement, il semblerait que le facteur diabète est lié à l'âge, au nombre de grossesses et au taux de glucose dans le sang. Les quatre autres variables ne semblent pas diverger de façon remarquable en fonction du diabète, même si quelques différences sont déjà notables.
+Visuellement, il semblerait que le facteur diabète soit lié à l'âge, au nombre de grossesses et au taux de glucose dans le sang. Les quatre autres variables ne semblent pas diverger de façon remarquable en fonction du diabète, même si quelques différences sont déjà notables.
 
 
 
@@ -677,7 +606,7 @@ Visuellement, il semblerait que le facteur diabète est lié à l'âge, au nombr
 \end{itemize}
 
 
-Contrairement à ce qu'on pensait précédemment, on se rend compte que toutes les variables sont plus ou moins influencées par le facteur diabète. Pour certaines, comme le taux de glucose, cela se comprend facilement. Pour d'autres, l'explication est inconnue. Nous allons par la suite représenter graphiquement les tableaux de fréquence afin de comprendre l'effet du diabète sur ces variables et inversement.
+Contrairement à ce qu'on pensait précédemment, on se rend compte que toutes les variables sont plus ou moins influencées par le facteur diabète. Pour certaines, comme le taux de glucose, cela se comprend facilement. Pour d'autres, l'explication ne nous est pas connue. Nous allons par la suite représenter graphiquement les tableaux de fréquence afin de comprendre l'effet du diabète sur ces variables et inversement.
 
 \subsubsection{Représentation graphique des tableaux de fréquence en fonction du facteur diabète}
 
@@ -753,22 +682,22 @@ Ces graphiques nous donnent deux informations~: la fréquence d'observation au s
 	\\ Pour un nombre de grossesses inférieur à 7, la différence de fréquence entre les deux populations n'est pas flagrante mais tends à défavoriser l'apparition de diabète. Par contre, à partir de 7 grossesses et plus, il y a une écrasante majorité d'individus atteints de diabète. Le fait d'être enceinte ou pas nous paraissant indépendant du diabète, notre conclusion est que c'est un nombre répété de grossesses qui va favoriser l'apparition du diabète (et non pas le diabète qui induit un nombre élevé de grossesses).
 		
 	\item \textbf{Diabète vs. Taux plasmatique de glucose}
-	\\ Comme dit précédemment, le manque d'insuline dans le corps implique un fort taux de glucose dans le sang. On peut dire que ce taux de glucose est un facteur indicatif de la présence ou de l'absence d'une condition diabétique.
+	\\ Comme dit précédemment, le manque d'insuline dans le corps implique une élévation du taux de glucose dans le sang. On peut dire que ce taux de glucose est un facteur indicatif de la présence ou de l'absence d'une condition diabétique.
 		
 	\item \textbf{Diabète vs. Pression artérielle diastolique}
-	\\ Ces deux facteurs sont liés, mais assez faiblement selon nous. Les individus diabétiques ont une légère tendance à avoir une pression artérielle plus élevée que les non diabétiques. Nous n'avons pas d'explication causale, à savoir est-ce le diabète qui favorise l'hypertension (et pourquoi) ou bien est-ce l'hypertension qui favorise le diabète~?
+	\\ Ces deux facteurs sont liés, mais assez faiblement. Les individus diabétiques ont une légère tendance à avoir une pression artérielle plus élevée que les non diabétiques. Nous n'avons pas d'explication causale, à savoir si c'est le diabète qui favorise l'hypertension (et pourquoi) ou bien si c'est l'hypertension qui favorise le diabète.
 		
 	\item \textbf{Diabète vs. Epaisseur du pli cutané au niveau du triceps}
-	\\ Les remarques sont les mêmes que pour la pression artérielle. On observe un effet du diabète, indiquant qu'un pli cutané plus épais est plus fréquent chez les diabétiques. Il nous semble aberrant que ce soit là la cause du diabète, aussi en déduit-on que c'est le facteur diabète qui induit cette augmentation d'épaisseur. L'explication est surement lié à l'augmentation de masse corporelle, comme on peut le voir juste après.
+	\\ Les remarques sont les mêmes que pour la pression artérielle. On observe un effet du diabète, indiquant qu'un pli cutané plus épais est plus fréquent chez les diabétiques. Il nous semble aberrant que ce soit là la cause du diabète, aussi en déduit-on que c'est le diabète qui induit cette augmentation d'épaisseur. L'explication est surement liée à l'augmentation de masse corporelle, comme on peut le voir juste après.
 		
 	\item \textbf{Diabète vs. Indice de masse corporelle}
-	\\ La différence de fréquence entre les deux populations diabétique et non diabétique est flagrante~: un indice élevé de masse corporelle est révélateur d'une condition diabétique. Et plus cet indice est élevé, plus les chance de diabète augmentent.
+	\\ La différence de fréquence entre les deux populations diabétique et non diabétique est flagrante~: un indice élevé de masse corporelle est révélateur d'une condition diabétique. Et plus cet indice est élevé, plus les chances de présenter une condition diabétique augmentent.
 		
 	\item \textbf{Diabète vs. Fonction de pedigree génétique du diabète}
 	\\ Plus cette fonction de pedigree génétique du diabète augmente, plus les risques de diabète sont vérifiés.
 		
 	\item \textbf{Diabète vs. Age}
-	\\ Le diabète tend à toucher majoritairement les personnes adultes et plus âgées. Les individus de moins de 25 ans sont très peu à présenter un diabète.
+	\\ Le diabète tend à toucher majoritairement les personnes adultes et plus âgées. Les individus de moins de 25 ans sont très peu touchés.
 \end{itemize}
 
 
@@ -791,7 +720,7 @@ $M = I_p$ la matrice de poids des $p$ variables (chaque variable possède une im
 \subsection{Axes factoriels de l'ACP et pourcentage d'inertie expliquée}
 
 \paragraph{Données de départ}
-Les données de départ, après avoir supprimé les correcteurs 2 et 3 qui n'ont respectivement pas corrigé le final et le médian, on obtient la matrice suivante~:
+Les données de départ, après avoir supprimé les correcteurs 2 et 3 qui n'ont respectivement pas corrigé le final et le médian, sont représentées par la matrice suivante~:
 
 
 \begin{table}[H]
@@ -823,11 +752,11 @@ Soit $X$ la matrice précédente centrée en colonne~:
 		Cor8 & 0.03 & 0.59 & -0.76 & 0.36 \\ 
 	\end{tabular}
 \end{table}
-Le centrage en colonne s'obtient en soustrayant à chaque valeur la moyenne de la colonne correspondante~: on obtient une somme de chaque colonne nulle.
+Le centrage en colonne s'obtient en soustrayant à chaque valeur la moyenne de la colonne correspondante~:la somme de chaque colonne est alors nulle.
 
 
 \paragraph{Matrice de covariance}
-On calcule la matrice $V$ de covariance entre les variables à l'aide de la formule $V = X^TD_{p}X = \frac{1}{6}X^TX$ ($n = 6$).
+On calcule la matrice $V$ de covariance entre les variables à l'aide de la formule $V = X^TD_{p}X = \frac{1}{6}X^TX$ ($n = 6\ et\ D_p = \frac{1}{n}I_n$).
 
 \begin{table}[H]
 	\centering
@@ -921,7 +850,7 @@ Voici la représentation des individus (correcteurs) dans le premier plan factor
 \begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.5\linewidth]{img/2-1-2-individus-premier-plan-factoriel}
+	\includegraphics[width=.3\linewidth]{img/2-1-2-individus-premier-plan-factoriel}
 	\caption{\scriptsize Individus (correcteurs) dans le premier plan factoriel de l'ACP}
 	\label{fig:individus_premier_plan_factoriel}
 \end{figure}
@@ -974,29 +903,12 @@ La somme $\sum\limits_{\alpha=1}^k = c_\alpha u_{\alpha}^T$ est donc égale à u
 
 Nous allons représenter les individus possédant des valeurs manquantes avec la méthode d'imputation par la moyenne~: chaque valeur non renseignée sera remplacée par la moyenne de la variable correspondante.
 
-On obtient la matrice (non centrée en colonne) suivante~:
-\begin{table}[H]
-	\centering
-	\begin{tabular}{r|rrrr}
-		& moy.median & std.median & moy.final & std.final \\ 
-		\hline
-		Cor1 & 10.71 & 3.90 & 10.94 & 4.58 \\ 
-		Cor2 & 12.01 & 3.71 & 12.21 & 4.39 \\ 
-		Cor3 & 10.90 & 4.01 & 12.57 & 3.65 \\ 
-		Cor4 & 10.23 & 3.04 & 13.43 & 4.34 \\ 
-		Cor5 & 10.98 & 4.41 & 11.83 & 3.97 \\ 
-		Cor6 & 11.50 & 4.30 & 13.41 & 4.88 \\ 
-		Cor7 & 10.12 & 4.03 & 11.90 & 4.44 \\ 
-		Cor8 & 10.74 & 4.65 & 11.40 & 4.87 \\ 
-	\end{tabular}
-\end{table}
-
 L'ACP effectuée avec la fonction \texttt{princomp} donne la représentation suivante des individus sur le premier plan factoriel~:
 
 \begin{figure}[H]
 	\centering
-	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.5\linewidth]{img/2-1-5-individus-with-na-premier-plan-factoriel}
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=.3\linewidth]{img/2-1-5-individus-with-na-premier-plan-factoriel}
 	\caption{\scriptsize Individus (dont les correcteurs 2 et 3 précédemment supprimés) dans le premier plan factoriel de l'ACP}
 	\label{fig:individus_with_na_premier_plan_factoriel}
 \end{figure}
@@ -1060,7 +972,7 @@ La fonction \texttt{plot} permet de représenter les résultats de l'ACP de diff
 
 
 
-La fonction \texttt{biplot} redéfinie pour l'ACP va mélanger les deux représentations sur le premier plan factoriel (par défaut)~: on aura les individus ainsi que l'expression de la corrélation entre les anciennes variables et les composantes principales (voir \autoref{fig:2-2-2-biplot-acp}).
+La fonction \texttt{biplot} redéfinie pour l'ACP va mélanger les deux représentations sur le premier plan factoriel (par défaut)~: on aura les individus ainsi que l'expression de la corrélation entre les variables d'origine et les composantes principales (voir \autoref{fig:2-2-2-biplot-acp}).
 
 \begin{figure}[H]
 	\centering
@@ -1070,7 +982,7 @@ La fonction \texttt{biplot} redéfinie pour l'ACP va mélanger les deux représe
 	\label{fig:2-2-2-biplot-acp}
 \end{figure}
 
-On remarque qu'il y a deux échelles de valeur pour chaque axe (haut et bas pour \textit{Comp.1} et gauche et droite pour \textit{Comp.2}). Les axes bas et gauche sont utiliser pour interpréter les corrélations entre les variables d'origine et les nouveaux axes factoriels. Les axes haut et droit mesurent les valeurs prises par les individus dans le nouveau plan factoriel.
+On remarque qu'il y a deux échelles de valeur pour chaque axe (haut et bas pour \textit{Comp.1} et gauche et droite pour \textit{Comp.2}). Les axes bas et gauche mesurent la corrélation entre les variables d'origine et les nouveaux axes factoriels. Les axes haut et droit mesurent les valeurs prises par les individus dans le premier plan factoriel.
 
 Options de la fonction \texttt{biplot}~:
 \begin{itemize}
@@ -1157,10 +1069,10 @@ Une rapide analyse du tableau de corrélation (\autoref{table:correlation_crabs_
 
 
 
-\subsection{Correction l'effet de taille}
+\subsection{Correction de l'effet de taille}
 
 Afin de prendre en compte une plus grande partie de l'inertie expliquée, il va nous falloir corriger l'effet de taille. Le principe de l'ACP est d'identifier les axes présentant la plus grande dispersion possible, et l'ACP précédente a bien montré que la taille du crabe est le facteur le plus "dispersant". Il va donc falloir réduire au maximum cette dispersion afin donner plus d'importance aux autres mesures et peut-être identifier des facteurs morphologiques (autres que la taille) communs au sexe et/ou aux espèces.\\
-On a identifié les variables \textit{CL} et \textit{CW} comme étant les initiatrices principales de cet effet. Il suffit alors de réduire à 0 la dispersion de l'une de ces deux mesures. Une manière simple de faire cela est d'exprimer l'ensemble des autres variables en pourcentage de la mesure dont on veut réduire la dispersion. Nous avons ici choisit de réduire la dispersion de la mesure \textit{CL} (les effets de \textit{CL} et \textit{CW} sur l'ACP sont quasiment identiques, donc ici choisir l'une ou l'autre revient finalement au même, comme on peut le voir dans la \autoref{fig:biplot_acp_crabs_corrected_CW}).\\
+On a identifié les variables \textit{CL} et \textit{CW} comme étant les initiatrices principales de cet effet de taille. Il suffit alors de réduire à 0 la dispersion de l'une de ces deux mesures. Une manière simple de faire cela est d'exprimer l'ensemble des autres variables en pourcentage de la mesure dont on veut réduire la dispersion. Nous avons ici choisit de réduire la dispersion de la mesure \textit{CL} (les effets de \textit{CL} et \textit{CW} sur l'ACP sont quasiment identiques, donc ici choisir l'une ou l'autre revient finalement au même, comme on peut le voir dans la \autoref{fig:biplot_acp_crabs_corrected_CW}).\\
 La méthode est donc, pour chaque individu, de diviser toutes les observations par la valeur de \textit{CL} puis de multiplier par 100. Le \autoref{table:comparatif_normalisation_crabs} montre bien le changement se produisant dans les observations.
 
 \begin{table}[H]
@@ -1277,7 +1189,7 @@ On effectue l'analyse en composantes principales sur les variables quantitatives
 \end{table}
 
 On voit que le premier plan factoriel représente environ 83\% de l'inertie expliquée, ce qui est encourageant.
-Par contre, on remarque aussi que les axes factoriels semblent être particulièrement représentatifs de certaines variables d'origine. Et c'est confirmé par la matrice de corrélation entre les variables d'origine et les nouveaux axes factoriels (voir \autoref{table:correlation-acp-pima}). Le premier axe factoriel est quasiment équivalent à la variable \texttt{glu}, le second à la variable \textit{bp}, le troisième représente plutôt les variables \texttt{skin} et \texttt{bmi}, le quatrième l'âge, le cinquième \texttt{bmi} encore et le sixième le nombre de grossesses. Le septième axe est le plus flagrant d'entre tous~: il est quasiment équivalent à la variable \texttt{ped} d'origine.
+Par contre, on remarque aussi que les axes factoriels semblent être particulièrement représentatifs de certaines variables d'origine. Et c'est confirmé par la matrice de corrélation entre les variables d'origine et les nouveaux axes factoriels (voir \autoref{table:correlation-acp-pima}). Le premier axe factoriel est quasiment équivalent à la variable \texttt{glu}, le second à la variable \texttt{bp}, le troisième représente plutôt les variables \texttt{skin} et \texttt{bmi}, le quatrième l'âge, le cinquième \texttt{bmi} encore et le sixième le nombre de grossesses. Le septième axe est le plus flagrant d'entre tous~: il est quasiment équivalent à la variable \texttt{ped} d'origine.
 
 L'ACP n'est pas concluante. Les sept composantes principales trouvées sont un reflet trop proche des sept variables initiales. Une représentation graphique des observations sur le premier plan factoriel ne permet pas de distinguer visuellement les groupes de patientes diabétiques et non diabétiques.
 
@@ -1285,7 +1197,7 @@ L'ACP n'est pas concluante. Les sept composantes principales trouvées sont un r
 \begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=2cm}
-	\includegraphics[width=.7\linewidth]{img/2-4-Pima-ACP-premier-plan-factoriel}
+	\includegraphics[width=.4\linewidth]{img/2-4-Pima-ACP-premier-plan-factoriel}
 	\caption{\scriptsize Représentation des données \texttt{Pima} sur le premier plan factoriel.\\ \tiny Rappel~: bleu pour diabétique, vert pour non diabétique}
 	\label{fig:2-4-Pima-ACP-premier-plan-factoriel}
 \end{figure}
@@ -1305,6 +1217,8 @@ On obtient la table de corrélation suivante entre les variables d'origine est l
 
 \begin{table}[H]
 	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\caption{ACP après modification du poids des individus: corrélation entre les variables d'origine et les nouveaux axes factoriels.}
 	\begin{tabular}{r|rrrrrrr}
 		& Comp.1 & Comp.2 & Comp.3 & Comp.4 & Comp.5 & Comp.6 & Comp.7 \\ 
 		\hline
