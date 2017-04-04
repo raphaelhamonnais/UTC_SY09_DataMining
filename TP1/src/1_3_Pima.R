@@ -1,4 +1,7 @@
 #1.3 Données Pima
+install.packages("ade4")
+library("ade4")
+
 Pima <- read.csv("data/Pima.csv",header = T)
 Pima$z <- factor(Pima$z)
 #il y a huit variables: 
@@ -47,7 +50,7 @@ contingence_z_npreg_freq
 barplot(
   as.matrix(contingence_z_npreg_freq), 
   col = c("light green", "light blue"),
-  beside = F, 
+  beside = T, 
   legend = row.names(contingence_z_npreg_freq),
   xlab = "Nombre de grossesses", ylab = "Fréquence"
 )
