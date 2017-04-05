@@ -1,0 +1,125 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{packages/rapportutc}
+%\usepackage{packages/include-packages}
+
+
+%%%%%%%% Références %%%%%%%%
+\usepackage{cleveref}
+\usepackage{hyperref}
+\usepackage[nottoc, notlof, notlot]{tocbibind} % bibliographie http://tex.stackexchange.com/questions/71129/bibliography-in-table-of-contents
+\usepackage{natbib} % bibliographie
+
+%%%%%%%% Code informatique %%%%%%%%
+\usepackage{packages/Sweave} %package d'affichage des codes R
+\usepackage{listings} % pour hightlight code
+
+%%%%%%%% Formules mathématiques %%%%%%%%
+\usepackage{amsmath, amsthm, amssymb, graphics, setspace} %packages de mathématiques
+\usepackage{chemist} %formule chimique 
+
+%%%%%%%% Mise en forme %%%%%%%%
+% Mise en forme graphique
+\usepackage{graphicx,wrapfig,lipsum} % pour afficher des figures à côté du texte
+\usepackage[linewidth=1pt]{mdframed} % permet de générer et gérer des frames
+\usepackage{rotating} % rotations on tables, captions, text, ...
+% Mise en forme images et tableaux
+\usepackage{float} % permet de spécifier l'option "H" aux captions afin de les positionner de manière fixe
+\usepackage{subcaption} % permet d'afficher plusieurs images dans une caption
+\usepackage{array} % meilleurs "table" et "tabular"
+% Mise en forme texte
+\usepackage{setspace} % permet de spécifier l'espacement interligne
+\usepackage{ulem} % \sout{Texte à barrer} \xout{Texte à hachurer} \uwave{Texte à souligner par une vaguelette}
+\usepackage{calc,enumitem}  % Mise en forme l'environnement itemsize description etc.
+\usepackage{color} % utilisation de couleurs
+\usepackage{ae,aecompl} % Vir­tual fonts for T1 en­coded CMR-fonts
+\usepackage{pifont} % com­mands for Pi fonts (Ding­bats, Sym­bol, etc.)
+\usepackage{comment} % Selectively include/exclude portions of text \comment....\endcomment
+
+\onehalfspacing % espacement interligne
+\setlength{\parindent}{.5em} % indentation des retraits de première ligne
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\title{TP 2 - }
+\author{LU Han - HAMONNAIS Raphaël}
+\date{\today}
+
+\uv{SY09}
+\branche{Génie Informatique}
+\filiere{Fouille de Données et Décisionnel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\renewcommand{\labelitemi}{\large\textcolor{tatoebagreen}{\fg}}
+\newgeometry{top=2.5cm,bottom=2cm,left=2cm,right=2cm}
+\groovypdtitre
+\restoregeometry % restaure la géométrie par défaut de latex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\chapter{Visualisation des données}
+
+\section{Données Iris}
+
+\begin{figure}[H]
+
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=2cm}
+		\includegraphics[width=0.3\linewidth]{img/}
+		\caption{\scriptsize Données \texttt{Iris} dans le premier plan factoriel sans tenir compte de l'espèce.}
+		\label{fig:}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=2cm}
+		\includegraphics[width=0.3\linewidth]{img/}
+		\caption{\scriptsize Données \texttt{Iris} dans le premier plan factoriel en tenant compte de l'espèce.}
+		\label{fig:}
+	\end{subfigure}%
+	\caption{
+		\scriptsize Représentation des données \texttt{Iris} dans le premier plan factoriel.
+	}
+	\label{fig:tab_effectifs_et_contingence_resultats_diplome_origine}%
+\end{figure}
+
+Affichage dans le premier plan factoriel après ACP sans tenir compte de l'espèce~:
+
+On observe deux groupes bien distincts.
+
+Affichage premier plan factoriel en tenant compte de l'espèce
+
+On voit qu'un des deux groupes est en fait constitué de deux des espèces différentes. 
+On obtient donc deux informations précieuses~: les méthodes de classification géométriques tendront à nous donner deux classes au lieu de trois. Il faudra donc spécifier qu'on recherche bien 3 classes et non 2.
+
+
+\section{Données Crabs}
+
+Affichage premier plan factoriel sans tenir compte de l'espèce ou du sexe
+
+On observe deux groupes bien distincts.
+
+
+Affichage premier plan factoriel en tenant compte de l'espèce et du sexe
+
+On constate que les deux groupes observés précédemment correspondent à l'espèce des crabes. On voit aussi apparaître deux autres groupes au sein des premiers qui délimitent le sexe.
+On va donc chercher à faire une classification à 4 classes. On note quand même que la délimitation entre les sexes est plus floue que celle entre les espèces.
+
+
+\section{Données Mutation}
+
+\end{document}
