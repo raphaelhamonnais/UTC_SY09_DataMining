@@ -86,7 +86,23 @@ plot(mut, dist(aftd_mut_5$points, diag = T, upper = T), xlab = "Dissimilarités 
 
 
 
+################## 2. classification hiérarchique ###################
+#2.1 faire un cluster pour effectuer la classification hiérarchique ascendante 
+#ici la méthode qu'on utilise est la méthode de ward
+mut_hclust <- hclust(mut, method = "ward.D2")
+mut_hclust
 
+#faire le "heatmap" pour vérifier globalement le découpage des données
+#ici on voit qu'il y a trois parties de couleur différents, donc on découpe les données en trois groupes. 
+heatmap(as.matrix(mut),labRow = F, labCol = F)
 
+#afficher le dendrogramme 
+plot(mut_hclust)
 
+#afficher le dendrogramme avec des cadres rectangulaires
+rect.hclust(mut_hclust, k = 3)
+
+#découpage en 3 groupes
+mut_cutree <- cutree(mut_hclust, k = 3)
+mut_cutree
 
