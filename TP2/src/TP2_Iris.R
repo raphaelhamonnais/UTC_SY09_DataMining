@@ -27,12 +27,9 @@ legend(2.5, 2.5, legend=c(levels(iris$Species)), col=c("darkblue", "darkorange",
 
 ######## 2 - classification hiérarchique #################
 #2.2 effectuer la classification hiérarchique ascendante 
-#faire le centrage des données 
-iris_centrage <- scale(iris_quant, center = T, scale = F)
-iris_centrage
 
 #faire la matrice des distances entre des individus
-iris_dist <- dist(iris_centrage)
+iris_dist <- dist(iris_quant)
 iris_dist
 
 #faire un cluster pour effectuer la classification hiérarchique ascendante 
@@ -49,11 +46,33 @@ plot(iris_hclust)
 #afficher le dendrogramme avec des cadres rectangulaires
 rect.hclust(iris_hclust, k = 2)
 
+# 3 espèces = 3 classes
+rect.hclust(iris_hclust, k = 3)
+
 #découpage en 2 groupes
 iris_cutree <- cutree(iris_hclust, k = 2)
+iris_cutree <- cutree(iris_hclust, k = 3)
 iris_cutree
+plot(iris_cutree, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
 
 #2.3 effectuer la classification hiérarchique descendante 
 iris_diana <- diana(iris_dist)
 iris_diana
 plot(iris_diana)
+iris_cutre_diana <- cutree(iris_diana, k = 3)
+iris_cutre_diana
+plot(iris_cutre_diana, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+
+
+
+
+
+
+
+
+
+
+plot(iris_diana$order, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+plot(iris_hclust$order, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+plot(iris_diana$height, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+plot(iris_hclust$height, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])

@@ -104,5 +104,12 @@ rect.hclust(mut_hclust, k = 3)
 
 #découpage en 3 groupes
 mut_cutree <- cutree(mut_hclust, k = 3)
-mut_cutree
+t(t(mut_cutree))
+
+
+# classificaiton avec 3 critères d'agrégation min, max et moyenne
+plot(hclust(mut, method = "single")) # min
+plot(hclust(mut, method = "complete")) # max
+plot(hclust(mut, method = "average")) # moyenne
+
 
