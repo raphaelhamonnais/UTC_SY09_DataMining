@@ -38,10 +38,11 @@ iris_hclust <- hclust(iris_dist, method = "ward.D2")
 
 #faire le "heatmap" pour vérifier globalement le découpage des données
 #ici on voit qu'il y a deux parties de couleur différents, donc on découpe les données en deux groupes. 
-heatmap(as.matrix(iris_dist),labRow = F, labCol = F)
+heatmap(as.matrix(iris_dist), labRow = F, labCol = F)
 
 #afficher le dendrogramme 
-plot(iris_hclust)
+plot(iris_hclust, labels = FALSE)
+
 
 #afficher le dendrogramme avec des cadres rectangulaires
 rect.hclust(iris_hclust, k = 2)
