@@ -107,9 +107,60 @@ mut_cutree <- cutree(mut_hclust, k = 3)
 t(t(mut_cutree))
 
 
-# classificaiton avec 3 critères d'agrégation min, max et moyenne
-plot(hclust(mut, method = "single")) # min
-plot(hclust(mut, method = "complete")) # max
-plot(hclust(mut, method = "average")) # moyenne
+######### # classificaiton avec différents critères d'agrégation #########
+
+# min - Distance inter-classes = distance minimum entre leurs objets respectifs les plus proches
+# type de classes = spectrum or chain (chaîne)
+plot(hclust(mut, method = "single"), hang = -1)
+rect.hclust(mut_hclust, k = 2) # TODO donne un mauvais résultat ? pigon n'est pas dans la bonne classe !!!
+
+# max - Distance inter-classes = distance maximum entre leurs objets respectifs les plus distants
+# types de classes = circle (by hobby, plot) (cercle de connaissance, de passion commune ?)
+plot(hclust(mut, method = "complete"), hang = -1) 
+rect.hclust(mut_hclust, k = 2)
+
+# moyenne - UPGMA - Distance inter-classe = moyenne arithmétique de toutes les distances entre les objets des deux classes  
+# souvent méthode par défaut
+# type de classe générique
+plot(hclust(mut, method = "average"), hang = -1) 
+
+# WPGMA - Simple average, or method of equilibrious between-group average - Même chose que "moyenne" (UPGMA) 
+#   sauf que que les sous-classes de la dernière classe ayant fusionée ont une importante égale, indifférement 
+#   de leur taille en termes d'effectifs (normalisation par rapport aux effectifs des deux classes qui ont été 
+#   regroupées précédemment)
+# # type de classe générique
+plot(hclust(mut, method = "mcquitty"), hang = -1) 
 
 
+# UPGMC - Distance inter-classe = distance euclidienne entre leurs centre de gravité respectifs
+#   méthode qui n'a pas un indice strictement croissant/décroissant ???
+# type de classes = "proximity of platforms (politics)"
+plot(hclust(mut, method = "centroid"), hang = -1) 
+
+# WPGMC - "centroid" modifiée - Distance inter-classe = distance entre leur centre de gravité respectifs sauf 
+#   que que les sous-classes de la dernière classe ayant fusionée ont une importante égale, indifférement de 
+#   leur taille en termes d'effectifs (normalisation par rapport aux effectifs des deux classes qui ont été 
+#   regroupées précédemment)
+# type de classes = "proximity of platforms (politics)"
+#   méthode qui n'a pas un indice strictement croissant/décroissant ???
+plot(hclust(mut, method = "median"), hang = -1) 
+
+# Ward’s method, or minimal increase of sum-of-squares (MISSQ), sometimes incorrectly called "minimum variance" method.
+#   Proximity between two clusters is the magnitude by which the summed square in their joint cluster will be 
+#   greater than the combined summed square in these two clusters: SS(1,2) − (  SS(1) + SS(2)  ).
+#   (Between two singleton objects this quantity = squared euclidean distance / 2.)
+# Classe mettant en valeur le "type" des objets de la classe
+plot(hclust(mut, method = "ward.D2"), hang = -1)
+
+
+rect.hclust(mut_hclust, k = 3)
+
+
+# TODO
+# Rapport 3 parties =>
+#     - critères de classification et explications
+#     - classif sur mutations
+#              - remarque qu'ils sont tous quand même la même classif
+#              - certains n'ont pas un indice croissant => pas bon
+#              - fonction pour entourer les classes semble ne pas marcher parfois
+#     - classif sur Iris
