@@ -5,12 +5,12 @@ library(xtable)
 
 mut <- read.csv("data/mutations2.csv", header=T, row.names = 1)
 mut
+#plot(mut)
 summary(mut)
 dim(mut)
 #faire la tableau de dissimilarite
 mut <- as.dist(mut, diag = T, upper = T)
 mut
-
 
 
 ######## 1. Représentation graphique ##########

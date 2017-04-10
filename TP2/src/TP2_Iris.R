@@ -2,6 +2,10 @@
 install.packages("cluster")
 library(cluster)
 
+#pour ajouter différents couleurs dans un dendrogramme 
+install.packages("sparcl")
+library("sparcl")
+
 data(iris)
 iris
 summary(iris)
@@ -35,6 +39,7 @@ iris_dist
 #faire un cluster pour effectuer la classification hiérarchique ascendante 
 #ici la méthode qu'on utilise est la méthode de ward
 iris_hclust <- hclust(iris_dist, method = "ward.D2")
+iris_hclust
 
 #faire le "heatmap" pour vérifier globalement le découpage des données
 #ici on voit qu'il y a deux parties de couleur différents, donc on découpe les données en deux groupes. 
@@ -42,7 +47,6 @@ heatmap(as.matrix(iris_dist), labRow = F, labCol = F)
 
 #afficher le dendrogramme 
 plot(iris_hclust, labels = FALSE)
-
 
 #afficher le dendrogramme avec des cadres rectangulaires
 rect.hclust(iris_hclust, k = 2)
@@ -55,6 +59,9 @@ iris_cutree <- cutree(iris_hclust, k = 2)
 iris_cutree <- cutree(iris_hclust, k = 3)
 iris_cutree
 plot(iris_cutree, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+#séparer les trois espèces en differentes couleurs
+ColorDendrogram(iris_hclust, y = iris_cutree, labels = names(iris_cutree), branchlength = 6)
+
 
 #2.3 effectuer la classification hiérarchique descendante 
 iris_diana <- diana(iris_dist)
