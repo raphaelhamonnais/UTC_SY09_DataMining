@@ -1,10 +1,20 @@
 #pour exécuter la fonction diana
-install.packages("cluster")
+#install.packages("cluster")
 library(cluster)
 
 #pour ajouter différents couleurs dans un dendrogramme 
-install.packages("sparcl")
+#install.packages("sparcl")
 library("sparcl")
+
+# For the methods map values
+install.packages("plyr")
+library(plyr)
+
+# For rand index
+install.packages("mclust")
+library(mclust)
+
+
 
 data(iris)
 iris
@@ -54,33 +64,25 @@ rect.hclust(iris_hclust, k = 2)
 # 3 espèces = 3 classes
 rect.hclust(iris_hclust, k = 3)
 
-#découpage en 2 groupes
-iris_cutree <- cutree(iris_hclust, k = 2)
-iris_cutree <- cutree(iris_hclust, k = 3)
-iris_cutree
-plot(iris_cutree, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
 #séparer les trois espèces en differentes couleurs
-ColorDendrogram(iris_hclust, y = iris_cutree, labels = names(iris_cutree), branchlength = 6)
+species_colors = mapvalues(iris$Species, from = c("setosa", "versicolor", "virginica"), to = c("red", "orange", "blue"))
 
+ColorDendrogram(iris_hclust, y = as.character(species_colors), branchlength = 7,  main = "Iris : classification hiérarchique ascendante", ylab = "Indice", xlab = "Individus classés")
+legend(120,30, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
+rect.hclust(iris_hclust, k = 3, border = c("red", "blue", "orange"))
+adjustedRandIndex(cutree(iris_hclust, k = 3), iris$Species)
 
 #2.3 effectuer la classification hiérarchique descendante 
 iris_diana <- diana(iris_dist)
 iris_diana
-plot(iris_diana)
-iris_cutre_diana <- cutree(iris_diana, k = 3)
-iris_cutre_diana
-plot(iris_cutre_diana, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+#iris_cutre_diana <- cutree(iris_diana, k = 3)
+#iris_cutre_diana
+#plot(iris_cutre_diana, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+ColorDendrogram(as.hclust(iris_diana), y = as.character(species_colors), branchlength = 7, main = "Iris : classification hiérarchique descendante", ylab = "Indice", xlab = "Individus classés")
+legend(120,7, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
+rect.hclust(as.hclust(iris_diana), k = 3, border = c("red", "orange", "blue"))
+adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
 
 
 
-
-
-
-
-
-
-
-plot(iris_diana$order, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
-plot(iris_hclust$order, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
-plot(iris_diana$height, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
-plot(iris_hclust$height, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
+# Résultat = Diana moins bon car rand = 0,69 au lieu de 0,73

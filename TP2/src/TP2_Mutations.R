@@ -71,19 +71,19 @@ plot(aftd_mut$points[1:17,], xlab = "Comp.1", ylab = "Comp.2") # sans les donné
 aftd_mut_2 <- cmdscale(mut, k = 2, eig = TRUE, x.ret = TRUE)
 dist(aftd_mut_2$points,diag = T, upper = T) # fonction pour transformer la représentation des points sur les axes en une matrice de distance
 plot(mut, dist(aftd_mut_2$points, diag = T, upper = T), xlab = "Dissimilarités originelles", ylab = "Dissimilarités espace factoriel à 2 dimensions")
-
+abline(1,1)
 ##### k = 3 dimensions
 aftd_mut_3 <- cmdscale(mut, k = 3, eig = TRUE, x.ret = TRUE)
 plot(mut, dist(aftd_mut_3$points, diag = T, upper = T), xlab = "Dissimilarités originelles", ylab = "Dissimilarités espace factoriel à 3 dimensions")
-
+abline(1,1)
 ##### k = 4 dimensions ######
 aftd_mut_4 <- cmdscale(mut, k = 4, eig = TRUE, x.ret = TRUE)
 plot(mut, dist(aftd_mut_4$points, diag = T, upper = T), xlab = "Dissimilarités originelles", ylab = "Dissimilarités espace factoriel à 4 dimensions")
-
+abline(1,1)
 ##### k = 5 dimensions ######
 aftd_mut_5 <- cmdscale(mut, k = 5, eig = TRUE, x.ret = TRUE)
 plot(mut, dist(aftd_mut_5$points, diag = T, upper = T), xlab = "Dissimilarités originelles", ylab = "Dissimilarités espace factoriel à 5 dimensions")
-
+abline(1,1)
 
 
 ################## 2. classification hiérarchique ###################
@@ -113,20 +113,21 @@ t(t(mut_cutree))
 # type de classes = spectrum or chain (chaîne)
 mut_hclust = hclust(mut, method = "single")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2) # TODO donne un mauvais résultat ? pigon n'est pas dans la bonne classe !!!
+rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 # max - Distance inter-classes = distance maximum entre leurs objets respectifs les plus distants
 # types de classes = circle (by hobby, plot) (cercle de connaissance, de passion commune ?)
 mut_hclust = hclust(mut, method = "complete")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 # moyenne - UPGMA - Distance inter-classe = moyenne arithmétique de toutes les distances entre les objets des deux classes  
 # souvent méthode par défaut
 # type de classe générique
 mut_hclust = hclust(mut, method = "average")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 # WPGMA - Simple average, or method of equilibrious between-group average - Même chose que "moyenne" (UPGMA) 
 #   sauf que que les sous-classes de la dernière classe ayant fusionée ont une importante égale, indifférement 
@@ -135,7 +136,7 @@ rect.hclust(mut_hclust, k = 2)
 # # type de classe générique
 mut_hclust = hclust(mut, method = "mcquitty")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 
 # UPGMC - Distance inter-classe = distance euclidienne entre leurs centre de gravité respectifs
@@ -150,7 +151,7 @@ rect.hclust(mut_hclust, k = 2)
 #   leur taille en termes d'effectifs (normalisation par rapport aux effectifs des deux classes qui ont été 
 #   regroupées précédemment)
 # type de classes = "proximity of platforms (politics)"
-#   méthode qui n'a pas un indice strictement croissant/décroissant ???
+#   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "median")
 plot(mut_hclust, hang = -1)
 rect.hclust(mut_hclust, k = 2)
@@ -160,16 +161,7 @@ rect.hclust(mut_hclust, k = 2)
 #   greater than the combined summed square in these two clusters: SS(1,2) − (  SS(1) + SS(2)  ).
 #   (Between two singleton objects this quantity = squared euclidean distance / 2.)
 # Classe mettant en valeur le "type" des objets de la classe
+#   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "ward.D2")
 plot(mut_hclust, hang = -1)
 rect.hclust(mut_hclust, k = 2)
-
-
-# TODO
-# Rapport 3 parties =>
-#     - critères de classification et explications
-#     - classif sur mutations
-#              - remarque qu'ils sont tous quand même la même classif
-#              - certains n'ont pas un indice croissant => pas bon
-#     - classif sur Iris
-
