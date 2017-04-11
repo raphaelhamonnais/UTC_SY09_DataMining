@@ -15,7 +15,6 @@ install.packages("mclust")
 library(mclust)
 
 
-
 data(iris)
 iris
 summary(iris)
@@ -86,3 +85,29 @@ adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
 
 
 # Résultat = Diana moins bon car rand = 0,69 au lieu de 0,73
+
+
+
+#####################3.Méthode des centres mobiles####################
+#3.1 Tenter une partition en K∈{2, 3, 4} classes avec la fonction kmeans;visualiser et commenter
+#install.packages("ggplot2")
+#library("ggplot2")
+#ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
+kmeans_iris_2 <- kmeans(iris_quant, 2)
+#le nombre de cluster pour chaque individu  
+kmeans_iris_2$cluster
+#les moyennes de chaque colonne pour différents clusters 
+kmeans_iris_2$centers
+kmeans_iris_2$totss
+kmeans_iris_2$withinss
+kmeans_iris_2$tot.withinss
+kmeans_iris_2$betweenss
+kmeans_iris_2$size
+kmeans_iris_2$iter
+kmeans_iris_2$ifault
+#vérifier le nombre de iris dans chaque cluster 
+table(iris$Species, kmeans_iris_2$cluster);
+plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = kmeans_iris_2$cluster, pch = as.integer(iris$Species));
+
+kmeans_iris_3 <- kmeans(iris_quant, 3)
+kmeans_iris_4 <- kmeans(iris_quant, 4)
