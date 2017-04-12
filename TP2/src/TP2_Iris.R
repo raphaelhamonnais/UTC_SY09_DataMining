@@ -96,32 +96,61 @@ adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
 #install.packages("ggplot2")
 #library("ggplot2")
 #ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
+#la partition en deux classes
 kmeans_iris_2 <- kmeans(iris_quant, 2)
+kmeans_iris_2
 #le individu de regroupement appartient 
 kmeans_iris_2$cluster
 # le point central de chaque variable dans chaque groupe
 kmeans_iris_2$centers
-#
-kmeans_iris_2$totss
-kmeans_iris_2$withinss
-kmeans_iris_2$tot.withinss
-kmeans_iris_2$betweenss
-kmeans_iris_2$size
-kmeans_iris_2$iter
-kmeans_iris_2$ifault
 #vérifier le nombre de iris dans chaque cluster 
 table(iris$Species, kmeans_iris_2$cluster);
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
 plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = kmeans_iris_2$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(kmeans_iris_2$centers[,c("Sepal.Length","Sepal.Width")], col = 1:2, pch = 8, cex=2);
-
+points(kmeans_iris_2$centers[,c("Sepal.Length","Sepal.Width")], col = 1:2, pch = 8, cex=3);
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
 plot(iris_quant[c("Petal.Length","Petal.Width")], col = kmeans_iris_2$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(kmeans_iris_2$centers[,c("Petal.Length","Petal.Length")], col = 1:2, pch = 8, cex=2);
+points(kmeans_iris_2$centers[,c("Petal.Length","Petal.Width")], col = 1:2, pch = 7, cex=3);
 
-iris$Petal.Length
 
+#la partition en trois classes
 kmeans_iris_3 <- kmeans(iris_quant, 3)
+kmeans_iris_3
+#le individu de regroupement appartient 
+kmeans_iris_3$cluster
+# le point central de chaque variable dans chaque groupe
+kmeans_iris_3$centers
+#vérifier le nombre de iris dans chaque cluster 
+table(iris$Species, kmeans_iris_3$cluster);
+#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
+plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = kmeans_iris_3$cluster, pch = as.integer(iris$Species));
+#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
+points(kmeans_iris_3$centers[,c("Sepal.Length","Sepal.Width")], col = 1:3, pch = 8, cex=3);
+#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
+plot(iris_quant[c("Petal.Length","Petal.Width")], col = kmeans_iris_3$cluster, pch = as.integer(iris$Species));
+#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
+points(kmeans_iris_3$centers[,c("Petal.Length","Petal.Width")], col = 1:3, pch = 7, cex=3);
+
+
+#la partition en quatre classes
 kmeans_iris_4 <- kmeans(iris_quant, 4)
+kmeans_iris_4
+#le individu de regroupement appartient 
+kmeans_iris_4$cluster
+# le point central de chaque variable dans chaque groupe
+kmeans_iris_4$centers
+#vérifier le nombre de iris dans chaque cluster 
+table(iris$Species, kmeans_iris_4$cluster);
+#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
+plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = kmeans_iris_4$cluster, pch = as.integer(iris$Species));
+#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
+points(kmeans_iris_4$centers[,c("Sepal.Length","Sepal.Width")], col = 1:4, pch = 8, cex=3);
+#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
+plot(iris_quant[c("Petal.Length","Petal.Width")], col = kmeans_iris_4$cluster, pch = as.integer(iris$Species));
+#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
+points(kmeans_iris_4$centers[,c("Petal.Length","Petal.Width")], col = 1:4, pch = 7, cex=3);
+
+
+
