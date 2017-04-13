@@ -1,5 +1,8 @@
 library(xtable)
 
+#For the function clusplot
+install.packages("cluster")
+library(cluster)
 
 ######## Initialisation données ##########
 
@@ -8,6 +11,8 @@ mut
 #plot(mut)
 summary(mut)
 dim(mut)
+d1 <- dim(mut)[1]
+d1
 #faire la tableau de dissimilarite
 mut <- as.dist(mut, diag = T, upper = T)
 mut
@@ -165,3 +170,37 @@ rect.hclust(mut_hclust, k = 2)
 mut_hclust = hclust(mut, method = "ward.D2")
 plot(mut_hclust, hang = -1)
 rect.hclust(mut_hclust, k = 2)
+
+
+
+####################### 3 méthode des centres mobiles #############################
+#3.1 K = 3 classes
+#aftd_mut_5 <- cmdscale(mut, k = 5, eig = TRUE, x.ret = TRUE)
+aftd_mut_5
+aftd_mut_5$points
+aftd_mut_5$x
+mut_kmeans_3 <- kmeans(aftd_mut_5$points,3, algorithm = "MacQueen")
+mut_kmeans_3
+mut_kmeans_3$cluster
+clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,diss=F,color=TRUE)
+
+#3.2 étudier la stabilité du résultat de la partition 
+mut <- as.matrix(mut)
+mut_matrix <- matrix(0, nrow = 20, ncol = 9)
+rownames(mut_matrix) <- colnames(mut)
+colnames(mut_matrix) <- c("K=2","K=3","K=4","K=5","K=6","K=7","K=8","K=9","K=10")
+for(k in 2:10)
+{
+  for (N in 1:20)
+  {
+    mut_kmeans <- kmeans(aftd_mut_5$points,k, algorithm = "MacQueen")
+    mut_matrix[N,k-1] <- mut_kmeans$tot.withinss/d1
+  }
+}
+mut_matrix
+
+#faire l'acp
+acp_aftd_mut_5 <- princomp(aftd_mut_5$points)
+acp_aftd_mut_5$loadings
+#afficher le premier plan factoriel de l'AFTD
+plot(acp_aftd_mut_5$scores,asp = 1)

@@ -155,7 +155,6 @@ points(iris_kmeans_4$centers[,c("Petal.Length","Petal.Width")], col = 1:4, pch =
 
 
 #3.2 Effectuer plusieurs classifications des données en K = 3 classes
-#Selon 
 for (i in 1:5)
 {
   cat('Classifiction',i,'\n')
