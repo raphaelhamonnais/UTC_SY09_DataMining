@@ -1,11 +1,14 @@
 library(xtable)
 
+#For the function Shepard
+install.packages("MASS")
+library(MASS)
+
 #For the function clusplot
 install.packages("cluster")
 library(cluster)
 
 ######## Initialisation données ##########
-
 mut <- read.csv("data/mutations2.csv", header=T, row.names = 1)
 mut
 #plot(mut)
@@ -118,7 +121,7 @@ t(t(mut_cutree))
 # type de classes = spectrum or chain (chaîne)
 mut_hclust = hclust(mut, method = "single")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+#rect.hclust(mut_hclust, k = 2)
 rect.hclust(mut_hclust, k = 3)
 
 # max - Distance inter-classes = distance maximum entre leurs objets respectifs les plus distants
@@ -149,7 +152,8 @@ rect.hclust(mut_hclust, k = 3)
 # type de classes = "proximity of platforms (politics)"
 mut_hclust = hclust(mut, method = "centroid")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+#rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 # WPGMC - "centroid" modifiée - Distance inter-classe = distance entre leur centre de gravité respectifs sauf 
 #   que que les sous-classes de la dernière classe ayant fusionée ont une importante égale, indifférement de 
@@ -159,7 +163,8 @@ rect.hclust(mut_hclust, k = 2)
 #   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "median")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+#rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 # Ward’s method, or minimal increase of sum-of-squares (MISSQ), sometimes incorrectly called "minimum variance" method.
 #   Proximity between two clusters is the magnitude by which the summed square in their joint cluster will be 
@@ -169,20 +174,21 @@ rect.hclust(mut_hclust, k = 2)
 #   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "ward.D2")
 plot(mut_hclust, hang = -1)
-rect.hclust(mut_hclust, k = 2)
+#rect.hclust(mut_hclust, k = 2)
+rect.hclust(mut_hclust, k = 3)
 
 
 
 ####################### 3 méthode des centres mobiles #############################
 #3.1 K = 3 classes
-#aftd_mut_5 <- cmdscale(mut, k = 5, eig = TRUE, x.ret = TRUE)
+aftd_mut_5 <- cmdscale(mut, k = 5, eig = TRUE, x.ret = TRUE)
 aftd_mut_5
 aftd_mut_5$points
 aftd_mut_5$x
-mut_kmeans_3 <- kmeans(aftd_mut_5$points,3, algorithm = "MacQueen")
+mut_kmeans_3 <- kmeans(aftd_mut_5$points,3)
 mut_kmeans_3
 mut_kmeans_3$cluster
-clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,diss=F,color=TRUE)
+clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,color=TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
 
 #3.2 étudier la stabilité du résultat de la partition 
 mut <- as.matrix(mut)
@@ -193,14 +199,20 @@ for(k in 2:10)
 {
   for (N in 1:20)
   {
-    mut_kmeans <- kmeans(aftd_mut_5$points,k, algorithm = "MacQueen")
-    mut_matrix[N,k-1] <- mut_kmeans$tot.withinss/d1
+    mut_kmeans <- kmeans(aftd_mut_5$points,k)
+    mut_matrix[N,k-1] <- mut_kmeans$tot.withinss
   }
 }
 mut_matrix
 
-#faire l'acp
+#faire l'acps
 acp_aftd_mut_5 <- princomp(aftd_mut_5$points)
 acp_aftd_mut_5$loadings
 #afficher le premier plan factoriel de l'AFTD
 plot(acp_aftd_mut_5$scores,asp = 1)
+
+#Pour chaque valeur de K, calculer l'inertie intra-classe mininale
+mut_matrix_min <- apply(mut_matrix, 2, min)
+mut_matrix_min
+plot(mut_matrix_min, type ='o', xaxt='n', xlab = "K", ylab = "l'inertie intra-classe minimale")
+axis(side = 1, at = seq(1,9,1),labels = c(2:10))

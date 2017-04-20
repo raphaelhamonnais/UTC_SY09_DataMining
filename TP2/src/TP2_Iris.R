@@ -18,12 +18,15 @@ library(mclust)
 install.packages("graphicsQC")
 library("graphicsQC")
 
+#Charger les données Iris 
 data(iris)
 iris
 summary(iris)
+#Supprimer le paramètre "Species" 
 iris_quant <- iris[,-5]
 iris_quant
 dim(iris_quant)
+#Obtenir le nombre de ligne des données 
 d1 <- dim(iris_quant)[1]
 d1
 
@@ -39,7 +42,7 @@ acp_iris
 plot(acp_iris$scores, asp = 1)
 ##affiche le premier plan factoriel en tenant compte de l'espece
 plot(acp_iris$scores, col = c("darkblue", "darkorange", "darkgreen")[iris$Species], asp = 1)
-legend(2.5, 2.5, legend=c(levels(iris$Species)), col=c("darkblue", "darkorange", "darkgreen"), pch=16, cex=.8)
+legend(2.5, 2, legend=c(levels(iris$Species)), col=c("darkblue", "darkorange", "darkgreen"), pch=16, cex=.8)
 
 
 ######## 2 - classification hiérarchique #################
@@ -70,9 +73,11 @@ rect.hclust(iris_hclust, k = 3)
 #séparer les trois espèces en differentes couleurs
 species_colors = mapvalues(iris$Species, from = c("setosa", "versicolor", "virginica"), to = c("red", "orange", "blue"))
 
+#faire un dendrogramme 
 ColorDendrogram(iris_hclust, y = as.character(species_colors), branchlength = 7,  main = "Iris : classification hiérarchique ascendante", ylab = "Indice", xlab = "Individus classés")
 legend(120,30, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
 rect.hclust(iris_hclust, k = 3, border = c("red", "blue", "orange"))
+#calculer "the adjusted Rand index"
 adjustedRandIndex(cutree(iris_hclust, k = 3), iris$Species)
 
 #2.3 effectuer la classification hiérarchique descendante 
@@ -85,8 +90,6 @@ ColorDendrogram(as.hclust(iris_diana), y = as.character(species_colors), branchl
 legend(120,7, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
 rect.hclust(as.hclust(iris_diana), k = 3, border = c("red", "orange", "blue"))
 adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
-
-
 
 # Résultat = Diana moins bon car rand = 0,69 au lieu de 0,73
 
@@ -106,14 +109,19 @@ iris_kmeans_2$cluster
 iris_kmeans_2$centers
 #vérifier le nombre de iris dans chaque cluster 
 table(iris$Species, iris_kmeans_2$cluster);
+#Centre mobile en 2 clusters
+#methode un
+plot(iris_quant, col = iris_kmeans_2$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 2 clusters")
+#methode deux
+clusplot(iris_quant,iris_kmeans_2$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 2 clusters")
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_2$centers[,c("Sepal.Length","Sepal.Width")], col = 1:2, pch = 8, cex=3);
+#points(iris_kmeans_2$centers[,c("Sepal.Length","Sepal.Width")], col = 1:2, pch = 8, cex=3);
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_2$centers[,c("Petal.Length","Petal.Width")], col = 1:2, pch = 7, cex=3);
+#points(iris_kmeans_2$centers[,c("Petal.Length","Petal.Width")], col = 1:2, pch = 7, cex=3);
 
 
 #la partition en trois classes
@@ -125,14 +133,19 @@ iris_kmeans_3$cluster
 iris_kmeans_3$centers
 #vérifier le nombre de iris dans chaque cluster 
 table(iris$Species, iris_kmeans_3$cluster);
+#Centre mobile en 3 clusters
+#methode un
+plot(iris_quant, col = iris_kmeans_3$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 3 clusters")
+#methode deux
+clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_3$centers[,c("Sepal.Length","Sepal.Width")], col = 1:3, pch = 8, cex=3);
+#points(iris_kmeans_3$centers[,c("Sepal.Length","Sepal.Width")], col = 1:3, pch = 8, cex=3);
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_3$centers[,c("Petal.Length","Petal.Width")], col = 1:3, pch = 7, cex=3);
+#points(iris_kmeans_3$centers[,c("Petal.Length","Petal.Width")], col = 1:3, pch = 7, cex=3);
 
 
 #la partition en quatre classes
@@ -144,23 +157,32 @@ iris_kmeans_4$cluster
 iris_kmeans_4$centers
 #vérifier le nombre de iris dans chaque cluster 
 table(iris$Species, iris_kmeans_4$cluster);
+#Centre mobile en 3 clusters
+#methode un
+plot(iris_quant, col = iris_kmeans_4$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 4 clusters")
+#methode deux
+clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 4 clusters")
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_4$centers[,c("Sepal.Length","Sepal.Width")], col = 1:4, pch = 8, cex=3);
+#points(iris_kmeans_4$centers[,c("Sepal.Length","Sepal.Width")], col = 1:4, pch = 8, cex=3);
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
+#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-points(iris_kmeans_4$centers[,c("Petal.Length","Petal.Width")], col = 1:4, pch = 7, cex=3);
+#points(iris_kmeans_4$centers[,c("Petal.Length","Petal.Width")], col = 1:4, pch = 7, cex=3);
 
 
 #3.2 Effectuer plusieurs classifications des données en K = 3 classes
-for (i in 1:5)
+iris_intra <- 0
+for (i in 1:nrow(iris_kmeans_3$centers))
 {
   cat('Classifiction',i,'\n')
   iris_kmeans_3 <- kmeans(iris_quant,3)
   print(iris_kmeans_3$cluster)
-  cat('L\'inertie intra-classe:',iris_kmeans_3$tot.withinss/d1,'\n')
+  #calculer l'inertie intra-classe
+  #iris_intra <- iris_intra + (1/d1)*sum((iris_quant - iris_kmeans_3$centers[i,])^2)
+  iris_intra <- iris_intra + iris_kmeans_3$withinss[i]
+  cat('L\'inertie intra-classe:',iris_intra,'\n')
   plot(iris_quant, col = iris_kmeans_3$cluster, pch = as.integer(iris$Species))
   Sys.sleep(2)
 }
@@ -176,7 +198,7 @@ for(k in 2:10)
   for (N in 1:100)
   {
       iris_kmeans <- kmeans(iris_quant,k)
-      iris_matrix[N,k-1] <- iris_kmeans$tot.withinss/d1
+      iris_matrix[N,k-1] <- iris_kmeans$tot.withinss
   }
 }
 iris_matrix
