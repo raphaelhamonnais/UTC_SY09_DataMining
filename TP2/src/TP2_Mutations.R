@@ -1,11 +1,11 @@
 library(xtable)
 
 #For the function Shepard
-install.packages("MASS")
+#install.packages("MASS")
 library(MASS)
 
 #For the function clusplot
-install.packages("cluster")
+#install.packages("cluster")
 library(cluster)
 
 ######## Initialisation données ##########
@@ -36,13 +36,8 @@ create_inertie_table = function(x, nbCol) {
   total
 }
 calc_abs_inertie_explique = function(x, nbDimensions=2) {
-  aftd_mut.inertExpliqueeAbs = abs(aftd_mut.valP) / sum(abs(aftd_mut.valP)) * 100
-#  aftd_mut.inertExpliqueeAbs.cumulated = aftd_mut.inertExpliqueeAbs
-#  for (i in 2:length(aftd_mut.inertExpliqueeAbs)) {
-#    aftd_mut.inertExpliqueeAbs.cumulated[i] = aftd_mut.inertExpliqueeAbs.cumulated[i] + aftd_mut.inertExpliqueeAbs.cumulated[i-1]
-#  }
+  aftd_mut.inertExpliqueeAbs = abs(x) / sum(abs(x)) * 100
   total = create_inertie_table(aftd_mut.inertExpliqueeAbs, nbDimensions)
-#  rownames(total) = c("Inertie expliquée", "Pourcentage d'inertie expliquée")
   total[,1:nbDimensions]
 }
 calc_inertie_explique_witout_neg_values = function(x, nbDimensions=2) {
@@ -58,6 +53,7 @@ calc_inertie_explique_witout_neg_values = function(x, nbDimensions=2) {
 
 # Calcul des pourcentages d'inertie pour k = 5 dimensions
 k=5
+aftd_mut <- cmdscale(mut, k = 5, eig = TRUE, x.ret = TRUE)
 inert_abs = round(calc_abs_inertie_explique(aftd_mut$eig, k), 2)
 colnames(inert_abs) = c("Comp.1", "Comp.2", "Comp.3", "Comp.4", "Comp.5")
 inert_abs
@@ -186,33 +182,33 @@ aftd_mut_5
 aftd_mut_5$points
 aftd_mut_5$x
 mut_kmeans_3 <- kmeans(aftd_mut_5$points,3)
-mut_kmeans_3
-mut_kmeans_3$cluster
-clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,color=TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
-
+#mut_kmeans_3
+#mut_kmeans_3$cluster
+plot(aftd_mut_5$points,  col = c("red","blue", "green")[mut_kmeans_3$cluster]) #TODO demander au prof
+clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 0, main = "Centre mobile en 3 clusters")
+mut_kmeans_3$tot.withinss
 #3.2 étudier la stabilité du résultat de la partition 
-mut <- as.matrix(mut)
-mut_matrix <- matrix(0, nrow = 20, ncol = 9)
-rownames(mut_matrix) <- colnames(mut)
+mut_matrix <- matrix(0, nrow = 100, ncol = 9)
+rownames(mut_matrix) <- rownames(mut_matrix, do.NULL = FALSE, prefix = "N")
 colnames(mut_matrix) <- c("K=2","K=3","K=4","K=5","K=6","K=7","K=8","K=9","K=10")
-for(k in 2:10)
-{
-  for (N in 1:20)
+mut_matrix
+for(k in 2:10) {
+  for (N in 1:100)
   {
     mut_kmeans <- kmeans(aftd_mut_5$points,k)
     mut_matrix[N,k-1] <- mut_kmeans$tot.withinss
   }
 }
 mut_matrix
-
-#faire l'acps
-acp_aftd_mut_5 <- princomp(aftd_mut_5$points)
-acp_aftd_mut_5$loadings
-#afficher le premier plan factoriel de l'AFTD
-plot(acp_aftd_mut_5$scores,asp = 1)
+# Stabilité : 
+t(t(table(mut_matrix[,1])))
+t(t(table(mut_matrix[,2])))
+t(t(table(mut_matrix[,3])))
 
 #Pour chaque valeur de K, calculer l'inertie intra-classe mininale
 mut_matrix_min <- apply(mut_matrix, 2, min)
 mut_matrix_min
 plot(mut_matrix_min, type ='o', xaxt='n', xlab = "K", ylab = "l'inertie intra-classe minimale")
 axis(side = 1, at = seq(1,9,1),labels = c(2:10))
+
+
