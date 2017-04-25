@@ -163,6 +163,7 @@ Nous allons effectuer une Analyse Factorielle de Tableau de Distance (AFTD). On 
 
 
 \subsection{Données Mutation dans le premier plan factoriel après AFTD}
+\label{subsection:1-3-1-mut-premier-plan-factoriel}
 
 \begin{figure}[H]
 	\centering
@@ -261,25 +262,168 @@ Plus le nombre de dimensions augmente, plus les valeurs des dissimilarités avan
 
 \chapter{Classification hiérarchique}
 
-
-
-TODO
-
-Rapport 3 parties =>
-
-     - critères de classification et explications SIMPLIFIEES
-     
-     - classif sur mutations
-     
-              - remarque qu'ils sont tous quand même la même classif
-              
-              - certains n'ont pas un indice croissant => pas bon
-              
-     - classif sur Iris
-
-
 \section{Classification hiérarchique ascendante sur les données Mutation}
 
+\textit{Remarque~: certains critères d'agrégation sont "pondérés". Cela signifie que les classes sont considérées comme étant de poids équivalents, quel que soit leur effectif.}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-min}
+		\caption{\scriptsize Critère agrégation Min}
+		\label{fig:2-1-mut-hierarchie-min}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-max}
+		\caption{\scriptsize Critère agrégation Max}
+		\label{fig:2-1-mut-hierarchie-max}
+	\end{subfigure}%
+	\caption{\small Classification avec les critères d'agrégation Min et Max}
+	\label{fig:2-1-classification-mut-min-max}%
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-moy}
+		\caption{\scriptsize Critère agrégation Moyenne}
+		\label{fig:2-1-mut-hierarchie-moy}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-moy-ponderee}
+		\caption{\scriptsize Critère agrégation Moyenne pondérée}
+		\label{fig:2-1-mut-hierarchie-moy-ponderee}
+	\end{subfigure}%
+	\caption{\small Classification avec les critères d'agrégation Moyenne et Moyenne pondérée}
+	\label{fig:2-1-classification-mut-moy}%
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-centroid}
+		\caption{\scriptsize Critère agrégation distance inter-classe}
+		\label{fig:2-1-mut-hierarchie-centroid}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-centroid-ponderee}
+		\caption{\scriptsize Critère agrégation distance inter-classe pondérée}
+		\label{fig:2-1-mut-hierarchie-centroid-ponderee}
+	\end{subfigure}%
+	\caption{\small Classification avec les critères d'agrégation de distance inter-classe (distance entre centres de gravité des classes)}
+	\label{fig:2-1-classification-mut-centroid}%
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=1\linewidth]{img/2-1-mut-hierarchie-ward}
+		%\caption{\scriptsize Critère agrégation Ward}
+		\label{fig:2-1-mut-hierarchie-ward}
+	\end{subfigure}%
+	\caption{\small Classification avec le critère d'agrégation de Ward}
+	\label{fig:2-1-classification-mut-ward}%
+\end{figure}
+
+
+
+La première chose qu'on remarque est que, lorsqu'on divise en trois classes tel que nous le suggérait la représentation graphique des données après AFTD (cf. \autoref{subsection:1-3-1-mut-premier-plan-factoriel}), tous les critères d'agrégation donnent les mêmes classes. A savoir \textit{\{Bakers Mould\}}, \textit{\{Bread Yeast, Skin Fungus\}}, et le reste dans la dernière classe.
+
+Il est aussi intéressant de remarque que deux des critères d'agrégation ne sont pas monotones (cf. \autoref{fig:2-1-mut-hierarchie-centroid} et \autoref{fig:2-1-mut-hierarchie-centroid-ponderee}). On voit en effet que l'indice n'est pas décroissant.
+
+
+
+\section{Classification hiérarchique sur les données Iris}
+
+
+
+\subsection{Classification hiérarchique ascendante}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\includegraphics[width=.6\linewidth]{img/2-2-1-iris-class-hierarchique-asc}
+	\caption{Iris : classification hiérarchique ascendante}
+	\label{2-2-1-iris-class-hierarchique-asc}%
+\end{figure}
+
+La classification identifie très bien les individus de l'espèce \textit{setosa}. Par contre, elle tend à confondre certains individus des espèces \textit{versicolor} et \textit{virginica}. Compte tenu de la représentation graphique obtenue après ACP (cf. \autoref{fig:1-iris-acp-premier-plan-factoriel-discr-species}), ce n'est pas étonnant, ces deux espèces étant très proches sur le graphe, contrairement à \textit{setosa} qui est bien distincte.
+
+
+\subsection{Classification hiérarchique descendante}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\includegraphics[width=.6\linewidth]{img/2-2-1-iris-class-hierarchique-desc}
+	\caption{Iris : classification hiérarchique descendante}
+	\label{2-2-1-iris-class-hierarchique-desc}%
+\end{figure}
+
+
+La classification hiérarchique descendante confond elle aussi certains des individus des espèces \textit{versicolor} et \textit{virginica}.
+Afin de savoir laquelle des deux méthodes reste la plus précise, nous utilisons l'indice de Rand corrigé. Le principe est de sélectionner l'ensemble des paires possibles d'individus au sein de chaque partition et comparer leur classement au classement initial qui est connu. La valeur de cet indice est comprise entre 0 et 1~: plus elle se rapproche de 1, plus la classification obtenue est proche de la classification initiale.\\
+
+Valeurs obtenues~:
+\begin{itemize}
+	\item Classification ascendante~: 0.73
+	\item Classification descendante~: 0.69
+\end{itemize}
+
+On en déduit que la classification ascendante est meilleure pour ce jeu de données, bien que de peu.
+
+
+
+
+\chapter{Méthode des centres mobiles (K-Means)}
+
+
+
+\section{Données Iris}
+
+
+\subsection{Partition en $K \in {2,3,4}$}
+
+
+\subsection{Étude de la stabilité du résultat}
+
+
+\subsection{Détermination du nombre de classes optimal}
+
+
+\subsection{Comparaison de la classification obtenue avec la classification initiale}
+
+
+
+
+
+
+\section{Données Crabs}
+
+\subsection{Classification en 2 classes}
+
+
+\subsection{Classification en 4 classes}
 
 
 
@@ -295,5 +439,15 @@ Rapport 3 parties =>
 
 
 
+
+
+\section{Données Mutations}
+
+
+
+\subsection{Classification en 3 classes}
+
+
+\subsection{Étude de la stabilité du résultat}
 
 \end{document}
