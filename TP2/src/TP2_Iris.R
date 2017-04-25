@@ -111,10 +111,11 @@ iris_kmeans_2$centers
 table(iris$Species, iris_kmeans_2$cluster);
 #Centre mobile en 2 clusters
 #methode un
-plot(iris_quant, col = iris_kmeans_2$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 2 clusters")
+#plot(iris_quant, col = iris_kmeans_2$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 2 clusters")
 #methode deux
-clusplot(iris_quant, iris_kmeans_2$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 2 clusters")
+#clusplot(iris_quant, iris_kmeans_2$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 2 clusters")
 clusplot(iris_quant, iris_kmeans_2$cluster, color = T, shade = FALSE, labels = 0, main = "Centre mobile en 2 clusters")
+legend(2.5,2.5, legend = c("cluster1","cluster2"), pch = c(1,2)[unique(iris_kmeans_2$cluster)])
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
 #plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
@@ -136,10 +137,11 @@ iris_kmeans_3$centers
 table(iris$Species, iris_kmeans_3$cluster);
 #Centre mobile en 3 clusters
 #methode un
-plot(iris_quant, col = iris_kmeans_3$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 3 clusters")
+#plot(iris_quant, col = iris_kmeans_3$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 3 clusters")
 #methode deux
-clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
+#clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
 clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = F, labels = 0, main = "Centre mobile en 3 clusters")
+legend(2.4,2.5, legend = c("cluster1","cluster2", "cluster3"), pch = c(1,2,3)[unique(iris_kmeans_3$cluster)])
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
 #plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
@@ -161,10 +163,11 @@ iris_kmeans_4$centers
 table(iris$Species, iris_kmeans_4$cluster);
 #Centre mobile en 3 clusters
 #methode un
-plot(iris_quant, col = iris_kmeans_4$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 4 clusters")
+#plot(iris_quant, col = iris_kmeans_4$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 4 clusters")
 #methode deux
-clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 4 clusters")
+#clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 4 clusters")
 clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = F, labels = 0, main = "Centre mobile en 4 clusters")
+legend(2.4,2.8, legend = c("cluster1","cluster2", "cluster3","cluster4"), pch = c(1,2,3,4)[unique(iris_kmeans_4$cluster)])
 #dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
 #plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
 #Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
