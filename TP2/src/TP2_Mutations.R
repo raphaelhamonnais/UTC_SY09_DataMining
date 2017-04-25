@@ -116,21 +116,21 @@ t(t(mut_cutree))
 # min - Distance inter-classes = distance minimum entre leurs objets respectifs les plus proches
 # type de classes = spectrum or chain (chaîne)
 mut_hclust = hclust(mut, method = "single")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"Min\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 #rect.hclust(mut_hclust, k = 2)
 rect.hclust(mut_hclust, k = 3)
 
 # max - Distance inter-classes = distance maximum entre leurs objets respectifs les plus distants
 # types de classes = circle (by hobby, plot) (cercle de connaissance, de passion commune ?)
 mut_hclust = hclust(mut, method = "complete")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"Max\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 rect.hclust(mut_hclust, k = 3)
 
 # moyenne - UPGMA - Distance inter-classe = moyenne arithmétique de toutes les distances entre les objets des deux classes  
 # souvent méthode par défaut
 # type de classe générique
 mut_hclust = hclust(mut, method = "average")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"Moyenne\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 rect.hclust(mut_hclust, k = 3)
 
 # WPGMA - Simple average, or method of equilibrious between-group average - Même chose que "moyenne" (UPGMA) 
@@ -139,7 +139,7 @@ rect.hclust(mut_hclust, k = 3)
 #   regroupées précédemment)
 # # type de classe générique
 mut_hclust = hclust(mut, method = "mcquitty")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"Moyenne pondérée\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 rect.hclust(mut_hclust, k = 3)
 
 
@@ -147,7 +147,7 @@ rect.hclust(mut_hclust, k = 3)
 #   méthode qui n'a pas un indice strictement croissant/décroissant ???
 # type de classes = "proximity of platforms (politics)"
 mut_hclust = hclust(mut, method = "centroid")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"UPGMC : Distance euclidienne \n entre les centres de gravité des classes\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 #rect.hclust(mut_hclust, k = 2)
 rect.hclust(mut_hclust, k = 3)
 
@@ -158,7 +158,7 @@ rect.hclust(mut_hclust, k = 3)
 # type de classes = "proximity of platforms (politics)"
 #   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "median")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"WPGMC : UPGMC pondéré\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 #rect.hclust(mut_hclust, k = 2)
 rect.hclust(mut_hclust, k = 3)
 
@@ -167,9 +167,8 @@ rect.hclust(mut_hclust, k = 3)
 #   greater than the combined summed square in these two clusters: SS(1,2) − (  SS(1) + SS(2)  ).
 #   (Between two singleton objects this quantity = squared euclidean distance / 2.)
 # Classe mettant en valeur le "type" des objets de la classe
-#   méthode qui n'a pas un indice strictement croissant/décroissant => perd "monotonie"
 mut_hclust = hclust(mut, method = "ward.D2")
-plot(mut_hclust, hang = -1)
+plot(mut_hclust, hang = -1, main = "Critère d'agrégation \"Ward\"", xlab = "Espèces", ylab = "Valeur d'indice", sub = "")
 #rect.hclust(mut_hclust, k = 2)
 rect.hclust(mut_hclust, k = 3)
 
