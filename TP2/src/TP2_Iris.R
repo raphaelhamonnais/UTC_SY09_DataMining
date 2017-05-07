@@ -181,21 +181,10 @@ legend(2.4,2.8, legend = c("cluster1","cluster2", "cluster3","cluster4"), pch = 
 #3.2 Effectuer plusieurs classifications des données en K = 3 classes
 
 iris_intra <- 0
-#for (i in 1:nrow(iris_kmeans_3$centers))
 for (i in 1:10) {
   cat('Classifiction',i,'\n')
   iris_kmeans_3 <- kmeans(iris_quant,3)
-  #print(iris_kmeans_3$cluster)
-  #calculer l'inertie intra-classe
-  #iris_intra <- iris_intra + (1/d1)*sum((iris_quant - iris_kmeans_3$centers[i,])^2)
-  cat(iris_kmeans_3$withinss, '\n') #inertie intra classe
-  #cat(table(iris$Species, iris_kmeans_3$cluster), '\n')
-  print(table(iris$Species, iris_kmeans_3$cluster))
-  #iris_intra <- iris_intra + iris_kmeans_3$withinss[i]
-  #cat('L\'inertie intra-classe:',iris_intra,'\n')
-  #plot(iris_quant, col = iris_kmeans_3$cluster, pch = as.integer(iris$Species))
-  #clusplot(iris_quant, iris_kmeans_3$cluster, color = T, shade = FALSE, labels = 0, main = "")
-  #Sys.sleep(2)
+  cat((1/d1)*iris_kmeans_3$withinss, '\n') #inertie intra classe
 }
 
 #3.3 Déterminer le nombre de classes optimal 
