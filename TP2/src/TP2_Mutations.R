@@ -187,27 +187,50 @@ plot(aftd_mut_5$points,  col = c("red","blue", "green")[mut_kmeans_3$cluster]) #
 clusplot(aftd_mut_5$points, mut_kmeans_3$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 0, main = "Centre mobile en 3 clusters")
 mut_kmeans_3$tot.withinss
 #3.2 étudier la stabilité du résultat de la partition 
-mut_matrix <- matrix(0, nrow = 100, ncol = 9)
-rownames(mut_matrix) <- rownames(mut_matrix, do.NULL = FALSE, prefix = "N")
-colnames(mut_matrix) <- c("K=2","K=3","K=4","K=5","K=6","K=7","K=8","K=9","K=10")
-mut_matrix
-for(k in 2:10) {
-  for (N in 1:100)
-  {
-    mut_kmeans <- kmeans(aftd_mut_5$points,k)
-    mut_matrix[N,k-1] <- mut_kmeans$tot.withinss
-  }
-}
-mut_matrix
+#mut_matrix <- matrix(0, nrow = 100, ncol = 1)
+#rownames(mut_matrix) <- rownames(mut_matrix, do.NULL = FALSE, prefix = "N")
+#colnames(mut_matrix) <- c("K=2","K=3","K=4","K=5","K=6","K=7","K=8","K=9","K=10")
+#mut_matrix
+#for(k in 2:10) {
+#  for (N in 1:100) {
+#    mut_kmeans <- kmeans(aftd_mut_5$points,k)
+#    mut_matrix[N,k-1] <- mut_kmeans$tot.withinss
+#  }
+#}
+#mut_matrix
 # Stabilité : 
-t(t(table(mut_matrix[,1])))
-t(t(table(mut_matrix[,2])))
-t(t(table(mut_matrix[,3])))
+#t(t(table(mut_matrix[,1])))
+#t(t(table(mut_matrix[,2])))
+#t(t(table(mut_matrix[,3])))
+n = dim(aftd_mut_5$points)[1]
+roundN = 3
+nbComparaisons=1000
+classifications_seen = vector(length = nbComparaisons)
+for (i in 1:nbComparaisons) {
+  mut_kmeans <- kmeans(aftd_mut_5$points, 3)
+  classifications_seen[i] = round(mut_kmeans$tot.withinss / n, digits = roundN)
+}
+classifications_seen = sort(classifications_seen, decreasing = F)
+uq_classifications_seen = unique(classifications_seen)
+t(t(table(round(classifications_seen, 3))/1000*100))
+xtable(t(t(table(round(classifications_seen, 3))/1000*100)))
+uq_classifications_seen
 
-#Pour chaque valeur de K, calculer l'inertie intra-classe mininale
-mut_matrix_min <- apply(mut_matrix, 2, min)
-mut_matrix_min
-plot(mut_matrix_min, type ='o', xaxt='n', xlab = "K", ylab = "l'inertie intra-classe minimale")
-axis(side = 1, at = seq(1,9,1),labels = c(2:10))
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 3621.850)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster ,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
 
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 4398.199)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
+
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 4918.086)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
+
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 4974.990)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
+
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 5092.462)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
+
+mut_kmeans = getExpectedInertie(tabQuant = aftd_mut_5$points, nbClasses = 3, roundN, expectedInertie = 5237.229)
+clusplot(aftd_mut_5$points, mut_kmeans$cluster,color=TRUE, shade = FALSE, lines = FALSE, labels = 3, main = "", cex.txt = 0.5)
 

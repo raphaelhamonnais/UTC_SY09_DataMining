@@ -1,4 +1,5 @@
 #Charger les données Crabs
+library(plyr)
 crabs2 <- read.csv("data/crabs2.csv", na.strings="", header=T)
 crabs2
 summary(crabs2)
@@ -24,29 +25,39 @@ legend(0.064, 0.050, legend=c("Femelle", "Mâle"), pch=c(21,24), cex=.8)
 
 
 #################### 3.méthode des centres mobiles #################################
+
+species_colors = mapvalues(crabs2$sp, from = c("B", "O"), to = c("blue", "darkorange"))
+sex_colors = mapvalues(crabs2$sex, from = c("M", "F"), to = c("red", "darkgreen"))
+
+
 #3.1 Effectuer plusieurs classifications en K = 2 classes
-#méthode un 
-#selon l'espèce 
-for (i in 1:10) {
-  cat('Classifiction',i,'\n')
+nbComparaisons=1000
+classifications_seen = vector(length = nbComparaisons)
+for (i in 1:nbComparaisons) {
   crabs2_kmeans_2 <- kmeans(crabs2_quant,2)
-  #print(crabs2_kmeans_2$cluster)
-  cat('L\'inertie intra-classe:',crabs2_kmeans_2$tot.withinss,'\n')
-  #plot(crabs2_quant, col = crabs2_kmeans_2$cluster, pch = as.integer(crabs2$sp), main = "Centre mobile en 2 clusters selon l'espèce")
-  clusplot(crabs2_quant, crabs2_kmeans_2$cluster, color = TRUE, col.p = crabs2$sp,  shade = F, labels = 0, main = "")
-  Sys.sleep(2)
+  classifications_seen[i] = crabs2_kmeans_2$tot.withinss
+}
+unique(classifications_seen)
+t(t(table(round(classifications_seen,5))/1000*100))
+xtable(t(t(table(round(classifications_seen,5))/1000*100)))
+
+getExpectedInertie = function(tabQuant, expectedInertie, nbClasses, roundN) {
+  kmeansResult <- kmeans(tabQuant, nbClasses)
+  while (round(kmeansResult$tot.withinss, roundN) != expectedInertie) {
+    kmeansResult <- kmeans(tabQuant, nbClasses)
+  }
+  kmeansResult
 }
 
-#selon le sex 
-for (i in 1:10) {
-  cat('Classifiction',i,'\n')
-  crabs2_kmeans_2 <- kmeans(crabs2_quant,2)
-  #print(crabs2_kmeans_2$cluster)
-  cat('L\'inertie intra-classe:',crabs2_kmeans_2$tot.withinss,'\n')
-  #plot(crabs2_quant, col = crabs2_kmeans_2$cluster, pch = as.integer(crabs2$sex), main = "Centre mobile en 2 clusters selon le sex")
-  clusplot(crabs2_quant, crabs2_kmeans_2$cluster, color = TRUE, col.p = crabs2$sex,  shade = F, labels = 0, main = "")
-  Sys.sleep(2)
-}
+crabs2_kmeans_2 = getExpectedInertie(crabs2_quant, expectedInertie = 0.3648, 2, 5)
+crabs2_kmeans_2 = getExpectedInertie(crabs2_quant, expectedInertie = 0.358, 2, 5)
+crabs2_kmeans_2 = getExpectedInertie(crabs2_quant, expectedInertie = 0.35754, 2, 5)
+crabs2_kmeans_2 = getExpectedInertie(crabs2_quant, expectedInertie = 0.35607, 2, 5)
+crabs2_kmeans_2 = getExpectedInertie(crabs2_quant, expectedInertie = 0.25878, 2, 5)
+clusplot(crabs2_quant, crabs2_kmeans_2$cluster, color = TRUE, col.p = as.character(species_colors), lines = F, main = "", ylab = "Sexe", xlab = "Espèce")
+legend(2,2.2, legend=c("Espèce Bleu", "Espèce Orange"), col=c("blue", "darkorange"), pch=16, cex=.8)
+clusplot(crabs2_quant, crabs2_kmeans_2$cluster, color = TRUE, col.p = as.character(sex_colors),lines = F, main = "", ylab = "Sexe", xlab = "Espèce")
+legend(2,2.2, legend=c("Mâle", "Femelle"), col=c("red", "darkgreen"), pch=16, cex=.8)
 
 #3.2 Effectuer une classifications en K = 4 classes
 #méthode un 
@@ -61,10 +72,8 @@ for (i in 1:100) {
   }
 }
 best_crabs_kmeans_4$tot.withinss
-species_colors = mapvalues(crabs2$sp, from = c("B", "O"), to = c("blue", "darkorange"))
-sex_colors = mapvalues(crabs2$sex, from = c("M", "F"), to = c("red", "darkgreen"))
-clusplot(crabs2_quant, best_crabs_kmeans_4$cluster, color = TRUE, col.p = as.character(species_colors), lines = F, main = "Comparaison K-Means 4 classes et Espèce")
+clusplot(crabs2_quant, best_crabs_kmeans_4$cluster, color = TRUE, col.p = as.character(species_colors), lines = F, main = "Comparaison K-Means 4 classes et Espèce", ylab = "Sexe", xlab = "Espèce")
 legend(2,2.2, legend=c("Espèce Bleu", "Espèce Orange"), col=c("blue", "darkorange"), pch=16, cex=.8)
-clusplot(crabs2_quant, best_crabs_kmeans_4$cluster, color = TRUE, col.p = as.character(sex_colors),lines = F, main = "Comparaison K-Means 4 classes et Sexe")
+clusplot(crabs2_quant, best_crabs_kmeans_4$cluster, color = TRUE, col.p = as.character(sex_colors),lines = F, main = "Comparaison K-Means 4 classes et Sexe", ylab = "Sexe", xlab = "Espèce")
 legend(2,2.2, legend=c("Mâle", "Femelle"), col=c("red", "darkgreen"), pch=16, cex=.8)
 

@@ -1,6 +1,8 @@
+############# Packages #################
 #pour exécuter la fonction diana
 #install.packages("cluster")
 library(cluster)
+library(xtable)
 
 #pour ajouter différents couleurs dans un dendrogramme 
 #install.packages("sparcl")
@@ -74,7 +76,7 @@ rect.hclust(iris_hclust, k = 3)
 species_colors = mapvalues(iris$Species, from = c("setosa", "versicolor", "virginica"), to = c("red", "orange", "blue"))
 
 #faire un dendrogramme 
-ColorDendrogram(iris_hclust, y = as.character(species_colors), branchlength = 7,  main = "Iris : classification hiérarchique ascendante", ylab = "Indice", xlab = "Individus classés")
+ColorDendrogram(iris_hclust, y = as.character(species_colors), branchlength = 7,  main = "Iris : classification hiérarchique ascendante", ylab = "Indice", xlab = "Individus classés", sub = "")
 legend(120,30, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
 rect.hclust(iris_hclust, k = 3, border = c("red", "blue", "orange"))
 #calculer "the adjusted Rand index"
@@ -85,8 +87,7 @@ iris_diana <- diana(iris_dist)
 iris_diana
 #iris_cutre_diana <- cutree(iris_diana, k = 3)
 #iris_cutre_diana
-#plot(iris_cutre_diana, col = c("darkblue", "darkorange", "darkgreen")[iris$Species])
-ColorDendrogram(as.hclust(iris_diana), y = as.character(species_colors), branchlength = 7, main = "Iris : classification hiérarchique descendante", ylab = "Indice", xlab = "Individus classés")
+ColorDendrogram(as.hclust(iris_diana), y = as.character(species_colors), branchlength = 7, main = "Iris : classification hiérarchique descendante", ylab = "Indice", xlab = "Individus classés", sub = "")
 legend(120,7, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
 rect.hclust(as.hclust(iris_diana), k = 3, border = c("red", "orange", "blue"))
 adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
@@ -95,108 +96,67 @@ adjustedRandIndex(cutree(as.hclust(iris_diana), k = 3), iris$Species)
 
 
 
+
+
 #####################3.Méthode des centres mobiles####################
 #3.1 Tenter une partition en K∈{2, 3, 4} classes avec la fonction kmeans;visualiser et commenter
-#install.packages("ggplot2")
-#library("ggplot2")
-#ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
-#la partition en deux classes
 iris_kmeans_2 <- kmeans(iris_quant, 2)
-iris_kmeans_2
-#le individu de regroupement appartient 
-iris_kmeans_2$cluster
-# le point central de chaque variable dans chaque groupe
-iris_kmeans_2$centers
-#vérifier le nombre de iris dans chaque cluster 
-table(iris$Species, iris_kmeans_2$cluster);
-#Centre mobile en 2 clusters
-#methode un
-#plot(iris_quant, col = iris_kmeans_2$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 2 clusters")
-#methode deux
-#clusplot(iris_quant, iris_kmeans_2$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 2 clusters")
-clusplot(iris_quant, iris_kmeans_2$cluster, color = T, shade = FALSE, labels = 0, main = "Centre mobile en 2 clusters")
-legend(2.5,2.5, legend = c("cluster1","cluster2"), pch = c(1,2)[unique(iris_kmeans_2$cluster)])
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_2$centers[,c("Sepal.Length","Sepal.Width")], col = 1:2, pch = 8, cex=3);
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_2$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_2$centers[,c("Petal.Length","Petal.Width")], col = 1:2, pch = 7, cex=3);
-
+iris_kmeans_2$cluster # clusterisation
+iris_kmeans_2$centers # le point central de chaque cluster
+table(iris$Species, iris_kmeans_2$cluster) # répartition des individus dans une classe
+clusplot(iris_quant, iris_kmeans_2$cluster, color = TRUE, col.p = as.character(species_colors), shade = F, labels = 0, lines = FALSE, main = "K = 2")
+legend(2.85,3.2, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
+legend(1.8,3.2, legend = c("Cluster 1","Cluster 2"), pch = c(1,2)[unique(iris_kmeans_2$cluster)], cex=.8)
 
 #la partition en trois classes
 iris_kmeans_3 <- kmeans(iris_quant, 3)
-iris_kmeans_3
-#le individu de regroupement appartient 
-iris_kmeans_3$cluster
-# le point central de chaque variable dans chaque groupe
-iris_kmeans_3$centers
-#vérifier le nombre de iris dans chaque cluster 
+iris_kmeans_3$tot.withinss / dim(iris_quant)[1]
 table(iris$Species, iris_kmeans_3$cluster);
-#Centre mobile en 3 clusters
-#methode un
-#plot(iris_quant, col = iris_kmeans_3$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 3 clusters")
-#methode deux
-#clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 3 clusters")
-clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, shade = F, labels = 0, main = "Centre mobile en 3 clusters")
-legend(2.4,2.5, legend = c("cluster1","cluster2", "cluster3"), pch = c(1,2,3)[unique(iris_kmeans_3$cluster)])
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_3$centers[,c("Sepal.Length","Sepal.Width")], col = 1:3, pch = 8, cex=3);
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_3$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_3$centers[,c("Petal.Length","Petal.Width")], col = 1:3, pch = 7, cex=3);
-
+clusplot(iris_quant, iris_kmeans_3$cluster, color = TRUE, col.p = as.character(species_colors), shade = F, labels = 0, lines = FALSE, main = "K = 3")
+legend(2.75,2.9, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
+legend(1.8,2.9, legend = c("Cluster 1","Cluster 2", "Cluster 3"), pch = c(1,2,3)[unique(iris_kmeans_3$cluster)], cex=.8)
 
 #la partition en quatre classes
 iris_kmeans_4 <- kmeans(iris_quant, 4)
-iris_kmeans_4
-#le individu de regroupement appartient 
-iris_kmeans_4$cluster
-# le point central de chaque variable dans chaque groupe
-iris_kmeans_4$centers
-#vérifier le nombre de iris dans chaque cluster 
 table(iris$Species, iris_kmeans_4$cluster);
-#Centre mobile en 3 clusters
-#methode un
-#plot(iris_quant, col = iris_kmeans_4$cluster,pch = as.integer(iris$Species), main = "Centre mobile en 4 clusters")
-#methode deux
-#clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = TRUE, labels = 2, main = "Centre mobile en 4 clusters")
-clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, shade = F, labels = 0, main = "Centre mobile en 4 clusters")
-legend(2.4,2.8, legend = c("cluster1","cluster2", "cluster3","cluster4"), pch = c(1,2,3,4)[unique(iris_kmeans_4$cluster)])
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Sepal.Length","Sepal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_4$centers[,c("Sepal.Length","Sepal.Width")], col = 1:4, pch = 8, cex=3);
-#dessiner la relation entre le longueur et le largeur du sépale d'iris en regroupant par le nombre de cluster 
-#plot(iris_quant[c("Petal.Length","Petal.Width")], col = iris_kmeans_4$cluster, pch = as.integer(iris$Species));
-#Marquer la centre de gravité de chaque cluster, pch est un paramètre pour dessiner des points en utilisant différents types
-#points(iris_kmeans_4$centers[,c("Petal.Length","Petal.Width")], col = 1:4, pch = 7, cex=3);
+clusplot(iris_quant, iris_kmeans_4$cluster, color = TRUE, col.p = as.character(species_colors), shade = F, labels = 0, lines = FALSE, main = "K = 4")
+legend(2.75,2.9, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
+legend(1.8,2.9, legend = c("Cluster 1","Cluster 2", "Cluster 3","Cluster 4"), pch = c(1,2,3,4)[unique(iris_kmeans_4$cluster)], cex=.8)
 
 
 #3.2 Effectuer plusieurs classifications des données en K = 3 classes
-
-iris_intra <- 0
-#for (i in 1:nrow(iris_kmeans_3$centers))
-for (i in 1:10) {
-  cat('Classifiction',i,'\n')
-  iris_kmeans_3 <- kmeans(iris_quant,3)
-  #print(iris_kmeans_3$cluster)
-  #calculer l'inertie intra-classe
-  #iris_intra <- iris_intra + (1/d1)*sum((iris_quant - iris_kmeans_3$centers[i,])^2)
-  cat(iris_kmeans_3$withinss, '\n') #inertie intra classe
-  #cat(table(iris$Species, iris_kmeans_3$cluster), '\n')
-  print(table(iris$Species, iris_kmeans_3$cluster))
-  #iris_intra <- iris_intra + iris_kmeans_3$withinss[i]
-  #cat('L\'inertie intra-classe:',iris_intra,'\n')
-  #plot(iris_quant, col = iris_kmeans_3$cluster, pch = as.integer(iris$Species))
-  #clusplot(iris_quant, iris_kmeans_3$cluster, color = T, shade = FALSE, labels = 0, main = "")
-  #Sys.sleep(2)
+test_stability_kmeans = function(tab_quant, K, nbComparaisons, originalClasses, latexTable) {
+  comparaison = matrix(nrow = nbComparaisons, ncol = 1)
+  colnames(comparaison) = c("Inertie intra classe")
+  row.names(comparaison) = c(1:nbComparaisons)
+  classifications_seen = vector(length = nbComparaisons)
+  n = dim(tab_quant)[1]
+  
+  for (i in 1:nbComparaisons) {
+    k_means_result = kmeans(tab_quant,K)
+    inertie = round(k_means_result$tot.withinss / n, 2)
+    comparaison[i,1] = inertie
+    if (! is.element(inertie, classifications_seen)) {
+      classifications_seen[i] = inertie
+      cat('\n\nClassification',i)
+      if (latexTable)
+        print(xtable(table(originalClasses, k_means_result$cluster)))
+      else
+        print(table(originalClasses, k_means_result$cluster))
+    }
+  }
+  if (latexTable) {
+    print(xtable(unique(comparaison)))
+    print(xtable(table(comparaison)))
+  }
+  else {
+    print((unique(comparaison)))
+    print((table(comparaison)))
+  }
 }
+
+test_stability_kmeans(iris_quant, K = 3, nbComparaisons = 100, originalClasses =  iris$Species, latexTable = F)
+
 
 #3.3 Déterminer le nombre de classes optimal 
 #(a) effectuer N = 100 classifications en prenant K = 2, 3, ...,10 classes
@@ -205,28 +165,22 @@ iris_matrix <- matrix(0, nrow = 100, ncol = 9)
 rownames(iris_matrix) <- rownames(iris_matrix, do.NULL = FALSE, prefix = "N")
 colnames(iris_matrix) <- c("K=2","K=3","K=4","K=5","K=6","K=7","K=8","K=9","K=10")
 iris_matrix
-for(k in 2:10)
-{
-  for (N in 1:100)
-  {
+for(k in 2:10) {
+  for (N in 1:100) {
       iris_kmeans <- kmeans(iris_quant,k)
-      iris_matrix[N,k-1] <- iris_kmeans$tot.withinss
+      iris_matrix[N,k-1] <- iris_kmeans$tot.withinss / dim(iris_quant)[1]
   }
 }
-iris_matrix
 
 #(b)Pour chaque valeur de K, calculer l'inertie intra-classe mininale
 iris_matrix_min <- apply(iris_matrix, 2, min)
 iris_matrix_min
-plot(iris_matrix_min, type ='o', xaxt='n', xlab = "K", ylab = "l'inertie intra-classe minimale")
-axis(side = 1, at = seq(1,9,1),labels = c(2:10))
-
-
 
 # Proposer un nombre de classes à partir de ces informations, en utilisant la méthode du coude
 # = étudier la décroissance du critère (inertie totale) en fonction du nombre de classes et choisir le nombre de classes
 #    avant le premier saut significatif
-
+plot(iris_matrix_min, type ='o', xaxt='n', xlab = "Nombe K de classes", ylab = "Inertie intra-classe minimale")
+axis(side = 1, at = seq(1,9,1),labels = c(2:10))
 # ==> 3 ou 4 classes
 
 
@@ -235,7 +189,7 @@ axis(side = 1, at = seq(1,9,1),labels = c(2:10))
 ########## 4 Comparer les résultats de la partition obtenue par les centres mobiles avec la partition réelle des iris en trois groupes. #############
 #la partition en trois classes avec inertie minimale
 iris_kmeans_3 <- kmeans(iris_quant, 3)
-while(iris_kmeans_3$tot.withinss != iris_matrix_min[2]) {
+while((iris_kmeans_3$tot.withinss / dim(iris_quant)[1]) != iris_matrix_min[2]) {
   iris_kmeans_3 <- kmeans(iris_quant, 3)
 }
 iris_kmeans_3$tot.withinss
@@ -243,4 +197,4 @@ table(iris$Species, iris_kmeans_3$cluster);
 #Centre mobile en 3 clusters
 clusplot(iris_quant,iris_kmeans_3$cluster, color = TRUE, col.p = as.character(species_colors), shade = F, labels = 0, lines = FALSE, main = "Centre mobile en 3 clusters")
 legend(2.5,2.5, legend=c("setosa", "versicolor", "virginica"), col=c("red", "orange", "blue"), pch=16, cex=.8)
-
+legend(1.8,2.9, legend = c("Cluster 1","Cluster 2", "Cluster 3"), pch = c(1,2,3)[unique(iris_kmeans_3$cluster)], cex=.8)
