@@ -1,0 +1,67 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{packages/rapportutc}
+%\usepackage{packages/include-packages}
+
+
+%%%%%%%% Références %%%%%%%%
+\usepackage{cleveref}
+\usepackage{hyperref}
+\usepackage[nottoc, notlof, notlot]{tocbibind} % bibliographie http://tex.stackexchange.com/questions/71129/bibliography-in-table-of-contents
+\usepackage{natbib} % bibliographie
+
+%%%%%%%% Code informatique %%%%%%%%
+\usepackage{packages/Sweave} %package d'affichage des codes R
+\usepackage{listings} % pour hightlight code
+
+%%%%%%%% Formules mathématiques %%%%%%%%
+\usepackage{amsmath, amsthm, amssymb, graphics, setspace} %packages de mathématiques
+\usepackage{chemist} %formule chimique 
+
+%%%%%%%% Mise en forme %%%%%%%%
+% Mise en forme graphique
+\usepackage{graphicx,wrapfig,lipsum} % pour afficher des figures à côté du texte
+\usepackage[linewidth=1pt]{mdframed} % permet de générer et gérer des frames
+\usepackage{rotating} % rotations on tables, captions, text, ...
+% Mise en forme images et tableaux
+\usepackage{float} % permet de spécifier l'option "H" aux captions afin de les positionner de manière fixe
+\usepackage{subcaption} % permet d'afficher plusieurs images dans une caption
+\usepackage{array} % meilleurs "table" et "tabular"
+% Mise en forme texte
+\usepackage{setspace} % permet de spécifier l'espacement interligne
+\usepackage{ulem} % \sout{Texte à barrer} \xout{Texte à hachurer} \uwave{Texte à souligner par une vaguelette}
+\usepackage{calc,enumitem}  % Mise en forme l'environnement itemsize description etc.
+\usepackage{color} % utilisation de couleurs
+\usepackage{ae,aecompl} % Vir­tual fonts for T1 en­coded CMR-fonts
+\usepackage{pifont} % com­mands for Pi fonts (Ding­bats, Sym­bol, etc.)
+\usepackage{comment} % Selectively include/exclude portions of text \comment....\endcomment
+
+\onehalfspacing % espacement interligne
+\setlength{\parindent}{.5em} % indentation des retraits de première ligne
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\title{TP 3 - Discrimination, théorie bayésienne de la décision}
+\author{LU Han - HAMONNAIS Raphaël}
+\date{\today}
+
+\uv{SY09}
+\branche{Génie Informatique}
+\filiere{Fouille de Données et Décisionnel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\renewcommand{\labelitemi}{\large\textcolor{tatoebagreen}{\fg}}
+\newgeometry{top=2.5cm,bottom=2cm,left=2cm,right=2cm}
+\groovypdtitre
+\restoregeometry % restaure la géométrie par défaut de latex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}
