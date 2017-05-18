@@ -1,11 +1,11 @@
 front.kppv <- function(Xapp, zapp, K, discretisation=50)
 {
-    deltaX <- (max(Xaff[,1]) -min(Xaff[,1]))/discretisation
-    deltaY <- (max(Xaff[,2]) -min(Xaff[,2]))/discretisation
-    minX <- min(Xaff[,1])-deltaX
-    maxX <- max(Xaff[,1])+deltaX
-    minY <- min(Xaff[,2])-deltaY
-    maxY <- max(Xaff[,2])+deltaY
+    deltaX <- (max(Xapp[,1]) -min(Xapp[,1]))/discretisation
+    deltaY <- (max(Xapp[,2]) -min(Xapp[,2]))/discretisation
+    minX <- min(Xapp[,1])-deltaX
+    maxX <- max(Xapp[,1])+deltaX
+    minY <- min(Xapp[,2])-deltaY
+    maxY <- max(Xapp[,2])+deltaY
 
     # grille d'affichage 
     grilleX <- seq(from=minX,to=maxX,by=deltaX)
