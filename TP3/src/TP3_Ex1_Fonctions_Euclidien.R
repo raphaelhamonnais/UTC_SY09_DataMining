@@ -29,16 +29,11 @@ ceuc.val <- function(mu, Xtst) {
   factor(result) # return results in factor form
 }
 
-
-
-
-
-
 # TESTS persos
-testData = read.csv("data/Synth1-40.csv")
-Xapp = testData[,1:2]
-zapp = factor(testData[,3])
-mu = ceuc.app(quant, classes)
-front.ceuc(mu, Xapp, zapp, 1000)
+#testData = read.csv("data/Synth1-40.csv")
+#Xapp = testData[,1:2]
+#zapp = factor(testData[,3])
+#mu = ceuc.app(quant, classes)
+#front.ceuc(mu, Xapp, zapp, 1000)
 
-ceuc.val(mu, Xapp)
+#ceuc.val(mu, Xapp)
