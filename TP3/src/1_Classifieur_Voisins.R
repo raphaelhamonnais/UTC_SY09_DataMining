@@ -22,7 +22,7 @@ ztst = factor(testData[,3])
 
 ############## 1.1.3 Test des fonctions ##############
 nppv = c(2*(1:6)-1)
-Kopt <- kppv.tune(Xapp, zapp, Xval, nppv)
+Kopt <- kppv.tune(Xapp, zapp, Xval, zval, nppv)
 Kopt
 front.kppv(Xtst, ztst, Kopt, 500)
 
@@ -54,8 +54,13 @@ Kopt
 # sur l’ensemble d’apprentissage et sur l’ensemble de test
 
 # Estimer le taux d'erreur
+nbTests = 20
+alpha = 0.05
 detailledErrorRates = list()
 meanErrorRates = list()
+sdErrorRates = list()
+errorVariation = list()
+confidenceIntervals = list()
 for (i in 1:length(fileNames)) {
     file = fileNames[i]
     data = read.csv(file)
@@ -65,32 +70,25 @@ for (i in 1:length(fileNames)) {
     errorRates = matrix(0, nrow = 20, ncol = 2)
     colnames(errorRates) = c("Error On App", "Error On Test")
     
-    for (j in 1:20) {
+    for (j in 1:nbTests) {
         sample = separ2(X,Z)
         Kopt = kppv.tune(sample$Xapp, sample$zapp, sample$Xval, sample$zval, nppv = c(2*(1:6)-1))
-        kppv.val(sample$Xapp, sample$zapp, Kopt, sample$Xtst)
-        
-        
-        appErrorRate = 1 - compute.sucess.rate(appPredictedClasses, samples$zapp)
-        testErrorRate = 1 - compute.sucess.rate(testPredictedClasses, samples$ztst)
+        Kopt = min(Kopt)
+        appPredictedClasses = kppv.val(sample$Xapp, sample$zapp, Kopt, sample$Xapp) # prédire les classes du jeu de données d'apprentissage
+        testPredictedClasses = kppv.val(sample$Xapp, sample$zapp, Kopt, sample$Xtst) # prédire les classes du jeu de données de test
+        appErrorRate = 1 - compute.sucess.rate(appPredictedClasses, sample$zapp)
+        testErrorRate = 1 - compute.sucess.rate(testPredictedClasses, sample$ztst)
         errorRates[j,1] = appErrorRate
         errorRates[j,2] = testErrorRate
     }
     detailledErrorRates[[file]] = errorRates
     meanErrorRates[[file]] = apply(errorRates, 2, mean)
+    sdErrorRates[[file]] = apply(errorRates, 2, sd)
+    errorVariation[[file]] = qt(1-alpha/2, df=nbTests-1) * sdErrorRates[[file]] / sqrt(nbTests)
+    a[["left"]] = meanErrorRates[[file]] - errorVariation[[file]]
+    a[["right"]] = meanErrorRates[[file]] + errorVariation[[file]]
+    confidenceIntervals[[file]] = a
 }
-detailledErrorRates
+
 meanErrorRates
-
-
-for (file in fileNames) {
-    onApp = "Error On App"
-    enTest = "Error On Test"
-    xMean = 
-    
-    
-}
-
-
-
-
+meanErrorRates$`data/Synth1-40.csv`

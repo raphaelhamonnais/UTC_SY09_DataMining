@@ -38,14 +38,14 @@ kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useR
     for (i in 1:nbKToTest) {
         K = nppv[i]
         if (skipOneNeighbor) if (K == 1) next
-        cat("K = ", K, "   ")
+        #cat("K = ", K, "   ")
         zvalPredicted = kppv.val(Xapp, zapp, K, Xval)
         
         if (useRandIndexes)
             successRate = adjustedRandIndex(zval, zvalPredicted)
         else
             successRate = compute.sucess.rate(predictedClasses = zvalPredicted, actualClasses = zval)
-        cat("successRate = ", successRate, "   ")
+        #cat("successRate = ", successRate, "   ")
         
         if (successRate >= maxSuccessRate) {
             if (successRate == maxSuccessRate) {
@@ -55,9 +55,9 @@ kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useR
                 optimumForK = c(K) # remplacer la valeur optimale de K
                 maxSuccessRate = successRate # mettre à jour le "maxSuccessRate"
             }
-            cat("optimumForK = ", optimumForK, "   ")
+            #cat("optimumForK = ", optimumForK, "   ")
         }
-        writeLines("")
+        #writeLines("")
     }
     return(optimumForK)
 }

@@ -42,6 +42,9 @@ fileNames = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv"
 #       - que les Σk sont égales entre-elles (même dispersion)
 #       - que la dispersion est sphérique, c’est à dire que les Σk sont des matrices diagonales avec
 #           des termes diagonaux nul ou négligeables
+
+#
+#
 estimatedMu = list() # centres des classes <=> mean
 estimatedProportions = list()
 estimatedSigma = list() # matrices de covariances
@@ -79,9 +82,13 @@ estimatedSigma
 
 
 # Estimer le taux d'erreur
-nbTests = 100
+nbTests = 20
+alpha = 0.05
 detailledErrorRates = list()
 meanErrorRates = list()
+sdErrorRates = list()
+errorVariation = list()
+confidenceIntervals = list()
 for (i in 1:length(fileNames)) {
     file = fileNames[i]
     data = read.csv(file)
@@ -103,14 +110,34 @@ for (i in 1:length(fileNames)) {
     }
     detailledErrorRates[[file]] = errorRates
     meanErrorRates[[file]] = apply(errorRates, 2, mean)
+    sdErrorRates[[file]] = apply(errorRates, 2, sd)
+    errorVariation[[file]] = qt(1-alpha/2, df=nbTests-1) * sdErrorRates[[file]] / sqrt(nbTests)
+    a[["left"]] = meanErrorRates[[file]] - errorVariation[[file]]
+    a[["right"]] = meanErrorRates[[file]] + errorVariation[[file]]
+    confidenceIntervals[[file]] = a
 }
+
+confidenceIntervals$`data/Synth1-40.csv`$left
+confidenceIntervals$`data/Synth1-40.csv`$right
+
+
 detailledErrorRates
 meanErrorRates
+sdErrorRates$`data/Synth1-40.csv`
+errorVariation$`data/Synth1-40.csv`
 
 
-X = detailledErrorRates$`data/Synth1-40.csv`
-X_MEAN = meanErrorRates$`data/Synth1-40.csv`
-X_MEAN - (2 * apply(X, 2, sd) / sqrt(nrow(X)) )
-X_MEAN + (2 * apply(X, 2, sd) / sqrt(nrow(X)) )
-X_MEAN
+
+############# INTERVALLES DE CONFIANCE #####################
+# par définition, un moyenne suit une loi gausienne, on peut donc obtenir l'intervalle de confiance via
+#   20 erreurs suivant la meme loi et tirées selon une loi qu'on ne connait pas mais on considère que ces 20 tirages sont indépendants car séparations différentes avec la fonction separ1
+#   "assuming that the original random variable is normally distributed, and the samples are independent"
+#       Donc tirages indépendants
+#       moyenne X-Barre de chaque tirage suit une loi gaussienne
+#       Vecteur de X-Barre contient 20 erreurs qui suivent une loi gausienne par le TCL
+#       Donc on a l'intervalle de confiance avec 
+#           Après centrage et réduction de la moyenne empirique, on obtient : sqrt(n)(mean(x)-m)/sd(x) ~ N(0,1)
+#           Avec variance inconnue on a sqrt(n)(mean(x)-m)/sd(x) ~ St(n-1) loi de student à n-1 degrés de liberté
+
+
 

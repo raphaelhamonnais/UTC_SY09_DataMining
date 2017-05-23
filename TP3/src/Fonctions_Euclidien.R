@@ -31,10 +31,11 @@ ceuc.val <- function(mu, Xtst) {
 }
 
 
-#testData = read.csv("data/Synth1-40.csv")
-#Xapp = testData[,1:2]
-#zapp = factor(testData[,3])
-#mu = ceuc.app(quant, classes)
-#front.ceuc(mu, Xapp, zapp, 1000)
+testData = read.csv("data/Synth2-1000.csv")
+testData = read.csv("data/Synth1-1000.csv")
+Xapp = testData[,1:2]
+zapp = factor(testData[,3])
+mu = ceuc.app(Xapp, zapp)
+front.ceuc(mu, Xapp, zapp, 100)
 
 #ceuc.val(mu, Xapp)
