@@ -2,22 +2,7 @@ library(mclust)
 source("src/fonctions-tp3/distXY.R")
 source("src/fonctions-tp3/front.ceuc.R")
 source("src/fonctions-tp3/front.kppv.R")
-maxN <- function(x, N=2){
-    len <- length(x)
-    if(N>len){
-        warning('N greater than length(x).  Setting N=length(x)')
-        N <- length(x)
-    }
-    sort(x,partial=len-N+1)[len-N+1]
-}
-minN <- function(x, N=2){
-    len <- length(x)
-    if(N>len){
-        warning('N greater than length(x).  Setting N=length(x)')
-        N <- length(x)
-    }
-    sort(x,partial=len-(len-N))[N]
-}
+source("src/Fonctions_Utilities.R")
 
 kppv.val = function(Xapp, zapp, K, Xtst) {
     zapp = factor(zapp)
@@ -56,15 +41,10 @@ kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useR
         cat("K = ", K, "   ")
         zvalPredicted = kppv.val(Xapp, zapp, K, Xval)
         
-        if (useRandIndexes) {
+        if (useRandIndexes)
             successRate = adjustedRandIndex(zval, zvalPredicted)
-        }
-        else {
-            zvalPredictedKnowingZvalContingency = table(zvalPredicted, zval)
-            correctPredictions = sum(diag(zvalPredictedKnowingZvalContingency))
-            totalPredictions = sum(zvalPredictedKnowingZvalContingency)
-            successRate = correctPredictions / totalPredictions
-        }
+        else
+            successRate = compute.sucess.rate(predictedClasses = zvalPredicted, actualClasses = zval)
         cat("successRate = ", successRate, "   ")
         
         if (successRate >= maxSuccessRate) {
