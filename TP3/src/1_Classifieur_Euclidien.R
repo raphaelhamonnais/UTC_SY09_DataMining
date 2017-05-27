@@ -23,7 +23,9 @@ front.ceuc(mu, Xtst, ztst, 500)
 
 
 ############## 1.2 Évaluation des performances ##############
-fileNames = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
+fileNames_CE = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
+fileNames_CE = c("data/Breastcancer.csv", "data/Pima.csv")
+
 
 ### 1 - Classifieur euclidien - Estimer les paramètres
 # Pour chacun des jeux de données, estimer les paramètres μk et Σk des distributions conditionnelles, ainsi que les proportions πk des classes.
@@ -45,17 +47,34 @@ fileNames = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv"
 
 #
 #
-estimatedMu = list() # centres des classes <=> mean
-estimatedProportions = list()
-estimatedSigma = list() # matrices de covariances
-for (i in 1:length(fileNames)) {
-    file = fileNames[i]
+estimatedMu_CE = list() # centres des classes <=> mean
+estimatedProportions_CE = list()
+estimatedSigma_CE = list() # matrices de covariances
+for (i in 1:length(fileNames_CE)) {
+    file = fileNames_CE[i]
     data = read.csv(file)
-    X = data[,1:2]
-    Z = factor(data[,3])
+    beginDataIndex = 1
+    endDatatIndex = 2
+    zIndex = 3
+    
+    if (file == "data/Breastcancer.csv") {
+        print("working with data/Breastcancer.csv")
+        beginDataIndex = 1
+        endDatatIndex = 9
+        zIndex = 10
+    }
+    if (file == "data/Pima.csv") {
+        print("working with data/Pima.csv")
+        beginDataIndex = 1
+        endDatatIndex = 7
+        zIndex = 8
+    }
+    
+    X = data[,beginDataIndex:endDatatIndex]
+    Z = factor(data[,zIndex])
     g = length(levels(Z))
     p = ncol(X)
-    cat("File : ", fileNames[i])
+    cat("File : ", fileNames_CE[i])
     writeLines("")
     
     currentFileMu = matrix(nrow = g, ncol = p)
@@ -72,59 +91,119 @@ for (i in 1:length(fileNames)) {
         currentFileProportion[level,] = nrow(classData) / nrow(X)
         currentSigma[[level]] = var(classData)
     }
-    estimatedMu[[file]] = currentFileMu
-    estimatedProportions[[file]] = currentFileProportion
-    estimatedSigma[[file]] = currentSigma
+    estimatedMu_CE[[file]] = currentFileMu
+    estimatedProportions_CE[[file]] = currentFileProportion
+    estimatedSigma_CE[[file]] = currentSigma
 }
-estimatedMu
-estimatedProportions
-estimatedSigma
+
+# affichage des paramètres estimés
+for (file in fileNames_CE) {
+    writeLines("-------------------------")
+    writeLines(file)
+    writeLines("-------------------------")
+    writeLines("")
+    
+    writeLines("estimatedMu_CE")
+    print(estimatedMu_CE[[file]])
+    writeLines("")
+    
+    writeLines("estimatedProportions_CE")
+    print(estimatedProportions_CE[[file]])
+    writeLines("")
+    
+    writeLines("estimatedSigma_CE")
+    print(estimatedSigma_CE[[file]])
+    writeLines("--------------------------------------")
+    writeLines("")
+    writeLines("")
+    writeLines("")
+}
 
 
 # Estimer le taux d'erreur
-nbTests = 20
-alpha = 0.05
-detailledErrorRates = list()
-meanErrorRates = list()
-sdErrorRates = list()
-errorVariation = list()
-confidenceIntervals = list()
-for (i in 1:length(fileNames)) {
-    file = fileNames[i]
+nbTests_CE = 20
+alpha_CE = 0.05
+detailledErrorRates_CE = list()
+meanErrorRates_CE = list()
+sdErrorRates_CE = list()
+errorVariation_CE = list()
+confidenceIntervals_CE = list()
+for (i in 1:length(fileNames_CE)) {
+    file = fileNames_CE[i]
     data = read.csv(file)
-    X = data[,1:2]
-    Z = data[,3]
+    beginDataIndex = 1
+    endDatatIndex = 2
+    zIndex = 3
     
-    errorRates = matrix(0, nrow = nbTests, ncol = 2)
-    colnames(errorRates) = c("Error On App", "Error On Test")
-    
-    for (j in 1:nbTests) {
-        samples = separ1(X,Z)
-        mu = ceuc.app(samples$Xapp, samples$zapp) # calculer les paramètres du modèle, c'est à dire les centre de gravité des classes
-        appPredictedClasses = ceuc.val(mu, samples$Xapp) # prédire les classes du jeu de données d'apprentissage
-        testPredictedClasses = ceuc.val(mu, samples$Xtst) # prédire les classes du jeu de données de test
-        appErrorRate = 1 - compute.sucess.rate(appPredictedClasses, samples$zapp)
-        testErrorRate = 1 - compute.sucess.rate(testPredictedClasses, samples$ztst)
-        errorRates[j,1] = appErrorRate
-        errorRates[j,2] = testErrorRate
+    if (file == "data/Breastcancer.csv") {
+        print("working with data/Breastcancer.csv")
+        beginDataIndex = 1
+        endDatatIndex = 9
+        zIndex = 10
     }
-    detailledErrorRates[[file]] = errorRates
-    meanErrorRates[[file]] = apply(errorRates, 2, mean)
-    sdErrorRates[[file]] = apply(errorRates, 2, sd)
-    errorVariation[[file]] = qt(1-alpha/2, df=nbTests-1) * sdErrorRates[[file]] / sqrt(nbTests)
-    a[["left"]] = meanErrorRates[[file]] - errorVariation[[file]]
-    a[["right"]] = meanErrorRates[[file]] + errorVariation[[file]]
-    confidenceIntervals[[file]] = a
+    if (file == "data/Pima.csv") {
+        print("working with data/Pima.csv")
+        beginDataIndex = 1
+        endDatatIndex = 7
+        zIndex = 8
+    }
+    X = data[,beginDataIndex:endDatatIndex]
+    Z = data[,zIndex]
+    
+    errorRates_CE = matrix(0, nrow = nbTests_CE, ncol = 2)
+    colnames(errorRates_CE) = c("Error On App", "Error On Test")
+    
+    for (j in 1:nbTests_CE) {
+        sample_CE = separ1(X,Z)
+        mu = ceuc.app(sample_CE$Xapp, sample_CE$zapp) # calculer les paramètres du modèle, c'est à dire les centre de gravité des classes
+        appPredictedClasses_CE = ceuc.val(mu, sample_CE$Xapp) # prédire les classes du jeu de données d'apprentissage
+        testPredictedClasses_CE = ceuc.val(mu, sample_CE$Xtst) # prédire les classes du jeu de données de test
+        appErrorRate_CE = 1 - compute.sucess.rate(appPredictedClasses_CE, sample_CE$zapp)
+        testErrorRate_CE = 1 - compute.sucess.rate(testPredictedClasses_CE, sample_CE$ztst)
+        errorRates_CE[j,1] = appErrorRate_CE
+        errorRates_CE[j,2] = testErrorRate_CE
+    }
+    detailledErrorRates_CE[[file]] = errorRates_CE
+    meanErrorRates_CE[[file]] = apply(errorRates_CE, 2, mean)
+    sdErrorRates_CE[[file]] = apply(errorRates_CE, 2, sd)
+    errorVariation_CE[[file]] = qt(1-alpha_CE/2, df=nbTests_CE-1) * sdErrorRates_CE[[file]] / sqrt(nbTests_CE)
+    a[["left"]] = meanErrorRates_CE[[file]] - errorVariation_CE[[file]]
+    a[["right"]] = meanErrorRates_CE[[file]] + errorVariation_CE[[file]]
+    confidenceIntervals_CE[[file]] = a
 }
 
-confidenceIntervals$`data/Synth1-40.csv`$left
-confidenceIntervals$`data/Synth1-40.csv`$right
 
 
-detailledErrorRates
-meanErrorRates
-sdErrorRates$`data/Synth1-40.csv`
-errorVariation$`data/Synth1-40.csv`
+# Affichage des taux d'erreur
+for (file in fileNames_CE) {
+    writeLines("-------------------------")
+    writeLines(file)
+    writeLines("-------------------------")
+    print("nbTests_CE = ", nbTests_CE)
+    
+    writeLines("Estimation de l'erreur")
+    print(meanErrorRates_CE[[file]])
+    writeLines("")
+    
+    writeLines("Intervalles de confiance")
+    nbCols = length(names(confidenceIntervals_CE[[file]]$left))
+    for (i in 1:nbCols) {
+        cat(
+            "Intervalle pour",
+            names(confidenceIntervals_CE[[file]]$left[i]),
+            "[",
+            confidenceIntervals_CE[[file]]$left[i],
+            ";",
+            confidenceIntervals_CE[[file]]$right[i],
+            "]"
+        )
+        writeLines("")
+    }
+    
+    writeLines("--------------------------------------")
+    writeLines("")
+    writeLines("")
+}
 
 
 

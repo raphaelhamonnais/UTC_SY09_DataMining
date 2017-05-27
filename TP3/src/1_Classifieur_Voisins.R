@@ -30,7 +30,7 @@ front.kppv(Xtst, ztst, Kopt, 500)
 
 ############## 1.2 Évaluation des performances ##############
 
-fileNames = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
+fileNames_CV = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
 
 ############# 1.2.1 #############
 # Question 3. Effectuer une séparation aléatoire de l’ensemble de données en un ensemble 
@@ -41,8 +41,8 @@ fileNames = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv"
 data = read.csv("data/Synth1-1000.csv")
 X = data[,1:2]
 Z = data[,3]
-sample = separ1(X,Z)
-Kopt = kppv.tune(sample$Xapp, sample$zapp, sample$Xapp, sample$zapp, nppv = c(2*(1:6)-1), skipOneNeighbor = FALSE, useRandIndexes = F)
+sample_CV = separ1(X,Z)
+Kopt = kppv.tune(sample_CV$Xapp, sample_CV$zapp, sample_CV$Xapp, sample_CV$zapp, nppv = c(2*(1:6)-1), skipOneNeighbor = FALSE, useRandIndexes = F)
 Kopt
 # K optimal = 1 car on fait du surapprentissage : le plus proche voisin d'un point étant lui-meme, on ne pourra pas avoir de meilleur résultat (ie 0% d'erreur) qu'avec le choix de K=1
 
@@ -54,41 +54,41 @@ Kopt
 # sur l’ensemble d’apprentissage et sur l’ensemble de test
 
 # Estimer le taux d'erreur
-nbTests = 20
-alpha = 0.05
-detailledErrorRates = list()
-meanErrorRates = list()
-sdErrorRates = list()
-errorVariation = list()
-confidenceIntervals = list()
-for (i in 1:length(fileNames)) {
-    file = fileNames[i]
+nbTests_CV = 20
+alpha_CV = 0.05
+detailledErrorRates_CV = list()
+meanErrorRates_CV = list()
+sdErrorRates_CV = list()
+errorVariation_CV = list()
+confidenceIntervals_CV = list()
+for (i in 1:length(fileNames_CV)) {
+    file = fileNames_CV[i]
     data = read.csv(file)
     X = data[,1:2]
     Z = data[,3]
     
-    errorRates = matrix(0, nrow = 20, ncol = 2)
-    colnames(errorRates) = c("Error On App", "Error On Test")
+    errorRates_CV = matrix(0, nrow = 20, ncol = 2)
+    colnames(errorRates_CV) = c("Error On App", "Error On Test")
     
-    for (j in 1:nbTests) {
-        sample = separ2(X,Z)
-        Kopt = kppv.tune(sample$Xapp, sample$zapp, sample$Xval, sample$zval, nppv = c(2*(1:6)-1))
+    for (j in 1:nbTests_CV) {
+        sample_CV = separ2(X,Z)
+        Kopt = kppv.tune(sample_CV$Xapp, sample_CV$zapp, sample_CV$Xval, sample_CV$zval, nppv = c(2*(1:6)-1))
         Kopt = min(Kopt)
-        appPredictedClasses = kppv.val(sample$Xapp, sample$zapp, Kopt, sample$Xapp) # prédire les classes du jeu de données d'apprentissage
-        testPredictedClasses = kppv.val(sample$Xapp, sample$zapp, Kopt, sample$Xtst) # prédire les classes du jeu de données de test
-        appErrorRate = 1 - compute.sucess.rate(appPredictedClasses, sample$zapp)
-        testErrorRate = 1 - compute.sucess.rate(testPredictedClasses, sample$ztst)
-        errorRates[j,1] = appErrorRate
-        errorRates[j,2] = testErrorRate
+        appPredictedClasses_CV = kppv.val(sample_CV$Xapp, sample_CV$zapp, Kopt, sample_CV$Xapp) # prédire les classes du jeu de données d'apprentissage
+        testPredictedClasses_CV = kppv.val(sample_CV$Xapp, sample_CV$zapp, Kopt, sample_CV$Xtst) # prédire les classes du jeu de données de test
+        appErrorRate_CV = 1 - compute.sucess.rate(appPredictedClasses_CV, sample_CV$zapp)
+        testErrorRate_CV = 1 - compute.sucess.rate(testPredictedClasses_CV, sample_CV$ztst)
+        errorRates_CV[j,1] = appErrorRate_CV
+        errorRates_CV[j,2] = testErrorRate_CV
     }
-    detailledErrorRates[[file]] = errorRates
-    meanErrorRates[[file]] = apply(errorRates, 2, mean)
-    sdErrorRates[[file]] = apply(errorRates, 2, sd)
-    errorVariation[[file]] = qt(1-alpha/2, df=nbTests-1) * sdErrorRates[[file]] / sqrt(nbTests)
-    a[["left"]] = meanErrorRates[[file]] - errorVariation[[file]]
-    a[["right"]] = meanErrorRates[[file]] + errorVariation[[file]]
-    confidenceIntervals[[file]] = a
+    detailledErrorRates_CV[[file]] = errorRates_CV
+    meanErrorRates_CV[[file]] = apply(errorRates_CV, 2, mean)
+    sdErrorRates_CV[[file]] = apply(errorRates_CV, 2, sd)
+    errorVariation_CV[[file]] = qt(1-alpha_CV/2, df=nbTests_CV-1) * sdErrorRates_CV[[file]] / sqrt(nbTests_CV)
+    a[["left"]] = meanErrorRates_CV[[file]] - errorVariation_CV[[file]]
+    a[["right"]] = meanErrorRates_CV[[file]] + errorVariation_CV[[file]]
+    confidenceIntervals_CV[[file]] = a
 }
 
-meanErrorRates
-meanErrorRates$`data/Synth1-40.csv`
+meanErrorRates_CV
+meanErrorRates_CV$`data/Synth1-40.csv`
