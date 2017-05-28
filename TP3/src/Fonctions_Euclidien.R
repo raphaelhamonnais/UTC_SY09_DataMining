@@ -5,8 +5,8 @@ source("src/Fonctions_Utilities.R")
 
 ceuc.app <- function(Xapp, zapp) {
   zapp = factor(zapp)
-  g = length(levels(zapp)) # nb de classes
-  p = dim(Xapp)[2] # p = nb colonnes
+  g = length(levels(zapp)) # nombre de classes
+  p = dim(Xapp)[2] # p = nombre de variables
   mu = matrix(nrow = g, ncol = p)
   rownames(mu) = levels(zapp)
   colnames(mu) = colnames(Xapp)
@@ -25,17 +25,23 @@ ceuc.val <- function(mu, Xtst) {
   predictedClasses = vector(length = n)
   classes = factor(rownames(mu))
   distances = distXY(Xtst, mu)
-  intClasses = apply(distances, MARGIN = 1, which.min) # récupérer les classes dont on est le plus proche du centre de gravité
-  predictedClasses = levels(classes)[intClasses] # obtenir le nom réel des classes
+  # récupérer les classes dont on est le plus proche du centre de gravité
+  intClasses = apply(distances, MARGIN = 1, which.min)
+  # obtenir le nom réel des classes
+  predictedClasses = levels(classes)[intClasses]
   return(factor(predictedClasses))
 }
 
 
-testData = read.csv("data/Synth2-1000.csv")
-testData = read.csv("data/Synth1-1000.csv")
-Xapp = testData[,1:2]
-zapp = factor(testData[,3])
+appData = read.csv("data/Synth1-1000.csv")
+Xapp = appData[,1:2]
+zapp = factor(appData[,3])
 mu = ceuc.app(Xapp, zapp)
-front.ceuc(mu, Xapp, zapp, 100)
+round(mu, digits = 2)
 
-#ceuc.val(mu, Xapp)
+testData = read.csv("data/Synth1-40.csv")
+Xaff = testData[,1:2]
+zaff = factor(testData[,3])
+front.ceuc(mu, Xaff, zaff, 500)
+
+

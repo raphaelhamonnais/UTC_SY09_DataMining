@@ -24,8 +24,6 @@ kppv.val = function(Xapp, zapp, K, Xtst) {
         mostRepresentedClass = names(which.max(neighborsClassesContingency)) # récupérer le nom de la classe la plus représenté
         #cat(mostRepresentedClass, "   ")
         ztst[i] = mostRepresentedClass
-        #writeLines("")
-        #writeLines("")
     }
     return(factor(ztst))
 }
@@ -33,19 +31,17 @@ kppv.val = function(Xapp, zapp, K, Xtst) {
 kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useRandIndexes = FALSE) {
     nbKToTest = length(nppv)
     maxSuccessRate = 0
-    optimumForK = c() # liste vide au début
+    optimumForK = c()
     
     for (i in 1:nbKToTest) {
         K = nppv[i]
         if (skipOneNeighbor) if (K == 1) next
-        #cat("K = ", K, "   ")
         zvalPredicted = kppv.val(Xapp, zapp, K, Xval)
         
         if (useRandIndexes)
             successRate = adjustedRandIndex(zval, zvalPredicted)
         else
             successRate = compute.sucess.rate(predictedClasses = zvalPredicted, actualClasses = zval)
-        #cat("successRate = ", successRate, "   ")
         
         if (successRate >= maxSuccessRate) {
             if (successRate == maxSuccessRate) {
@@ -55,9 +51,7 @@ kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useR
                 optimumForK = c(K) # remplacer la valeur optimale de K
                 maxSuccessRate = successRate # mettre à jour le "maxSuccessRate"
             }
-            #cat("optimumForK = ", optimumForK, "   ")
         }
-        #writeLines("")
     }
     return(optimumForK)
 }
@@ -68,32 +62,36 @@ kppv.tune <- function(Xapp, zapp, Xval, zval, nppv, skipOneNeighbor = TRUE, useR
 
 ################# TEST DE LA FONCTION kppv.val ######################
 
-#appData = read.csv("data/Synth1-8.csv")
-#Xapp = appData[,1:2]
-#zapp = factor(appData[,3])
+appData = read.csv("data/Synth1-1000.csv")
+Xapp = appData[,1:2]
+zapp = factor(appData[,3])
 
-#valData = read.csv("data/Synth1-8-bis.csv")
-#Xval = valData[,1:2]
-#zval = factor(valData[,3])
+valData = read.csv("data/Synth1-500.csv")
+Xval = valData[,1:2]
+zval = factor(valData[,3])
 
-#testData = read.csv("data/Synth1-8-bis.csv")
-#Xtst = testData[,1:2]
-#ztst = factor(testData[,3])
+affData = read.csv("data/Synth1-40.csv")
+Xaff = affData[,1:2]
+zaff = factor(affData[,3])
 
-#kppv.val(Xapp, zapp, 3, Xtst)
+nppv = c(2*(1:6)-1)
 
-################# TEST DE LA FONCTION kppv.tune ######################
+Kopt = kppv.tune(Xapp, zapp, Xval, zval, nppv)
+Kopt
+front.kppv(Xaff, zaff, Kopt[1], 500)
+
+################ TEST DE LA FONCTION kppv.tune ######################
 
 
-#appData = read.csv("data/Synth1-1000.csv")
-#Xapp = appData[,1:2]
-#zapp = factor(appData[,3])
+appData = read.csv("data/Synth1-1000.csv")
+Xapp = appData[,1:2]
+zapp = factor(appData[,3])
 
-#valData = read.csv("data/Synth1-500.csv")
-#Xval = valData[,1:2]
-#zval = factor(valData[,3])
+valData = read.csv("data/Synth1-500.csv")
+Xval = valData[,1:2]
+zval = factor(valData[,3])
 
-#nppv = c(2*(1:6)-1)
 
-#Kopt = kppv.tune(Xapp, zapp, Xval, zval, nppv)
-#Kopt
+
+Kopt = kppv.tune(Xapp, zapp, Xval, zval, nppv)
+Kopt

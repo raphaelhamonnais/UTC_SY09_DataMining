@@ -22,3 +22,5 @@ compute.sucess.rate = function(predictedClasses, actualClasses) {
     totalPredictions = sum(zvalPredictedKnowingZvalContingency)
     successRate = correctPredictions / totalPredictions
 }
+
+

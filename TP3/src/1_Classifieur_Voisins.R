@@ -31,6 +31,8 @@ front.kppv(Xtst, ztst, Kopt, 500)
 ############## 1.2 Évaluation des performances ##############
 
 fileNames_CV = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
+fileNames_CV = c("data/Synth2-1000.csv")
+fileNames_CV = c("data/Breastcancer.csv", "data/Pima.csv")
 
 ############# 1.2.1 #############
 # Question 3. Effectuer une séparation aléatoire de l’ensemble de données en un ensemble 
@@ -64,10 +66,20 @@ confidenceIntervals_CV = list()
 for (i in 1:length(fileNames_CV)) {
     file = fileNames_CV[i]
     data = read.csv(file)
-    X = data[,1:2]
-    Z = data[,3]
+    zIndex = 3
     
-    errorRates_CV = matrix(0, nrow = 20, ncol = 2)
+    if (file == "data/Breastcancer.csv") {
+        print("working with data/Breastcancer.csv")
+        zIndex = 10
+    }
+    if (file == "data/Pima.csv") {
+        print("working with data/Pima.csv")
+        zIndex = 8
+    }
+    X = data[,1:zIndex-1]
+    Z = data[,zIndex]
+    
+    errorRates_CV = matrix(0, nrow = nbTests_CV, ncol = 2)
     colnames(errorRates_CV) = c("Error On App", "Error On Test")
     
     for (j in 1:nbTests_CV) {
@@ -90,5 +102,50 @@ for (i in 1:length(fileNames_CV)) {
     confidenceIntervals_CV[[file]] = a
 }
 
-meanErrorRates_CV
-meanErrorRates_CV$`data/Synth1-40.csv`
+for (file in fileNames_CV) {
+    writeLines("-------------------------")
+    writeLines(file)
+    writeLines("-------------------------")
+    
+    writeLines("Estimation de l'erreur")
+    print(round(meanErrorRates_CV[[file]], 3))
+    writeLines("")
+    
+    writeLines("Intervalles de confiance")
+    nbCols = length(names(confidenceIntervals_CV[[file]]$left))
+    for (i in 1:nbCols) {
+        cat(
+            "Intervalle pour",
+            names(confidenceIntervals_CV[[file]]$left[i]),
+            "[",
+            round(confidenceIntervals_CV[[file]]$left[i],3),
+            ",",
+            round(confidenceIntervals_CV[[file]]$right[i],3),
+            "]"
+        )
+        writeLines("")
+    }
+    
+    writeLines("--------------------------------------")
+    writeLines("")
+    writeLines("")
+}
+
+
+
+
+
+
+
+file = "data/Synth2-1000.csv"
+data = read.csv(file)
+X = data[,1:2]
+Z = data[,3]
+plot(X, col = c("blue", "orange")[Z])
+
+
+sample = separ2(X,Z)
+Kopt = kppv.tune(sample$Xapp, sample$zapp, sample$Xval, sample$zval, nppv = c(2*(1:6)-1))
+Kopt = min(Kopt)
+front.kppv(sample$Xtst, sample$ztst, Kopt, 500)
+

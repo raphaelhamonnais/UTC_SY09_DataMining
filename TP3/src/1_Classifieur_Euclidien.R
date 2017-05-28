@@ -1,4 +1,5 @@
 library(mclust)
+library(xtable)
 source("src/fonctions-tp3/distXY.R")
 source("src/fonctions-tp3/front.ceuc.R")
 source("src/fonctions-tp3/front.kppv.R")
@@ -23,7 +24,8 @@ front.ceuc(mu, Xtst, ztst, 500)
 
 
 ############## 1.2 Évaluation des performances ##############
-fileNames_CE = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv", "data/Synth2-1000.csv")
+fileNames_CE = c("data/Synth1-40.csv", "data/Synth1-100.csv", "data/Synth1-500.csv", "data/Synth1-1000.csv")
+fileNames_CE = c("data/Synth2-1000.csv")
 fileNames_CE = c("data/Breastcancer.csv", "data/Pima.csv")
 
 
@@ -44,7 +46,6 @@ fileNames_CE = c("data/Breastcancer.csv", "data/Pima.csv")
 #       - que les Σk sont égales entre-elles (même dispersion)
 #       - que la dispersion est sphérique, c’est à dire que les Σk sont des matrices diagonales avec
 #           des termes diagonaux nul ou négligeables
-
 #
 #
 estimatedMu_CE = list() # centres des classes <=> mean
@@ -53,24 +54,18 @@ estimatedSigma_CE = list() # matrices de covariances
 for (i in 1:length(fileNames_CE)) {
     file = fileNames_CE[i]
     data = read.csv(file)
-    beginDataIndex = 1
-    endDatatIndex = 2
     zIndex = 3
     
     if (file == "data/Breastcancer.csv") {
         print("working with data/Breastcancer.csv")
-        beginDataIndex = 1
-        endDatatIndex = 9
         zIndex = 10
     }
     if (file == "data/Pima.csv") {
         print("working with data/Pima.csv")
-        beginDataIndex = 1
-        endDatatIndex = 7
         zIndex = 8
     }
     
-    X = data[,beginDataIndex:endDatatIndex]
+    X = data[,1:zIndex-1]
     Z = factor(data[,zIndex])
     g = length(levels(Z))
     p = ncol(X)
@@ -95,7 +90,6 @@ for (i in 1:length(fileNames_CE)) {
     estimatedProportions_CE[[file]] = currentFileProportion
     estimatedSigma_CE[[file]] = currentSigma
 }
-
 # affichage des paramètres estimés
 for (file in fileNames_CE) {
     writeLines("-------------------------")
@@ -104,21 +98,49 @@ for (file in fileNames_CE) {
     writeLines("")
     
     writeLines("estimatedMu_CE")
-    print(estimatedMu_CE[[file]])
+    print(round(estimatedMu_CE[[file]], digits = 2))
     writeLines("")
     
     writeLines("estimatedProportions_CE")
-    print(estimatedProportions_CE[[file]])
+    print(round(estimatedProportions_CE[[file]], digits = 2))
     writeLines("")
     
     writeLines("estimatedSigma_CE")
-    print(estimatedSigma_CE[[file]])
+    print("Classe 1")
+    print(round(estimatedSigma_CE[[file]]$`1`, digits = 2))
+    print("Classe 2")
+    print(round(estimatedSigma_CE[[file]]$`2`, digits = 2))
     writeLines("--------------------------------------")
     writeLines("")
     writeLines("")
     writeLines("")
 }
 
+# affichage avec xtable
+for (file in fileNames_CE) {
+    writeLines("-------------------------")
+    writeLines(file)
+    writeLines("-------------------------")
+    writeLines("")
+    
+    writeLines("estimatedMu_CE")
+    print(xtable(round(estimatedMu_CE[[file]], digits = 2)))
+    writeLines("")
+    
+    writeLines("estimatedProportions_CE")
+    print(xtable(round(estimatedProportions_CE[[file]], digits = 2)))
+    writeLines("")
+    
+    writeLines("estimatedSigma_CE")
+    print("Classe 1")
+    print(xtable(round(estimatedSigma_CE[[file]]$`1`, digits = 2)))
+    print("Classe 2")
+    print(xtable(round(estimatedSigma_CE[[file]]$`2`, digits = 2)))
+    writeLines("--------------------------------------")
+    writeLines("")
+    writeLines("")
+    writeLines("")
+}
 
 # Estimer le taux d'erreur
 nbTests_CE = 20
@@ -131,23 +153,17 @@ confidenceIntervals_CE = list()
 for (i in 1:length(fileNames_CE)) {
     file = fileNames_CE[i]
     data = read.csv(file)
-    beginDataIndex = 1
-    endDatatIndex = 2
     zIndex = 3
     
     if (file == "data/Breastcancer.csv") {
         print("working with data/Breastcancer.csv")
-        beginDataIndex = 1
-        endDatatIndex = 9
         zIndex = 10
     }
     if (file == "data/Pima.csv") {
         print("working with data/Pima.csv")
-        beginDataIndex = 1
-        endDatatIndex = 7
         zIndex = 8
     }
-    X = data[,beginDataIndex:endDatatIndex]
+    X = data[,1:zIndex-1]
     Z = data[,zIndex]
     
     errorRates_CE = matrix(0, nrow = nbTests_CE, ncol = 2)
@@ -167,11 +183,12 @@ for (i in 1:length(fileNames_CE)) {
     meanErrorRates_CE[[file]] = apply(errorRates_CE, 2, mean)
     sdErrorRates_CE[[file]] = apply(errorRates_CE, 2, sd)
     errorVariation_CE[[file]] = qt(1-alpha_CE/2, df=nbTests_CE-1) * sdErrorRates_CE[[file]] / sqrt(nbTests_CE)
+    a = list()
     a[["left"]] = meanErrorRates_CE[[file]] - errorVariation_CE[[file]]
     a[["right"]] = meanErrorRates_CE[[file]] + errorVariation_CE[[file]]
     confidenceIntervals_CE[[file]] = a
+    a = NULL
 }
-
 
 
 # Affichage des taux d'erreur
@@ -179,10 +196,9 @@ for (file in fileNames_CE) {
     writeLines("-------------------------")
     writeLines(file)
     writeLines("-------------------------")
-    print("nbTests_CE = ", nbTests_CE)
     
     writeLines("Estimation de l'erreur")
-    print(meanErrorRates_CE[[file]])
+    print(round(meanErrorRates_CE[[file]], 3))
     writeLines("")
     
     writeLines("Intervalles de confiance")
@@ -192,9 +208,9 @@ for (file in fileNames_CE) {
             "Intervalle pour",
             names(confidenceIntervals_CE[[file]]$left[i]),
             "[",
-            confidenceIntervals_CE[[file]]$left[i],
-            ";",
-            confidenceIntervals_CE[[file]]$right[i],
+            round(confidenceIntervals_CE[[file]]$left[i],3),
+            ",",
+            round(confidenceIntervals_CE[[file]]$right[i],3),
             "]"
         )
         writeLines("")
@@ -220,3 +236,16 @@ for (file in fileNames_CE) {
 
 
 
+
+
+file = "data/Synth2-1000.csv"
+data = read.csv(file)
+X = data[,1:2]
+Z = data[,3]
+plot(X, col = c("blue", "orange")[Z])
+
+
+sample = separ1(X,Z)
+mu <- ceuc.app(sample$Xapp, sample$zapp)
+mu
+front.ceuc(mu, sample$Xtst, sample$ztst, 500)
