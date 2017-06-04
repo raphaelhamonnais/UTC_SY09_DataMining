@@ -931,7 +931,462 @@ On remarque deux choses qui peuvent expliquer la mauvaise discrimination euclidi
 
 En conclusion, on peut s'attendre à une zone de chevauchement conséquentes, les centres de gravité étant relativement proche. De plus, la dispersion étant elle aussi proche entre les classes, le classifieur des $K$ plus proches voisins ne sera pas beaucoup plus efficace que le classifieur Euclidien.
 
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Règle de Bayes}
+
+
+\subsubsection{Explications sur l'obtention des jeux de données synthétiques}
+
+Les jeux de données étudiés précédemment ont été obtenus de la manière suivante~:
+\begin{itemize}
+	\item Tout d’abord, l’effectif $n_1$ de la classe $\omega_1$ a été déterminé par tirage aléatoire suivant une loi binomiale de paramètres $n$ et $\pi_1 = 0.5$~;
+	\item $n_1$ individus ont ensuite été générés dans la classe $\omega_1$ suivant une loi normale bivariée de paramètres $\mu_1$ et $\Sigma_{1}$, et $n_2 = n - n_1$ individus ont été générés dans la classe $\omega_2$ suivant une loi normale bivariée de paramètres $\mu_2$ et $\Sigma_{2}$.
+\end{itemize}
+
+Pour les jeux de données \textit{Synth1-$n$}, on a utilisé comme paramètres~:
+\[
+	\mu_1 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, 
+	\quad \mu_2 = \begin{pmatrix} -2 \\ 0 \end{pmatrix},
+	\quad \Sigma_1 = \Sigma_2 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}
+\]
+
+Pour les jeux de données \textit{Synth2-$n$}, on a utilisé comme paramètres~:
+\[
+	\mu_1 = \begin{pmatrix} 3 \\ 0 \end{pmatrix}, 
+	\quad \mu_2 = \begin{pmatrix} -2 \\ 0 \end{pmatrix},
+	\quad \Sigma_1 = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, 
+	\quad \Sigma_2 = \begin{pmatrix} 5 & 0 \\ 0 & 1 \end{pmatrix}
+\]
+
+
+
+
+\section{Distribution marginales des variables $X^1$ et $X^2$}
+
+
+Les données sont obtenues pour chaque classe en suivant une loi normale bi-variée~: 
+\begin{align*}
+	X_{\omega_1} \sim N_{p=2}(\mu_{\omega_1}, \Sigma_{\omega_1}) \\
+	X_{\omega_2} \sim N_{p=2}(\mu_{\omega_2}, \Sigma_{\omega_2}) \\
+\end{align*}
+
+Une des propriété nous dit que si $X \sim N_{p}(\mu, \Sigma)$ alors toutes les lois marginales et conditionnelles sont des lois normales.\\
+
+
+Les variables $X^1$ et $X^2$ suivent donc de manière générale, pour chaque classe, les lois suivantes~:
+\begin{align*}
+X_{\omega_1}^1 &\sim N(\mu_{11}, \sigma_{11}^2) \\
+X_{\omega_2}^1 &\sim N(\mu_{21}, \sigma_{21}^2)  \\
+X_{\omega_1}^2 &\sim N(\mu_{12}, \sigma_{12}^2) \\
+X_{\omega_2}^2 &\sim N(\mu_{22}, \sigma_{22}^2) 
+\end{align*}
+	
+
+Lorsqu'on remplace par les valeurs numériques, on obtient~:
+\begin{center}
+\begin{tabular}{c|c}
+	\centering
+	\textit{Synth1-$n$} & \textit{Synth2-$n$} \\
+	\hline
+	$ \begin{aligned}[t]
+	X_{\omega_1}^1 &\sim N(0,1) \\
+	X_{\omega_2}^1 &\sim N(-2,1) \\
+	X_{\omega_1}^2 &\sim N(1,1) \\
+	X_{\omega_2}^2 &\sim N(0,1)
+	\end{aligned} $     
+	&
+	$ \begin{aligned}[t]
+	X_{\omega_1}^1 &\sim N(3,1) \\
+	X_{\omega_2}^1 &\sim N(-2,5) \\
+	X_{\omega_1}^2 &\sim N(0,1) \\
+	X_{\omega_2}^2 &\sim N(0,1)
+	\end{aligned} $ \\
+\end{tabular}
+\end{center}
+
+
+
+
+
+
+
+
+
+\section{Expression des courbes d'iso-densité}
+
+Les courbes d'iso-densité sont données par l'équation $f_k(x) = c$.\\
+
+
+Prenons l'expression de $f_k(x)$ donnée dans le cas général du modèle de l'analyse discriminante quadratique~:
+\begin{align*}
+	f_k(x) = \frac{1}{(2\pi)^{p/2} |\Sigma_k|^{1/2}} \exp \left(-\frac{1}{2} (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k)\right)
+\end{align*}\\
+
+On a alors, pour $p=2$~:
+\begin{align*}
+	&\quad \quad \quad f_k(x) = \textbf{c} \\
+	&\Leftrightarrow \quad  \frac{1}{2\pi |\Sigma_k|^{1/2}} \exp \left(-\frac{1}{2} (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k)\right) = \textbf{c} \\
+	&\Leftrightarrow \quad  (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k) = -2 \ln (2\pi |\Sigma_k|^{1/2}\textbf{c})
+\end{align*}\\
+
+
+
+Cas de matrices $\Sigma$ diagonales~:
+\begin{align*}
+\quad&Calcul\ de\ \Sigma^{—1}_k~:
+	& \Sigma^{—1}_k  &= \frac{1}{\sigma_{k1}^2 \sigma_{k2}^2} \begin{pmatrix} \sigma_{k2}^2 & 0 \\ 0 & \sigma_{k1}^2 \end{pmatrix} = \begin{pmatrix} 1/\sigma_{k1}^2 & 0 \\ 0 & 1/\sigma_{k2}^2 \end{pmatrix}\\
+\quad&Calcul\ de\ |\Sigma_k|^{1/2}~:
+	& |\Sigma_k|^{1/2} &= \sqrt{\sigma_{k1}^2 . \sigma_{k2}^2 } = \sigma_{k1} . \sigma_{k2} \\
+\quad&Calcul\ de\ (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k)~:
+	& (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k) 
+	&= (x_1 - \mu_{k1}, x_2 - \mu_{k2}) \begin{pmatrix} 1/\sigma_{k1}^2 & 0 \\ 0 & 1/\sigma_{k2}^2 \end{pmatrix} \begin{pmatrix} x_1 - \mu_{k1} \\ x_2 - \mu_{k2} \end{pmatrix} \\
+	& & &= \left( \frac{1}{\sigma_{k1}^2} (x_1 - \mu_{k1}), \frac{1}{\sigma_{k2}^2} (x_2 - \mu_{k2})  \right) \begin{pmatrix} x_1 - \mu_{k1} \\ x_2 - \mu_{k2} \end{pmatrix} \\
+	& & &= \frac{(x_1 - \mu_{k1})^2}{\sigma_{k1}^2} + \frac{(x_2 - \mu_{k2})^2}{\sigma_{k2}^2}
+\end{align*}\\
+
+
+On obtient donc l'équation d'iso-densité suivante~:
+\begin{align*}
+	\frac{(x_1 - \mu_{k1})^2}{\sigma_{k1}^2} + \frac{(x_2 - \mu_{k2})^2}{\sigma_{k2}^2}
+		= -2 \ln (2\pi \sigma_{k1} \sigma_{k2}\textbf{c})
+\end{align*}
+\textbf{C'est l'équation d'une ellipse de centre $\mu = (\mu_{k1}, \mu_{k2})^t$}.\\
+
+
+\textbf{Notons que lorsque les variances $\sigma_{k1}$ et $\sigma_{k2}$ sont égales, on obtient l'équation du cercle de centre $\mu = (\mu_{k1}, \mu_{k2})^t$ et de rayon $r = \sqrt{-2 \sigma_k^2 \ln (2\pi \sigma_k^2 \textbf{c})}$}~:
+\begin{align*}
+(x_1 - \mu_{k1})^2 + (x_2 - \mu_{k2})^2 = -2 \sigma_k^2 \ln (2\pi \sigma_k^2 \textbf{c})\\
+\end{align*}\\
+~\\
+
+
+\textbf{Remarque sur la constante $\textbf{c}$}~:
+
+Pour éviter la racine carrée d'un nombre négatif, alors il faut borner $\textbf{c}$ tel que $2\pi\sigma_{k1}\sigma_{k2}\textbf{c} \in ]0,1]$~:
+\begin{align*}
+	2\pi\sigma_{k1}\sigma_{k2}\textbf{c} > 0 &\Leftrightarrow c > 0 \qquad si\ 2\pi\sigma_{k1}\sigma_{k2} > 0 \\
+	2\pi\sigma_{k1}\sigma_{k2}\textbf{c} \leq 1 &\Leftrightarrow c \leq \frac{1}{2\pi\sigma_{k1}\sigma_{k2}} \\
+	Et\ donc\ \textbf{c} \in \left]0, \frac{1}{2\pi\sigma_{k1}\sigma_{k2}}\right]
+\end{align*}
+Notons que lorsque $2\pi\sigma_{k1}\sigma_{k2}\textbf{c} = 1$, alors le rayon du cercle est nul, ce qui est équivalent à dire qu'on se situe au niveau du centre de gravité ($x_1 = \mu_{k1}$ et $x_2 = \mu_{k2}$).\\
+
+
+\textbf{Remarque sur les matrices $\Sigma$ diagonales}~:
+
+Si les matrices $\Sigma$ ne sont pas diagonales, alors cela influera sur les directions des axes de l'ellipsoïde~: lorsque $\Sigma$ est diagonale, ces axes sont parallèles aux axes des coordonnées.
+
+\subsection{Données \textit{Synth1}}
+
+Paramètres~:
+\[
+x = \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}, 
+\quad \mu_1 = \begin{pmatrix} \mu_{11} \\ \mu_{12} \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, 
+\quad \mu_2 = \begin{pmatrix} \mu_{21} \\ \mu_{22} \end{pmatrix} = \begin{pmatrix} -2 \\ 0 \end{pmatrix},
+\quad \Sigma_1 = \Sigma_2 = \begin{pmatrix} \sigma_{1}^2 & 0 \\ 0 & \sigma_{2}^2 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}
+\]
+
+
+Équation des courbes d'iso-densité~:
+\begin{center}
+	\begin{tabular}{c|c}
+		\centering
+		Classe $\omega_1$ & Classe $\omega_2$ \\
+		\hline
+		$ \begin{aligned}[t]
+		f_1(x) &= \textbf{c}_{\omega_1} \\
+		\Leftrightarrow x_1^2 + (x_2 - 1)^2 &= -2\ln(2 \pi \textbf{c}_{\omega_1}) \\
+		\Leftrightarrow x_1^2 + (x_2 - 1)^2 &= -2\ln(\textbf{c}_{\omega_1})
+		\end{aligned} $     
+		&
+		$ \begin{aligned}[t]
+		f_2(x) &= \textbf{c}_{\omega_2} \\
+		\Leftrightarrow (x_1 +2)^2 + x_2^2 &= -2\ln(2 \pi \textbf{c}_{\omega_2}) \\
+		\Leftrightarrow (x_1 +2)^2 + x_2^2 &= -2\ln(\textbf{c}_{\omega_2})
+		\end{aligned} $
+	\end{tabular}
+\end{center}
+
+
+
+\subsection{Données \textit{Synth2}}
+
+Paramètres~:
+\begin{align*}
+x = \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}, 
+\quad \mu_1 = \begin{pmatrix} \mu_{11} \\ \mu_{12} \end{pmatrix} = \begin{pmatrix} 3 \\ 0 \end{pmatrix}, 
+\quad \mu_2 = \begin{pmatrix} \mu_{21} \\ \mu_{22} \end{pmatrix} = \begin{pmatrix} -2 \\ 0 \end{pmatrix}, \\
+\quad \Sigma_1 = \begin{pmatrix} \sigma_{11}^2 & 0 \\ 0 & \sigma_{12}^2 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix},
+\quad \Sigma_2 = \begin{pmatrix} \sigma_{21}^2 & 0 \\ 0 & \sigma_{22}^2 \end{pmatrix} = \begin{pmatrix} 5 & 0 \\ 0 & 1 \end{pmatrix}
+\end{align*}
+
+
+Équation des courbes d'iso-densité~:
+\begin{center}
+	\begin{tabular}{c|c}
+		\centering
+		Classe $\omega_1$ & Classe $\omega_2$ \\
+		\hline
+		$ \begin{aligned}[t]
+		f_1(x) &= \textbf{c}_{\omega_1} \\
+		\Leftrightarrow (x_1 - 3)^2 + x_2^2 &= -2\ln(2 \pi \textbf{c}_{\omega_1}) \\
+		\Leftrightarrow (x_1 - 3)^2 + x_2^2 &= -2\ln(\textbf{c}_{\omega_1})
+		\end{aligned} $     
+		&
+		$ \begin{aligned}[t]
+		f_2(x) &= \textbf{c}_{\omega_2} \\
+		\Leftrightarrow \frac{1}{5}(x_1 +2)^2 + x_2^2 &= -2\ln(2 \pi \sqrt{5} \textbf{c}_{\omega_2}) \\
+		\Leftrightarrow \frac{1}{5}(x_1 +2)^2 + x_2^2 &= -2\ln(\sqrt{5}\textbf{c}_{\omega_2})
+		\end{aligned} $
+	\end{tabular}
+\end{center}
+
+
+
+\section{Règle de Bayes}
+
+Rappel de la règle de Bayes~:
+\begin{align*}
+	\delta^*(x) =  \left\{ 
+	\begin{array}{l}
+		a_1 \quad si\ \mathbb{P}(\omega_1|x) > \mathbb{P}(\omega_2|x) \\
+		a_2 \quad sinon
+	\end{array} 	\right. \\
+\end{align*}
+
+
+Dans le cas de deux classes, on peut exprimer la règle de Bayes de la manière suivante~:
+\begin{align*}
+\delta^*(x) = a_1 \quad 
+&\Leftrightarrow \quad  \mathbb{P}(\omega_1|x) > \mathbb{P}(\omega_2|x) \\
+&\Leftrightarrow \quad \frac{f_1(x)\pi_{1}}{f(x)} > \frac{f_2(x)\pi_{2}}{f(x)} \\
+&\Leftrightarrow \quad \frac{f_1(x)}{f_2(x)} > \frac{\pi_{2}}{\pi_{1}} \\
+\end{align*}
+
+
+On a $\pi_{1} = \pi_{2}$, alors la règle de Bayes devient~:
+\begin{align*}
+\delta^*(x) = a_1 \quad 
+&\Leftrightarrow \quad f_1(x) > f_2(x) \\
+&\Leftrightarrow \quad \frac{1}{(2\pi)^{p/2} |\Sigma_1|^{1/2}} \exp \left(-\frac{1}{2} (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1)\right) > \frac{1}{(2\pi)^{p/2} |\Sigma_2|^{1/2}} \exp \left(-\frac{1}{2} (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2)\right) \\
+&\Leftrightarrow \quad \exp \left(-\frac{1}{2} (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) \right) > \frac{|\Sigma_1|^{1/2}}{|\Sigma_2|^{1/2}} \exp \left(-\frac{1}{2} (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2)\right) \\
+&\Leftrightarrow \quad -\frac{1}{2} (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) - \frac{1}{2}\ln(|\Sigma_1|) > -\frac{1}{2} (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2)  -\frac{1}{2} \ln(|\Sigma_2|) \\
+\end{align*}
+
+
+
+
+
+\subsection{Règle de Bayes pour le jeu de données \textit{Synth1}}
+
+Dans le cadre des données \textit{Synth1}, $ \Sigma_{1} = \Sigma_{2} $, elles ne participent donc pas à la discrimination de la classe~:
+\begin{align*}
+\delta^*(x) = a_1 \quad 
+&\Leftrightarrow \quad f_1(x) > f_2(x) \\
+&\Leftrightarrow \quad -\frac{1}{2} (x - \mu_1)^t (x - \mu_1) > -\frac{1}{2} (x - \mu_2)^t(x - \mu_2) \\
+&\Leftrightarrow \quad -\frac{1}{2} \left( x^tx -2\mu_{1}^tx + \mu_{1}^t\mu_{1}  \right) > -\frac{1}{2} \left( x^tx -2\mu_{2}^tx + \mu_{2}^t\mu_{2}  \right) \\
+&\Leftrightarrow \quad -\frac{1}{2}x^tx + \mu_{1}^tx -\frac{1}{2} \mu_{1}^t\mu_{1} > -\frac{1}{2}x^tx + \mu_{2}^tx -\frac{1}{2} \mu_{2}^t\mu_{2} \\
+&\Leftrightarrow \quad \mu_{1}^tx -\frac{1}{2} \mu_{1}^t\mu_{1} > \mu_{2}^tx -\frac{1}{2} \mu_{2}^t\mu_{2} \\
+&\Leftrightarrow \quad \mu_{1}^tx - \mu_{2}^tx + \frac{1}{2}( \mu_{2}^t\mu_{2} - \mu_{1}^t\mu_{1} )  >  0 \\
+&\Leftrightarrow \quad (\mu_{1} - \mu_{2})^tx + \frac{1}{2}( \mu_{2}^t\mu_{2} - \mu_{1}^t\mu_{1} )   >  0 \\
+&\Leftrightarrow \quad x_1(\mu_{11} - \mu_{21}) + x_2(\mu_{12} - \mu_{22}) + \frac{1}{2} (\mu_{21}^2 + \mu_{22}^2 - \mu_{11}^2 - \mu_{12}^2) >  0
+\end{align*}
+La règle de Bayes $\delta^*(x)$ est donc une fonction linéaire de $x = (x_1, x_2)^t$ et d'une constante $ c = \frac{1}{2}( \mu_{2}^t\mu_{2} - \mu_{1}^t\mu_{1} )$.
+Si on remplace $\mu_{1}$ et $\mu_{2}$ par leurs valeurs numériques, on obtient~:
+\begin{align*}
+\delta^*(x) 
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ 2x_1 + x_2 + \frac{3}{2} > 0 \\
+a_2 \quad sinon
+\end{array} 	\right. \\
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ x_2 > -2x_1 -\frac{3}{2} \\
+a_2 \quad sinon
+\end{array} 	\right.
+\end{align*}
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=.5\linewidth]{img/3-2-1-front-dec-euc-Synth1}
+	\caption{\small Frontière de décision pour les données \textit{Synth-1000}}	
+	\label{fig:3-2-1-front-dec-euc-Synth1}%
+\end{figure}
+
+
+\subsection{Règle de Bayes pour le jeu de données \textit{Synth2}}
+
+On a ~:
+\begin{align*}
+\delta^*(x) = a_1 \quad 
+&\Leftrightarrow \quad f_1(x) > f_2(x) \\
+&\Leftrightarrow \quad -\frac{1}{2} (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) - \frac{1}{2}\ln(|\Sigma_1|) > -\frac{1}{2} (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2)  -\frac{1}{2} \ln(|\Sigma_2|) \\
+&\Leftrightarrow \quad - (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) - \ln(|\Sigma_1|) > - (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2)  - \ln(|\Sigma_2|) \\
+&\Leftrightarrow \quad (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2) - (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) - \ln(|\Sigma_1|) + \ln(|\Sigma_2|) > 0 \\
+\end{align*}
+
+Or $\Sigma_{1} = diag(\sigma_{11}^2, \sigma_{12}^2)$ et $\Sigma_{2} = diag(\sigma_{21}^2, \sigma_{22}^2)$ (elles sont toutes deux diagonales)~:
+\begin{align*}
+\Sigma_{1}^{-1} &= \begin{pmatrix} 1/\sigma_{11}^2 & 0 \\ 0 & 1/\sigma_{12}^2 \end{pmatrix} \\
+\Sigma_{2}^{-1} &= \begin{pmatrix} 1/\sigma_{21}^2 & 0 \\ 0 & 1/\sigma_{22}^2 \end{pmatrix} \\
+|\Sigma_1| &= \sigma_{11}^2 . \sigma_{12}^2  \\
+|\Sigma_2| &= \sigma_{21}^2 . \sigma_{22}^2  \\
+\end{align*}
+
+
+Calcul de $ (x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k) $~:
+\begin{align*}
+(x - \mu_k)^t \Sigma_k^{-1} (x - \mu_k) 
+&= ( x_1 - \mu_{k1}, x_2 - \mu_{k2}) \begin{pmatrix} \frac{1}{\sigma_{k1}^2} & 0 \\ 0 & \frac{1}{\sigma_{k2}^2} \end{pmatrix} \begin{pmatrix} x_1 - \mu_{k1} \\ x_2 - \mu_{k2} \end{pmatrix} \\
+&=  \left( \frac{x_1 - \mu_{k1}}{\sigma_{k1}^2} , \frac{x_2 - \mu_{k2}}{\sigma_{k2}^2} \right) \begin{pmatrix} x_1 - \mu_{k1} \\ x_2 - \mu_{k2} \end{pmatrix} \\
+&=   \frac{(x_1 - \mu_{k1})^2}{\sigma_{k1}^2} + \frac{(x_2 - \mu_{k2})^2}{\sigma_{k2}^2} \\
+&= \frac{x_1^2 - 2x_1\mu_{k1} + \mu_{k1}^2}{\sigma_{k1}^2}
+	+ \frac{x_2^2 - 2x_2\mu_{k2} + \mu_{k2}^2}{\sigma_{k2}^2} \\
+&= \frac{x_1(x_1 - 2\mu_{k1})}{\sigma_{k1}^2}
+	+ \frac{x_2(x_2 - 2\mu_{k2})}{\sigma_{k2}^2}
+	+ \frac{\mu_{k1}^2}{\sigma_{k1}^2}
+	+ \frac{\mu_{k2}^2}{\sigma_{k2}^2} \\
+\end{align*}
+
+
+
+On obtient donc~:
+\begin{align*}
+\delta^*(x) = a_1 \quad 
+&\Leftrightarrow \quad f_1(x) > f_2(x) \\
+&\Leftrightarrow \quad (x - \mu_2)^t \Sigma_2^{-1} (x - \mu_2) - (x - \mu_1)^t \Sigma_1^{-1} (x - \mu_1) - \ln(|\Sigma_1|) + \ln(|\Sigma_2|) > 0 \\
+&\Leftrightarrow \quad 
+	\frac{x_1(x_1 - 2\mu_{21})}{\sigma_{21}^2}
+	+ \frac{x_2(x_2 - 2\mu_{22})}{\sigma_{22}^2}
+	+ \frac{\mu_{21}^2}{\sigma_{21}^2}
+	+ \frac{\mu_{22}^2}{\sigma_{22}^2} \\
+&\qquad \qquad 
+	- \frac{x_1(x_1 - 2\mu_{11})}{\sigma_{11}^2}
+	- \frac{x_2(x_2 - 2\mu_{12})}{\sigma_{12}^2}
+	- \frac{\mu_{11}^2}{\sigma_{11}^2}
+	- \frac{\mu_{12}^2}{\sigma_{12}^2} \\
+&\qquad \qquad - \ln(\sigma_{11}^2 \sigma_{12}^2) + \ln(\sigma_{21}^2 \sigma_{22}^2) > 0 \\
+&\Leftrightarrow \quad 
+	x_1 \left( 
+		\frac{(x_1 - 2\mu_{21})}{\sigma_{21}^2} 
+		- \frac{(x_1 - 2\mu_{11})}{\sigma_{11}^2}
+	\right)
+	+ x_2 \left( 
+		\frac{(x_2 - 2\mu_{22})}{\sigma_{22}^2}
+		- \frac{(x_2 - 2\mu_{12})}{\sigma_{12}^2}
+	\right) \\
+	&\qquad \qquad + \left(  
+		\frac{\mu_{21}^2}{\sigma_{21}^2} 
+		+ \frac{\mu_{22}^2}{\sigma_{22}^2} 
+		+ \ln(\sigma_{21}^2 \sigma_{22}^2) 
+	\right) \\
+	&\qquad \qquad - \left(  
+		\frac{\mu_{11}^2}{\sigma_{11}^2} 
+		+ \frac{\mu_{12}^2}{\sigma_{12}^2} 
+		+ \ln(\sigma_{11}^2 \sigma_{12}^2)
+	\right) > 0
+\end{align*}
+
+
+La règle de Bayes $\delta^*(x)$ est donc fonction quadratique de $x = (x_1, x_2)^t$ et de deux constantes
+\begin{align*}
+c_1 &= - \left(  
+\frac{\mu_{11}^2}{\sigma_{11}^2} 
++ \frac{\mu_{12}^2}{\sigma_{12}^2} 
++ \ln(\sigma_{11}^2 \sigma_{12}^2)
+\right) \\
+c_2 &= \left(  
+\frac{\mu_{21}^2}{\sigma_{21}^2} 
++ \frac{\mu_{22}^2}{\sigma_{22}^2} 
++ \ln(\sigma_{21}^2 \sigma_{22}^2) 
+\right)
+\end{align*}
+
+
+Si on remplace $\mu_{1}$, $\mu_{2}$, $\sigma_{1}^2$ et $\sigma_{2}^2$ par leurs valeurs numériques, on obtient~:
+\begin{align*}
+\delta^*(x) 
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ \frac{1}{5}(-4x_1^2 + 34x_1) + \left(c_1\right) + \left(c_2\right) > 0 \\
+a_2 \quad sinon
+\end{array} 	\right. \\
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ \frac{1}{5}(-4x_1^2 + 34x_1) + \left(-9\right) + \left(\frac{4}{5} + \ln(5)\right) > 0 \\
+a_2 \quad sinon
+\end{array} 	\right. \\
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ \frac{1}{5}(-4x_1^2 + 34x_1) + \frac{1}{5} \left( 4 - 45 + 5\ln(5) \right) > 0 \\
+a_2 \quad sinon
+\end{array} 	\right. \\
+&=  \left\{ 
+\begin{array}{l}
+a_1 \quad si\ -4x_1^2 + 34x_1 > 41 - 5\ln(5) \\
+a_2 \quad sinon
+\end{array} 	\right.
+\end{align*}
+
+
+\section{Calcul de l'erreur de Bayes}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \appendix
+
+
+
+
+
+
+
+
 
 \chapter{Fonction \texttt{compute.sucess.rate()}}
 \begin{figure}[H]
