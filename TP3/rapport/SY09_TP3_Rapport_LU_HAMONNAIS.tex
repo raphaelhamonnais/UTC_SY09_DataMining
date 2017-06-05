@@ -231,7 +231,7 @@ Nous sommes ici dans le cas de la règle de Bayes de coûts $\{0,1\}$~: classer 
 		\item Pour chaque valeur $k$ de la liste \texttt{nppv}~;
 		\begin{itemize}
 			\item Obtenir les étiquettes prédites grâce à la fonction \texttt{kppv.val()}~;
-			\item Calculer le taux de succès de la discrimination grâce à la fonction \texttt{compute.sucess.rate()} ou bien \texttt{adjustedRandIndex()}~;
+			\item Calculer le taux de succès de la discrimination grâce à la fonction \texttt{compute.sucess.rate()} (voir \autoref{annexe:compute.sucess.rate}) ou bien \texttt{adjustedRandIndex()}~;
 			\item Si le taux de succès est égal au précédent, ajouter $k$ à la liste des $K$ optimum~;
 			\item Sinon le taux de succès est supérieur au précédent, remplace la liste des $K$ optimum par $k$~;
 			\item Sinon ne rien faire, le $k$ actuellement testé est moins efficace que le précédent~;
@@ -329,20 +329,20 @@ En déterminant de la sorte N séparations aléatoires de l’ensemble de donné
 \subsubsection{Notes sur les intervalles de confiances}
 On suppose que l'échantillon $E$ constitué des $N$ estimations $E_{1},...,E_{N}$ du taux d’erreur est  \textit{\textbf{iid}}~:
 \begin{itemize}
-	\item Les $N$ observations sont indépendantes car les ensembles de test, d'apprentissage et de validation sont tirés de façon aléatoire~;
+	\item Les $N$ observations peuvent être considérées comme indépendantes car les ensembles de test, d'apprentissage et de validation sont tirés de façon aléatoire~;
 	\item Les $N$ observations sont identiquement distribuées car, quand bien même on ne connaît pas la loi des observations originelles ayant conduit à l'obtention des taux d'erreur, l'échantillon est constituée de moyennes, qui suivent par définition une loi gaussienne.
 \end{itemize}
 
-La variance étant inconnue, on peut alors approcher $\epsilon$ (l'espérance de l'échantillon) avec la loi de Student à $N-1$ degrés de liberté~:
+La variance étant inconnue, on peut alors approcher $\hat{\epsilon} = \overline{E}$ (l'espérance de l'échantillon) avec la loi de Student à $N-1$ degrés de liberté~:
 
 \[
-\sqrt{N} \times  \frac{\overline{E_{N}} - \epsilon}{\sigma^*} \sim S(N-1)
+\sqrt{N} \times  \frac{\overline{E} - \epsilon}{\sigma^*} \sim S(N-1)
 \]
 
 Et donc l'intervalle de confiance est donné par~:
 
 \[
-IC(\epsilon) = [ \overline{E_{N}} - t_{1-\frac{\alpha}{2}} \frac{\sigma^*}{\sqrt{N}} , \overline{E_{N}} + t_{1-\frac{\alpha}{2}} \frac{\sigma^*}{\sqrt{N}}]
+IC(\epsilon) = [ \overline{E} - t_{1-\frac{\alpha}{2}} \frac{\sigma^*}{\sqrt{N}} , \overline{E} + t_{1-\frac{\alpha}{2}} \frac{\sigma^*}{\sqrt{N}}]
 \]
 où $t_{1-\frac{\alpha}{2}}$ est le fractile d'ordre $1-\frac{\alpha}{2}$ de la loi de Student à $N-1$ degrés de liberté.
 
@@ -363,6 +363,7 @@ De plus, le classifieur étant Euclidien, il aura tendance à mieux marcher si l
 
 
 \subsection{Jeux de données \textit{Synth1-40}, \textit{Synth1-100}, \textit{Synth1-500} et \textit{Synth1-1000}}
+\label{subsection:estimation-erreur-synth1}
 
 
 
@@ -585,6 +586,7 @@ Comparaison avec le classifieur Euclidien~:
 \end{itemize}
 
 D'après l'estimation des paramètres, les données ont été générées de manière à respecter les hypothèses du classifieur Euclidien. Il est donc logique que ce dernier soit plus efficace sur les données de test. De plus, le fait d'avoir la même dispersion dans les deux classes peut pénaliser le travail du classifieur des $K$ plus proches voisins~: plus la dispersion d'une classe est faible, plus ses voisins sont proches et donc plus discrimination pourra être efficace pour cette classe.
+Enfin, notons que le classifieur des K plus proches voisins ne suit pas un modèle~: il se base complètement sur les données d'apprentissage pour discriminer les données de test. Si ces dernières ne sont pas représentatives, alors la classification aura un fort taux d'échec.
 
 
 
@@ -594,7 +596,7 @@ D'après l'estimation des paramètres, les données ont été générées de man
 
 
 \subsection{Jeux de données \textit{Synth2-1000}}
-
+\label{subsection:estimation-erreur-synth2}
 \subsubsection{Estimation des paramètres}
 
 
@@ -980,7 +982,7 @@ Les données sont obtenues pour chaque classe en suivant une loi normale bi-vari
 	X_{\omega_2} \sim N_{p=2}(\mu_{\omega_2}, \Sigma_{\omega_2}) \\
 \end{align*}
 
-Une des propriété nous dit que si $X \sim N_{p}(\mu, \Sigma)$ alors toutes les lois marginales et conditionnelles sont des lois normales.\\
+Une des propriétés nous dit que si $X \sim N_{p}(\mu, \Sigma)$ alors toutes les lois marginales et conditionnelles sont des lois normales.\\
 
 
 Les variables $X^1$ et $X^2$ suivent donc de manière générale, pour chaque classe, les lois suivantes~:
@@ -1216,6 +1218,7 @@ a_2 \quad sinon
 \end{array} 	\right.
 \end{align*}
 
+La frontière de décision a donc pour équation $x_2 + 2x_1 +\frac{3}{2} = 0$~:
 \begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
@@ -1324,11 +1327,6 @@ a_2 \quad sinon
 \end{array} 	\right. \\
 &=  \left\{ 
 \begin{array}{l}
-a_1 \quad si\ \frac{1}{5}(-4x_1^2 + 34x_1) + \left(-9\right) + \left(\frac{4}{5} + \ln(5)\right) > 0 \\
-a_2 \quad sinon
-\end{array} 	\right. \\
-&=  \left\{ 
-\begin{array}{l}
 a_1 \quad si\ \frac{1}{5}(-4x_1^2 + 34x_1) + \frac{1}{5} \left( 4 - 45 + 5\ln(5) \right) > 0 \\
 a_2 \quad sinon
 \end{array} 	\right. \\
@@ -1340,18 +1338,61 @@ a_2 \quad sinon
 \end{align*}
 
 
+La frontière de décision a donc pour équation $-4x_1^2 + 34x_1 -41 + 5\ln(5) = 0$
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\includegraphics[width=.5\linewidth]{img/3-2-1-front-dec-euc-Synth2}
+	\caption{\small Frontière de décision pour les données \textit{Synth-2000}}	
+	\label{fig:3-2-1-front-dec-euc-Synth2}%
+\end{figure}
+
+
 \section{Calcul de l'erreur de Bayes}
 
 
+\subsection{Jeu de données \textit{Synth1}}
+
+Dans le cadre du classifieur euclidien, avec $\Sigma_k = \Sigma \ \forall \ k \in \{1, ...,  g\}$ diagonale et scalaire, $\pi_{1} = \pi_{2}$, l'erreur de Bayes est donnée par la formule suivante~:
+\begin{align*}
+	\epsilon^* = \phi \left(-\frac{\Delta}{2}\right)
+\end{align*}
+avec $\Delta^2 = (\mu_{2} - \mu_{1})^t\Sigma^{-1}(\mu_{2} - \mu_{1}) = 5$.\\
 
 
+On obtient donc~:
+\begin{align*}
+\epsilon^* 
+= \phi \left(-\frac{\Delta}{2}\right)
+= \phi \left(-\frac{\sqrt{5}}{2}\right)
+= 0.13
+\end{align*}
+
+On remarque que les estimation du taux d'erreur $ \hat{\epsilon}$ obtenues sur les données \textit{Synth1} (voir \autoref{subsection:estimation-erreur-synth1}) convergent vers la borne de l'erreur théorique $\epsilon^* = 0.13$ lorsque la taille des jeux de données augmente.
+
+\subsection{Jeu de données \textit{Synth2}}
+
+Dans le cadre des données \textit{Synth2}, on a toujours $\pi_{1} = \pi_{2}$, mais les matrices de variances ne sont plus égales entre-elles.\\
+
+On va donc utiliser la borne de Bhattacharrya afin d'approximer l'erreur de Bayes~:
+\begin{align*}
+\epsilon^* &\leq \sqrt{\pi_{1}\pi_{2}} \int_{\mathbb{R}_p} \sqrt{f_1(x)f_2(x)}dx \\
+\Leftrightarrow \quad \epsilon^* &\leq \sqrt{\pi_{1}\pi_{2}} \exp(-\Delta_B^2)
+\end{align*}
+
+Nous sommes dans le cas gaussien, alors~:
+\begin{align*}
+\Delta_B^2 = \frac{1}{8}(\mu_{2} - \mu_1)^t \left(\frac{\Sigma_{1} + \Sigma_{2}}{2}\right)^{-1} (\mu_{2} - \mu_1)
+	+ \frac{1}{2} \ln \left( \frac{|\frac{\Sigma_{1} + \Sigma_{2}}{2}|}{\sqrt{|\Sigma_1||\Sigma_2|}} \right)
+\end{align*}
+peut être utilisée dans le calcul de la borne supérieure de l'erreur de Bayes.\\
 
 
+On obtient finalement, après calcul, $\epsilon^* \leq 0.15$.
 
-
-
-
-
+On remarque que les estimation du taux d'erreur $ \hat{\epsilon}$ obtenues sur les données \textit{Synth2} (voir \autoref{subsection:estimation-erreur-synth2}) est bien inférieure à la borne maximale de l'erreur de Bayes, car on avait obtenu $\hat{\epsilon}_{app} = 0.062$ et $\hat{\epsilon}_{test} = 0.063$.\\
+Cela peut s'expliquer si l'on regarde l'estimation des paramètres, et plus particulièrement $\Sigma_{2}$~: la dispersion de la première variable $X^1$, sensée valoir $5$, vaut $4.43$ pour le jeu de données \textit{Synth2-1000}. On a une dispersion moins importante sur l'axe $X^1$ et donc une zone de chevauchement moins grande, d'où le faible taux d'erreur comparé à la borne maximale de l'erreur de Bayes.
 
 
 
@@ -1389,6 +1430,7 @@ a_2 \quad sinon
 
 
 \chapter{Fonction \texttt{compute.sucess.rate()}}
+\label{annexe:compute.sucess.rate}
 \begin{figure}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
