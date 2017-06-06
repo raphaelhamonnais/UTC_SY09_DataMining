@@ -16,7 +16,11 @@ prob.ad <- function(param, X, z, niveaux)
     grille <- cbind(rep.int(grilleX,times=rep(naffY,naffX)),rep(grilleY,naffX))
 
     # calcul des valeurs de la fonction 
-    valf <- ad.val(param, grille)$prob[,1]
+    #valf <- ad.val(param, grille)$prob[,1]
+    #valf <- t(t(ad.val(param, grille)$pw1))
+    valf <- ad.val(param, grille)$pw1
+    hist(valf)
     plot(X, col=c("red","green","blue","magenta","orange")[z])
-    contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=FALSE, levels=niveaux)
+    #contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=FALSE, levels=niveaux)
+    contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=TRUE, levels=niveaux)
 }

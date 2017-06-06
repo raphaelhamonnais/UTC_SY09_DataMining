@@ -1,4 +1,4 @@
-install.packages("MASS")
+#install.packages("MASS")
 library("MASS")
 
 source("src/fonctions/mvdnorm.r")
@@ -119,11 +119,9 @@ Xtst <- testData[,1:2]
 ztst <- testData[,3]
 
 params = adq.app(Xtst,ztst)
-
 val = ad.val(params,Xtst)
-
 cbind(round(t(t(val$pw1)), 3),
       round(t(t(val$pw2)), 3),
       t(t(val$ztst))
 )
-
+prob.ad(params, Xtst, ztst, seq(0, 1, 0.1))
