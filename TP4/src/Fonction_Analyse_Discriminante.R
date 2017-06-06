@@ -1,3 +1,6 @@
+install.packages("MASS")
+library("MASS")
+
 source("src/fonctions/mvdnorm.r")
 source("src/fonctions/prob.ad.R")
 
@@ -89,3 +92,38 @@ params = nba.app(Xapp,zapp)
 params$pi
 params$mu
 params$sigma
+
+
+ad.val <- function(params, Xtst) {
+  n = nrow(Xtst)
+  f1 = mvdnorm(Xtst, params$mu[[1]], params$sigma[[1]])
+  f2 = mvdnorm(Xtst, params$mu[[2]], params$sigma[[2]])
+  discrimination = list()
+  discrimination[["pw1"]] = vector(length = n)
+  discrimination[["pw2"]] = vector(length = n)
+  discrimination[["ztst"]] = vector(length = n)
+  for (i in 1 : n) {
+    discrimination[["pw1"]][i] = f1[i]*params$pi[[1]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    discrimination[["pw2"]][i] = f2[i]*params$pi[[2]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    if(discrimination[["pw1"]][i] > discrimination[["pw2"]][i])
+      discrimination[["ztst"]][i] = 1
+    else
+      discrimination[["ztst"]][i] = 2
+  }
+  discrimination[["ztst"]] = factor(discrimination[["ztst"]])
+  return(discrimination)
+}
+
+testData <- read.csv("data/Synth1-40.csv")
+Xtst <- testData[,1:2]
+ztst <- testData[,3]
+
+params = adq.app(Xtst,ztst)
+
+val = ad.val(params,Xtst)
+
+cbind(round(t(t(val$pw1)), 3),
+      round(t(t(val$pw2)), 3),
+      t(t(val$ztst))
+)
+
