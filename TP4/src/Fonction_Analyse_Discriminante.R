@@ -4,26 +4,27 @@ library("MASS")
 source("src/fonctions/mvdnorm.r")
 source("src/fonctions/prob.ad.R")
 
-appData <- read.csv("data/Synth1-40.csv")
-Xapp <- appData[,1:2]
-zapp <- factor(appData[,3])
-zapp <- factor(zapp)
-g = length(levels(zapp)) # nombre de classes
-n = dim(Xapp)[1] # n = nombre d'individus total
-p = dim(Xapp)[2] # p = nombre de variables
 
 # calcul des proportions
-prop.app = function(zapp) {
+prop.app = function(Xapp, zapp) {
     zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
     prop = list()
     for (k in 1:g) {
         prop[[k]] = table(zapp)[k] / length(zapp)
     }
     return(prop)
 }
+
+
 # calcul des centres de gravité
 mu.app = function(Xapp, zapp) {
     zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
     mu = list()
     for (k in 1:g) {
         dataClassK = Xapp[zapp == levels(zapp)[k],]
@@ -31,9 +32,14 @@ mu.app = function(Xapp, zapp) {
     }
     return(mu)
 }
+
+
 # calcul des matrices de variance
 sigma.app = function(Xapp, zapp) {
     zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
     sigma = list()
     for (k in 1:g) {
         dataClassK = Xapp[zapp == levels(zapp)[k],]
@@ -43,23 +49,21 @@ sigma.app = function(Xapp, zapp) {
 }
 
 
-
 adq.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
     params = list()
-    params[["pi"]] = prop.app(zapp)
+    params[["pi"]] = prop.app(Xapp, zapp)
     params[["mu"]] = mu.app(Xapp, zapp)
     params[["sigma"]] = sigma.app(Xapp, zapp)
     return(params)
 }
-params = adq.app(Xapp,zapp)
-params$pi
-params$mu
-
 
 
 adl.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
     params = list()
-    prop = prop.app(zapp)
+    prop = prop.app(Xapp, zapp)
     mu = mu.app(Xapp, zapp)
     classes_sigma = sigma.app(Xapp, zapp)
     sigma = matrix(0, g, g)
@@ -71,15 +75,13 @@ adl.app <- function(Xapp, zapp) {
     params[["mu"]] = mu
     return(params)
 }
-params = adl.app(Xapp,zapp)
-params$pi
-params$mu
-params$sigma
 
 
 nba.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
     params = list()
-    prop = prop.app(zapp)
+    prop = prop.app(Xapp, zapp)
     mu = mu.app(Xapp, zapp)
     classes_sigma = sigma.app(Xapp, zapp)
     for (k in 1:g)
@@ -89,45 +91,74 @@ nba.app <- function(Xapp, zapp) {
     params[["sigma"]] = classes_sigma
     return(params)
 }
+
+
+ad.val <- function(params, Xtst) {
+    n = nrow(Xtst)
+    f1 = mvdnorm(Xtst, params$mu[[1]], params$sigma[[1]])
+    f2 = mvdnorm(Xtst, params$mu[[2]], params$sigma[[2]])
+    discrimination = list()
+    discrimination[["pw1"]] = vector(length = n)
+    discrimination[["pw2"]] = vector(length = n)
+    discrimination[["ztst"]] = vector(length = n)
+    for (i in 1 : n) {
+    discrimination[["pw1"]][i] = f1[i]*params$pi[[1]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    discrimination[["pw2"]][i] = f2[i]*params$pi[[2]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    if(discrimination[["pw1"]][i] > discrimination[["pw2"]][i])
+        discrimination[["ztst"]][i] = 1
+    else
+        discrimination[["ztst"]][i] = 2
+    }
+    discrimination[["ztst"]] = factor(discrimination[["ztst"]])
+    return(discrimination)
+}
+
+
+
+
+
+########### Tests des fonctions ###########
+appData <- read.csv("data/Synth1-40.csv")
+Xapp <- appData[,1:2]
+zapp <- factor(appData[,3])
+
+testData <- read.csv("data/Synth1-1000.csv")
+Xtst <- testData[,1:2]
+ztst <- testData[,3]
+
+
+# test adq.app
+params = adq.app(Xapp,zapp)
+params$pi
+params$mu
+params$sigma
+
+
+# test adl.app
+params = adl.app(Xapp,zapp)
+params$pi
+params$mu
+params$sigma
+
+
+# test nba.app
 params = nba.app(Xapp,zapp)
 params$pi
 params$mu
 params$sigma
 
 
-ad.val <- function(params, Xtst) {
-  n = nrow(Xtst)
-  f1 = mvdnorm(Xtst, params$mu[[1]], params$sigma[[1]])
-  f2 = mvdnorm(Xtst, params$mu[[2]], params$sigma[[2]])
-  discrimination = list()
-  discrimination[["pw1"]] = vector(length = n)
-  discrimination[["pw2"]] = vector(length = n)
-  discrimination[["ztst"]] = vector(length = n)
-  for (i in 1 : n) {
-    discrimination[["pw1"]][i] = f1[i]*params$pi[[1]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
-    discrimination[["pw2"]][i] = f2[i]*params$pi[[2]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
-    if(discrimination[["pw1"]][i] > discrimination[["pw2"]][i])
-      discrimination[["ztst"]][i] = 1
-    else
-      discrimination[["ztst"]][i] = 2
-  }
-  discrimination[["ztst"]] = factor(discrimination[["ztst"]])
-  return(discrimination)
-}
-
-testData <- read.csv("data/Synth1-40.csv")
-Xtst <- testData[,1:2]
-ztst <- testData[,3]
-
-params = adq.app(Xtst,ztst)
-val = ad.val(params,Xtst)
-cbind(round(t(t(val$pw1)), 3),
-      round(t(t(val$pw2)), 3),
-      t(t(val$ztst))
-)
-prob.ad(params, Xtst, ztst, seq(0, 1, 0.25))
+# test ad.val
+params = adq.app(Xapp, zapp)
+val = ad.val(params,Xapp)
+prediction_and_posteriori_prob = cbind(round(t(t(val$pw1)), 3), round(t(t(val$pw2)), 3), t(t(val$ztst)))
+prediction_and_posteriori_prob
 
 
-params = adl.app(Xtst,ztst)
-params
-prob.ad(params, Xtst, ztst, seq(0, 1, 0.25))
+# visualisation
+params = adq.app(Xapp, zapp)
+prob.ad(params, Xapp, zapp, seq(0, 1, 0.25))
+params = adl.app(Xapp, zapp)
+prob.ad(params, Xapp, zapp, seq(0, 1, 0.25))
+params = nba.app(Xapp, zapp)
+prob.ad(params, Xapp, zapp, seq(0, 1, 0.25))
