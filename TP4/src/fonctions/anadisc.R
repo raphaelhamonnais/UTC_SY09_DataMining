@@ -1,97 +1,107 @@
-adq.app <- function(Xapp, zapp)
-{
-	n <- dim(Xapp)[1]
-	p <- dim(Xapp)[2]
-	g <- max(unique(zapp))
-
-	param <- NULL
-	param$MCov <- array(0, c(p,p,g))
-	param$mean <- array(0, c(g,p))
-	param$prop <- rep(0, g)
-
-	for (k in 1:g)
-	{
-		indk <- which(zapp==k)
-
-		param$MCov[,,k] <- 
-		param$mean[k,] <- 
-		param$prop[k] <- 
-	}
-
-	param
+# calcul des proportions
+prop.app = function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
+    prop = list()
+    for (k in 1:g) {
+        prop[[k]] = table(zapp)[k] / length(zapp)
+    }
+    return(prop)
 }
 
-adl.app <- function(Xapp, zapp)
-{
-	n <- dim(Xapp)[1]
-	p <- dim(Xapp)[2]
-	g <- max(unique(zapp))
 
-	param <- NULL
-	MCov <- array(0, c(p,p))
-	param$MCov <- array(0, c(p,p,g))
-	param$mean <- array(0, c(g,p))
-	param$prop <- rep(0, g)
-
-	for (k in 1:g)
-	{
-		indk <- which(zapp==k)
-
-		MCov <- 
-		param$mean[k,] <- 
-		param$prop[k] <- 
-	}
-	MCov <- 
-	for (k in 1:g)
-	{
-		param$MCov[,,k] <- 
-	}
-
-	param
+# calcul des centres de gravité
+mu.app = function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
+    mu = list()
+    for (k in 1:g) {
+        dataClassK = Xapp[zapp == levels(zapp)[k],]
+        mu[[k]] = apply(dataClassK, MARGIN = 2, mean)
+    }
+    return(mu)
 }
 
-nba.app <- function(Xapp, zapp)
-{
-	n <- dim(Xapp)[1]
-	p <- dim(Xapp)[2]
-	g <- max(unique(zapp))
 
-	param <- NULL
-	param$MCov <- array(0, c(p,p,g))
-	param$mean <- array(0, c(g,p))
-	param$prop <- rep(0, g)
-
-	for (k in 1:g)
-	{
-		indk <- which(zapp==k)
-
-		param$MCov[,,k] <- 
-		param$mean[k,] <- 
-		param$prop[k] <- 
-	}
-
-	param
+# calcul des matrices de variance
+sigma.app = function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    n = dim(Xapp)[1] # n = nombre d'individus total
+    p = dim(Xapp)[2] # p = nombre de variables
+    sigma = list()
+    for (k in 1:g) {
+        dataClassK = Xapp[zapp == levels(zapp)[k],]
+        sigma[[k]] = var(dataClassK)
+    }
+    return(sigma)
 }
 
-ad.val <- function(param, Xtst)
-{
-	n <- dim(Xtst)[1]
-	p <- dim(Xtst)[2]
-	g <- length(param$prop)
 
-	out <- NULL
+adq.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
+    params = list()
+    params[["pi"]] = prop.app(Xapp, zapp)
+    params[["mu"]] = mu.app(Xapp, zapp)
+    params[["sigma"]] = sigma.app(Xapp, zapp)
+    return(params)
+}
 
-	prob <- matrix(0, nrow=n, ncol=g)
 
-	for (k in 1:g)
-	{
-		prob[,k] <- 
-	}
-	prob <- 
-	pred <- max.col(prob)
+adl.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    params = list()
+    prop = prop.app(Xapp, zapp)
+    mu = mu.app(Xapp, zapp)
+    classes_sigma = sigma.app(Xapp, zapp)
+    sigma = matrix(0, g, g)
+    for (k in 1:g)
+        sigma = sigma + (prop[[k]] * classes_sigma[[k]])
+    for (k in 1:g)
+        params[["sigma"]][[k]] = sigma
+    params[["pi"]] = prop
+    params[["mu"]] = mu
+    return(params)
+}
 
-	out$prob <- prob
-	out$pred <- pred
 
-	out
+nba.app <- function(Xapp, zapp) {
+    zapp = factor(zapp)
+    g = length(levels(zapp)) # nombre de classes
+    params = list()
+    prop = prop.app(Xapp, zapp)
+    mu = mu.app(Xapp, zapp)
+    classes_sigma = sigma.app(Xapp, zapp)
+    for (k in 1:g)
+        classes_sigma[[k]] = diag(diag(classes_sigma[[k]]))
+    params[["pi"]] = prop
+    params[["mu"]] = mu
+    params[["sigma"]] = classes_sigma
+    return(params)
+}
+
+
+ad.val <- function(params, Xtst) {
+    n = nrow(Xtst)
+    f1 = mvdnorm(Xtst, params$mu[[1]], params$sigma[[1]])
+    f2 = mvdnorm(Xtst, params$mu[[2]], params$sigma[[2]])
+    discrimination = list()
+    discrimination[["pw1"]] = vector(length = n)
+    discrimination[["pw2"]] = vector(length = n)
+    discrimination[["ztst"]] = vector(length = n)
+    for (i in 1 : n) {
+    discrimination[["pw1"]][i] = f1[i]*params$pi[[1]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    discrimination[["pw2"]][i] = f2[i]*params$pi[[2]]/(f1[i]*params$pi[[1]]+ f2[i]*params$pi[[2]])
+    if(discrimination[["pw1"]][i] > discrimination[["pw2"]][i])
+        discrimination[["ztst"]][i] = 1
+    else
+        discrimination[["ztst"]][i] = 2
+    }
+    discrimination[["ztst"]] = factor(discrimination[["ztst"]])
+    return(discrimination)
 }
