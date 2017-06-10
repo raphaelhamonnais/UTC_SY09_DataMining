@@ -65,9 +65,10 @@ adl.app <- function(Xapp, zapp) {
     sigma = matrix(0, g, g)
     for (k in 1:g)
         sigma = sigma + (prop[[k]] * classes_sigma[[k]])
+    for (k in 1:g)
+        params[["sigma"]][[k]] = sigma
     params[["pi"]] = prop
     params[["mu"]] = mu
-    params[["sigma"]] = sigma
     return(params)
 }
 params = adl.app(Xapp,zapp)
@@ -124,4 +125,9 @@ cbind(round(t(t(val$pw1)), 3),
       round(t(t(val$pw2)), 3),
       t(t(val$ztst))
 )
-prob.ad(params, Xtst, ztst, seq(0, 1, 0.1))
+prob.ad(params, Xtst, ztst, seq(0, 1, 0.25))
+
+
+params = adl.app(Xtst,ztst)
+params
+prob.ad(params, Xtst, ztst, seq(0, 1, 0.25))
