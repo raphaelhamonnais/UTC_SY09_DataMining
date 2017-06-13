@@ -1,7 +1,11 @@
 #install.packages("tree")
+#install.packages("rpart")
+install.packages("rpart.plot")
+library("rpart")
+library("rpart.plot")
 library("tree")
 
-tree.app <- function(Xapp,zapp,Xtst,ztst)
+tree.app <- function(Xapp, zapp, Xtst)
 {
   zapp = factor(zapp)
   # obtenir l'arbre en utilisant le parametre control
@@ -18,18 +22,10 @@ tree.app <- function(Xapp,zapp,Xtst,ztst)
   testPred <- predict(prune_tree,newdata = Xtst)
   
   # classer des donnees du test selon le resultat predicted
-  n = dim(Xtst)[1] # nombre d'individu des donnees du test
-  
-  for(i in 1 : n) {
-    if(testPred[i,1] > 0.5)
-      ztst[i] = 1
-    else
-      ztst[i] = 2
-  }
-  
-  test_classed = cbind(Xtst,ztst)
-  
-  return(test_classed)
+  #plot(tree)
+  #text(tree)
+  pred <- max.col(testPred)
+  return(factor(pred))
 }
 
 ##############Test#######################
@@ -41,5 +37,4 @@ testData <- read.csv("data/Synth1-40.csv")
 Xtst <- testData[,1:2]
 ztst <- testData[,3]
 
-tree.app(Xapp,zapp,Xtst,ztst)
-
+tree.app(Xapp,zapp,Xtst)

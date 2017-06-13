@@ -55,13 +55,18 @@ adq.app <- function(Xapp, zapp) {
 adl.app <- function(Xapp, zapp) {
     zapp = factor(zapp)
     g = length(levels(zapp)) # nombre de classes
+    p = dim(Xapp)[2]
     params = list()
     prop = prop.app(Xapp, zapp)
     mu = mu.app(Xapp, zapp)
     classes_sigma = sigma.app(Xapp, zapp)
-    sigma = matrix(0, g, g)
-    for (k in 1:g)
+    sigma = matrix(0, p, p)
+    for (k in 1:g) {
+        #print(prop[[k]])
+        #print(classes_sigma[[k]])
+        #print(sigma)
         sigma = sigma + (prop[[k]] * classes_sigma[[k]])
+    }
     for (k in 1:g)
         params[["sigma"]][[k]] = sigma
     params[["pi"]] = prop

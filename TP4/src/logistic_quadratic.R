@@ -92,7 +92,9 @@ log_quad.val <- function(beta, Xtst)
 		Xtst  <- cbind(rep(1,m),Xtst)
 	}
 
-	prob <- postprob(beta,Xtst) # les probabilités a posteriori
+	prob_w1 <- postprob(beta, Xtst) # proportions à postériori de la classe 1
+	prob_w2 <- 1 - prob_w1
+	prob <- cbind(prob_w1, prob_w2) # les probabilités a posteriori
 	pred <- max.col(prob) # trouver la position de la valeur maximale pour chaque ligne de matrice
 
 	out <- NULL
@@ -127,10 +129,9 @@ ztst <- testData[,3]
 log_quad1 <- log_quad.app(Xtst, ztst, T, 1e-5)
 Xtst1 <- log_quad1$X
 beta1 = log_quad1$beta
-
 log_quad.val(beta1,Xtst1)
 
-prob.log2(beta1, Xtst, ztst, seq(0,1,0.1))
+prob.log2(beta1, Xtst, ztst, seq(0,1,0.2))
 
 # situation sans le coordonnée d'origine 
 log_quad2 <- log_quad.app(Xtst, ztst, F, 1e-5)
@@ -139,5 +140,5 @@ beta2 = log_quad2$beta
 
 log_quad.val(beta2,Xtst2)
 
-prob.log2(beta2, Xtst, ztst, seq(0,1,0.1)) 
+prob.log2(beta2, Xtst, ztst, seq(0,1,0.25)) 
 
