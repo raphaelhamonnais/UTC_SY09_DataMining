@@ -117,9 +117,9 @@ meanErrorRates <- function(fileNames, model) {
             print("working with data/bcw.csv")
             nbTests = 100
         }
-        if (file == "data/spam2.csv") {
-            print("working with data/spam2.csv")
-        }
+        # if (file == "data/spam2.csv") {
+        #     print("working with data/spam2.csv")
+        # }
         
         X = data[,1:zIndex-1]
         Z = data[,zIndex]
@@ -131,7 +131,9 @@ meanErrorRates <- function(fileNames, model) {
             sample = separ1(X,Z)
             if (model == "Quadratic Discriminat Analysis") {
                 params = adq.app(sample$Xapp, sample$zapp) # calculer les paramètres du modèle
+                print(params)
                 testPredictedClasses = ad.val(params, sample$Xtst) # prédire les classes du jeu de données de test
+                # print(testPredictedClasses)
                 testErrorRate = 1 - compute.sucess.rate(testPredictedClasses$ztst, sample$ztst)
             } 
             else if (model == "Linear Discriminat Analysis") {
@@ -182,32 +184,32 @@ meanErrorRates <- function(fileNames, model) {
 }
 
 
-spam = read.csv("data/spam.csv", header = T)
-zIndex = dim(spam)[2] # nombre de variable
-# summary(spam)
-# head(spam)
-X = spam[,2:(zIndex-1)]
-Z = spam[,zIndex]
-
-# PCA pour des donnees
-spam_pca = prcomp(X, center = FALSE,  scale. = FALSE)
-summary(spam_pca)
-
-
-# On prend le 90% de données comme les composants principales
-spam_pca_new = spam_pca$x[,1:2]
-# head(spam_pca_new)
-spam_new = cbind(spam_pca_new,Z)
-# head(spam_new)
-# créer un nouveau fichier csv pour les données spam.csv
-write.csv(spam_new, file = "data/spam2.csv", row.names = FALSE)
+# spam = read.csv("data/spam.csv", header = T)
+# zIndex = dim(spam)[2] # nombre de variable
+# # summary(spam)
+# # head(spam)
+# X = spam[,2:(zIndex-1)]
+# Z = spam[,zIndex]
+# 
+# # PCA pour des donnees
+# spam_pca = prcomp(X, center = FALSE,  scale. = FALSE)
+# summary(spam_pca)
+# 
+# 
+# # On prend le 90% de données comme les composants principales
+# spam_pca_new = spam_pca$x[,1:2]
+# # head(spam_pca_new)
+# spam_new = cbind(spam_pca_new,Z)
+# # head(spam_new)
+# # créer un nouveau fichier csv pour les données spam.csv
+# write.csv(spam_new, file = "data/spam2.csv", row.names = FALSE)
 
 
 fileNames = c("data/Synth1-1000.csv","data/Synth2-1000.csv","data/Synth3-1000.csv")
 fileNames = c("data/Pima.csv")
 fileNames = c("data/bcw.csv")
 # fileNames = c("data/spam.csv")
-fileNames = c("data/spam2.csv")
+# fileNames = c("data/spam2.csv")
 model = c("Quadratic Discriminat Analysis", 
           "Linear Discriminat Analysis", 
           "Naive Bayes classifier", 
@@ -220,9 +222,6 @@ for (m in model) {
     #print(m)
     meanErrorRates(fileNames,m)
 }
-
-
-
 
 
 
