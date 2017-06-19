@@ -1,61 +1,54 @@
-# construire des données pour la régression logistique et calculer les paramètres
-log.app <- function(Xapp, zapp, intr, epsi)
-{
-    n <- dim(Xapp)[1] # nombre d'individu
-    p <- dim(Xapp)[2] # nombre de variable
+log.app <- function(Xapp, zapp, intr, epsi) {
+    n <- dim(Xapp)[1]
+    p <- dim(Xapp)[2]
     
     Xapp <- as.matrix(Xapp)
     
-    if (intr == T) # on ajoute une ordonnée à l'origine
-    {
+    if (intr == T) { # on ajoute une ordonnée à l'origine
         Xapp <- cbind(rep(1,n),Xapp)
         p <- p + 1
     }
     
     targ <- matrix(as.numeric(zapp),nrow=n) # ti: la réalisation d'une variable Ti~B(pi)
-    targ[which(targ==2),] <- 0              # remplacer la classe 2 à 0
+    targ[which(targ==2),] <- 0              # remplacer la classe 2 par 0
     Xapp_transposed <- t(Xapp)
     
     beta <- matrix(0,nrow=p,ncol=1)
     
     conv <- F
     iter <- 0
-    while (conv == F)
-    {
+    while (conv == F) {
         iter <- iter + 1
         beta_old <- beta
         
-        prob_w1 <- postprob(beta, Xapp) # proportions à postériori de la classe 1
+        prob_w1 <- postprob(beta, Xapp) # P(w1|x)
         prob_w2 <- 1 - prob_w1
-        MatW <- diag(as.numeric(prob_w1 * prob_w2))    # W: la matrice diagonale de terme Wii = pi(1-pi)
+        MatW <- diag(as.numeric(prob_w1 * prob_w2)) # W: Wii = pi(1-pi)
         
         mat_hessienne <- -Xapp_transposed %*% MatW %*% Xapp
         mat_hessienne_inverse <- solve(mat_hessienne)
         gradient_w1 <- Xapp_transposed %*% (targ - prob_w1)
         beta <- beta_old - (mat_hessienne_inverse %*% gradient_w1)
         
-        if (norm(beta - beta_old) < epsi)
-        {
+        if (norm(beta - beta_old) < epsi) {
             conv <- T
         }
     }
     
-    prob_w1 <- postprob(beta, Xapp) # proportions à postériori de la classe 1
+    prob_w1 <- postprob(beta, Xapp) # P(w1|x)
     prob_w2 <- 1 - prob_w1
     out <- NULL
     out$beta <- beta
     out$iter <- iter
     out$logL <- sum(targ*prob_w1+(1-targ)*(prob_w2))
-    
     out
 }
 
-# classer un ensemble d'individus
-log.val <- function(beta, Xtst)
-{
-    m <- dim(Xtst)[1]  # nombre d'individu des données de test 
+
+log.val <- function(beta, Xtst) {
+    m <- dim(Xtst)[1]
     p <- dim(beta)[1]  
-    pX <- dim(Xtst)[2] # nombre de variable des données de test 
+    pX <- dim(Xtst)[2]
     
     Xtst <- as.matrix(Xtst)
     
@@ -64,10 +57,10 @@ log.val <- function(beta, Xtst)
         Xtst  <- cbind(rep(1,m),Xtst)
     }
     
-    prob_w1 <- postprob(beta, Xtst) # proportions à postériori de la classe 1
+    prob_w1 <- postprob(beta, Xtst) # P(w1|x)
     prob_w2 <- 1 - prob_w1
-    prob <- cbind(prob_w1, prob_w2) # les probabilités a posteriori
-    pred <- max.col(prob) # trouver la position de la valeur maximale pour chaque ligne de matrice
+    prob <- cbind(prob_w1, prob_w2)
+    pred <- max.col(prob)
     
     out <- NULL
     out$prob <- prob
@@ -77,9 +70,8 @@ log.val <- function(beta, Xtst)
 
 
 # calculer des probabilités a posteriori de la classe 1
-postprob <- function(beta, X)
-{
+postprob <- function(beta, X) {
     X <- as.matrix(X)
     
-    prob <- t(exp(t(beta)%*%t(X))/(1+exp(t(beta)%*%t(X)))) # p=t(p1,...,pn)
+    prob <- t(exp(t(beta)%*%t(X))/(1+exp(t(beta)%*%t(X))))
 }

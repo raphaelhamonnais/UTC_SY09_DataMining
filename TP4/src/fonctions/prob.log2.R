@@ -14,13 +14,12 @@ prob.log2 <- function(param, X, z, niveaux)
     grilleY <- seq(from=minY,to=maxY,by=deltaY)
     naffY <- length(grilleY)
     grille <- cbind(rep.int(grilleX,times=rep(naffY,naffX)),rep(grilleY,naffX))
-	grille <- cbind(grille, grille[,1]*grille[,2], grille[,1]^2, grille[,2]^2)
+	#grille <- cbind(grille, grille[,1]*grille[,2], grille[,1]^2, grille[,2]^2) # variables
 
     grille <- as.matrix(grille)
 
     # calcul des valeurs de la fonction 
     valf <- log_quad.val(param, grille)$prob[,1]
-    plot(X, col=c("red","green","blue","magenta","orange")[z])
-    #contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=FALSE, levels=niveaux)
+    plot(X, col=c("red","black","blue","magenta","orange")[z])
     contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=TRUE, levels=niveaux)
 }

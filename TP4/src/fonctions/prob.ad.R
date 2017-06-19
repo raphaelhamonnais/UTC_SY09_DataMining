@@ -20,7 +20,7 @@ prob.ad <- function(param, X, z, niveaux)
     #valf <- t(t(ad.val(param, grille)$pw1))
     valf <- ad.val(param, grille)$pw1
     hist(valf)
-    plot(X, col=c("red","green","blue","magenta","orange")[z])
+    plot(X, col=c("red","black","blue","magenta","orange")[z])
     #contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=FALSE, levels=niveaux)
     contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=TRUE, levels=niveaux)
 }

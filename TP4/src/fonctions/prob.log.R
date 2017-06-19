@@ -19,6 +19,6 @@ prob.log <- function(param, X, z, niveaux)
 
     # calcul des valeurs de la fonction 
     valf <- log.val(param, grille)$prob[,1]
-    plot(X, col=c("red","green","blue","magenta","orange")[z])
-    contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=FALSE, levels=niveaux)
+    plot(X, col=c("red","black","blue","magenta","orange")[z])
+    contour(grilleX, grilleY, matrix(valf,nrow=naffX,byrow=T), add=T, drawlabels=TRUE, levels=niveaux)
 }
