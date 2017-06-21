@@ -134,12 +134,14 @@ ad.val <- function(params, Xtst) {
         }
     }
     if (nbRowsWithBothDensityEqualsToZero > 0) {
-        cat("Il y a eu", nbRowsWithBothDensityEqualsToZero / n * 100, "% d'individus avec f1[i] == 0 && f2[i] == 0\n")    
+        #cat("Il y a eu", nbRowsWithBothDensityEqualsToZero / n * 100, "% d'individus avec f1[i] == 0 && f2[i] == 0\n")    
     }
     if (nbRowsWithOneDensityVerySmall > 0) {
-        cat("Il y a eu", nbRowsWithOneDensityVerySmall / n * 100, "% d'individus avec f1[i] == 0 && f2[i] extrêmement petit (ou l'inverse) menant à P(w1|x) = P(w2|x) = NaN. Classe choisit en fonction de max(f1[x],f2[x])\n")
+        #cat("Il y a eu", nbRowsWithOneDensityVerySmall / n * 100, "% d'individus avec f1[i] == 0 && f2[i] extrêmement petit (ou l'inverse) menant à P(w1|x) = P(w2|x) = NaN. Classe choisit en fonction de max(f1[x],f2[x])\n")
     }
     discrimination[["pred"]] = factor(discrimination[["pred"]])
+    discrimination[["nbRowsWithBothDensityEqualsToZero"]] = nbRowsWithBothDensityEqualsToZero / n
+    discrimination[["nbRowsWithOneDensityVerySmall"]] = nbRowsWithOneDensityVerySmall / n
     return(discrimination)
 }
 

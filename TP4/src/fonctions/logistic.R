@@ -1,4 +1,4 @@
-log.app <- function(Xapp, zapp, intr, epsi) {
+log.app <- function(Xapp, zapp, intr = T, epsi = 1e-5) {
     n <- dim(Xapp)[1]
     p <- dim(Xapp)[2]
     
@@ -26,7 +26,8 @@ log.app <- function(Xapp, zapp, intr, epsi) {
         MatW <- diag(as.numeric(prob_w1 * prob_w2)) # W: Wii = pi(1-pi)
         
         mat_hessienne <- -Xapp_transposed %*% MatW %*% Xapp
-        mat_hessienne_inverse <- solve(mat_hessienne)
+        #mat_hessienne_inverse <- solve(mat_hessienne)
+        mat_hessienne_inverse <- ginv(mat_hessienne)
         gradient_w1 <- Xapp_transposed %*% (targ - prob_w1)
         beta <- beta_old - (mat_hessienne_inverse %*% gradient_w1)
         

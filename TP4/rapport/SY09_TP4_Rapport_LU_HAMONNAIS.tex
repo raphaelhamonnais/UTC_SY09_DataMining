@@ -658,22 +658,22 @@ Des exemples de frontières de décisions sont disponibles en annexe~:
 
 
 
-\subsection{Calculs des taux d'erreur}
+\subsection{Calculs des pourcentages d'erreur des classifieurs}
 
-\textit{\textbf{Remarque sur l'espérance et la variance du taux d'erreur $\hat{\epsilon}$}~: on va par la suite calculer ces statistiques à des fins analytiques. Il faut prendre note que nous allons les calculer sur un échantillon de taille $n=6$, voire moins lorsqu'on comparera les différents types de classifieur. Bien que donnant certaines indications et servant notre propos lors des comparaisons, ces statistiques doivent être considérées avec prudence.}\\
+\textit{\textbf{Remarque sur l'espérance et la variance du pourcentage d'erreur $\hat{\epsilon}$}~: on va par la suite calculer ces statistiques à des fins analytiques. Il faut prendre note que nous allons les calculer sur un échantillon de taille $n=6$, voire moins lorsqu'on comparera les différents types de classifieur. Bien que donnant certaines indications et servant notre propos lors des comparaisons, ces statistiques doivent être considérées avec prudence.}\\
 
-Calcul du taux d'erreur $\hat{\epsilon}$ sur les données synthétiques~:
+Calcul du pourcentage d'erreur $\hat{\epsilon}$ sur les données synthétiques~:
 \begin{table}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
 	\begin{tabular}{c|c|c|c|c|c|c}
 		Fichier source & ADQ & ADL & NBA & Log & Log Quad & Tree \\ 
 		\hline
-		Synth1 & \textbf{3.43} & 4.52 & 4.22 & 3.67 & \textbf{3.25} & 4.73  \\ 
-		Synth2 & 6.23 & 8 & \textbf{6.17} & 6.85 & \textbf{6.44} & 8.09  \\ 
-		Synth3 & 4.23 & \textbf{4.16} & 5.45 & \textbf{4.2} & 4.37 & 5.93  \\ 
+		Synth1 & \textbf{3.43}  & 4.52  & 4.22  & 3.67  & \textbf{3.25}  & 4.73  \\ 
+		Synth2 & 6.23  & 8  & \textbf{6.17}  & 6.85  & \textbf{6.44}  & 8.09  \\ 
+		Synth3 & 4.23  & \textbf{4.16}  & 5.45  & \textbf{4.2}  & 4.37  & 5.93   \\ 
 	\end{tabular}
-	\caption{\small Estimation du taux d'erreur $\hat{\epsilon}$ sur $N=20$ itérations des différents classifieurs sur les données synthétiques}
+	\caption{\small Estimation du pourcentage d'erreur $\hat{\epsilon}$ sur $N=20$ itérations des différents classifieurs sur les données synthétiques}
 	\label{table:2-1-erreur-data-synth}
 \end{table}
 
@@ -711,7 +711,7 @@ Il faut néanmoins nuancer nos propos car les performances des classifieurs par 
 		Synth2 & 6.96 & 0.76  \\ 
 		Synth3 & 4.72 & 0.59  \\ 
 	\end{tabular}
-	\caption{\small Espérances et variances des taux d'erreurs de tous les classifieurs pour un fichier synthétique donné}
+	\caption{\small Espérances et variances des pourcentages d'erreurs de tous les classifieurs pour un fichier synthétique donné}
 	\label{table:2-1-erreur-data-synth-mean-var}
 \end{table}
 
@@ -726,7 +726,7 @@ Nous nous proposons maintenant de faire une analyse comparative des performances
 	\item les modèles à frontière de décision linéaire comparés aux modèles à frontière de décision quadratique.
 \end{itemize}
 
-\subsubsection{Comparaison du taux d'erreur $\hat{\epsilon}$ entre analyse discriminante et régression logistique}
+\subsubsection{Comparaison du pourcentage d'erreur $\hat{\epsilon}$ entre analyse discriminante et régression logistique}
 
 \begin{table}[H]
 	\centering
@@ -738,14 +738,14 @@ Nous nous proposons maintenant de faire une analyse comparative des performances
 		Synth2 & 6.8  & 1.08 & \textbf{6.64}  & \textbf{0.08} \\ 
 		Synth3 & 4.61 & 0.53 & \textbf{4.29}  & \textbf{0.01}  \\ 
 	\end{tabular}
-	\caption{\small Espérances et variances des taux d'erreurs des classifieurs de type analyse discriminante versus les classifieurs de type régression logistique}
+	\caption{\small Espérances et variances des pourcentages d'erreurs des classifieurs de type analyse discriminante versus les classifieurs de type régression logistique}
 	\label{table:2-1-erreur-data-synth-mean-var-ad-vs-regression}
 \end{table}
 
 Étonnamment, et quand bien même les données suivent dans chaque classe une loi normale multivariée et respectent à tour de rôle les hypothèses d'un classifieur d'analyse discriminante donné, on a quand même des performances \textit{légèrement} supérieures pour la régression logistique (simple ou quadratique). Mais cette différence est tout de même trop faible pour être significative (0.35 d'écart en moyenne).\\
-La variance du taux d'erreur est par contre significativement plus faible pour la régression logistique. Cela peut s'expliquer par le fait que cette dernière \textit{\textbf{ne fait pas de supposition}} sur la distribution des données, contrairement à l'analyse discriminante.
+La variance du pourcentage d'erreur est par contre significativement plus faible pour la régression logistique. Cela peut s'expliquer par le fait que cette dernière \textit{\textbf{ne fait pas de supposition}} sur la distribution des données, contrairement à l'analyse discriminante.
 
-\subsubsection{Comparaison du taux d'erreur $\hat{\epsilon}$ entre classifieurs à frontière de décision linéaire ou quadratique}
+\subsubsection{Comparaison du pourcentage d'erreur $\hat{\epsilon}$ entre classifieurs à frontière de décision linéaire ou quadratique}
 \begin{table}[H]
 	\centering
 	\captionsetup{justification=centering, margin=1cm}
@@ -756,7 +756,7 @@ La variance du taux d'erreur est par contre significativement plus faible pour l
 		Synth2 & 7.42   & 0.66   &  \textbf{6.28}  & \textbf{0.02}  \\ 
 		Synth3 &  \textbf{4.18}  &  \textbf{0}  & 4.68   & 0.45   \\ 
 	\end{tabular}
-	\caption{\small Espérances et variances des taux d'erreurs des classifieurs donnant une frontière de décision linéaire versus les classifieurs donnant une frontière de décision quadratique}
+	\caption{\small Espérances et variances des pourcentage d'erreurs des classifieurs donnant une frontière de décision linéaire versus les classifieurs donnant une frontière de décision quadratique}
 	\label{table:2-1-erreur-data-synth-mean-var-lin-vs-quad}
 \end{table}
 
@@ -768,11 +768,16 @@ Cette comparaison renforce les hypothèses émises précédemment lors de l'anal
 
 On remarquera aussi en observant les variances que les modèles les plus adéquats sont aussi les plus fiables, c'est à dire les plus stables dans leurs performances~: leurs variances sont systématiquement plus faibles que celles des modèles non adéquats.
 
-\section{Test sur données réelles}
+\section{Test sur données réelles~: "Pima"}
+
+\subsection{Visualisation graphique des données avec ACP}
 
 
-\subsection{Données "Pima"}
+\subsection{Visualisation "mathématique" des données via l'estimation des paramètres}
 
+
+
+\subsection{Calculs des pourcentages d'erreur des classifieurs}
 \begin{table}[H]
 	\centering
 	\captionsetup{justification=centering, margin=4cm}
@@ -781,11 +786,20 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 		\hline
 		Pima & 23.97 & 22.62 & 23.8 & 21.77 & 24.72 & 26.23  \\ 
 	\end{tabular}
-	\caption{\small Estimation du taux d'erreur sur $N=100$ itérations des différents classifieurs sur les données "Pima"}
+	\caption{\small Estimation du pourcentage d'erreur $\hat{\epsilon}$ sur $N=100$ itérations des différents classifieurs sur les données "Pima"}
 	\label{table:2-1-erreur-data-pima}
 \end{table}
 
-\subsection{Données "Breast Cancer Wisconsin"}
+\section{Test sur données réelles~: "Breast Cancer Wisconsin"}
+
+\subsection{Visualisation graphique des données avec ACP}
+
+
+\subsection{Visualisation "mathématique" des données via l'estimation des paramètres}
+
+
+
+\subsection{Calculs des pourcentages d'erreur des classifieurs}
 
 \begin{table}[H]
 	\centering
@@ -795,7 +809,7 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 		\hline
 		Brestcancer & 4.93 & 4.46 & 3.99 & 3.94 & 5.39 \\ 
 	\end{tabular}
-	\caption{\small Estimation du taux d'erreur sur $N=100$ itérations des différents classifieurs sur les données "breast cancer Wisconsin"}
+	\caption{\small Estimation du pourcentage d'erreur $\hat{\epsilon}$ sur $N=100$ itérations des différents classifieurs sur les données "breast cancer Wisconsin"}
 	\label{table:2-1-erreur-data-breastcancer}
 \end{table}
 
@@ -825,18 +839,292 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 \chapter{Challenge : données "Spam"}
 
 
+\section{Analyse rapide des données}
+\begin{itemize}
+	\item Données regroupant un grand nombre d'indicateurs calculés sur des messages électroniques classés en deux classes~: spams et non spams~;
+	\item 57 dimensions numériques (variables \texttt{V1} à \texttt{V57}) pour 4600 observations (il faudra penser à ne pas prendre en compte la première colonne qui représente les numéro des lignes)~;
+	\item Beaucoup d'observations égales à 0 pour chaque variable~;
+	\item Disparité des distributions des valeurs~:
+	\begin{itemize}
+		\item Variances comprises entre 0 et 4 pour les variables \texttt{V1} à \texttt{V54} (sauf \texttt{V27} dont la variance vaut 11.33)
+		\item Variances élevées voire extrêmement élevées pour les 3 dernières variables avec 1~006.76 pour \texttt{V55}, 37~982.62 pour \texttt{V56} et 367~657.71 pour \texttt{V57}~;
+		\item Réduire (et centrer) les données sera donc fortement conseillé en cas d'ACP.
+	\end{itemize}
+\end{itemize}
+
+
+\section{Essai des classifieurs sans traitement des données}
+\label{section:Essai-des-classifieurs-sans-traitement-des-données}
+Nous allons commencer par essayer de discriminer les données \textit{Spam} directement avec nos classifieurs afin de voir ce qu'il se passe.
+
+\subsubsection{Analyse discriminante quadratique}
+\begin{itemize}
+	\item Erreurs lorsqu'on calcule les densités des données de chaque classe grâce à la fonction \texttt{mvdnorm(X, mu, Sigma)}, plus particulièrement lors de l'appel à \texttt{chol(Sigma)} qui calcule la factorisation de Cholesky~: certaines composantes (i.e. variables) de la matrice $\Sigma$ ne sont pas définis positives~;
+	\begin{itemize}
+		\item Log d'erreur de R~:\\
+		\texttt{Error in chol.default(Sigma) : le mineur dominant d'ordre 41 n'est pas défini positif}~;
+		\item Cette erreur e répète pour les "mineurs dominants" 31, 32 et 41, soit pour les variables \texttt{V31}, \texttt{V32} et \texttt{V41}~;
+		\item Une analyse de ces variables ne nous a pas permis de comprendre pourquoi elles sont à l'origine de cette erreur.
+	\end{itemize}
+	\item La solution mise en place pour appliquer l'analyse discriminante quadratique sur les données brutes fut de ne pas considérer ces trois variables~;
+	\item On obtient alors un pourcentage d'erreur $\hat{\epsilon}$ égal à 16.93 pour $N = 20$ itérations.
+\end{itemize}
+
+
+\subsubsection{Analyse discriminante linéaire}
+\begin{itemize}
+	\item Erreurs lorsqu'on calcule les densités des données de chaque classe grâce à la fonction \texttt{mvdnorm(X, mu, Sigma)}~:
+	\begin{itemize}
+		\item Les densités des deux classes sont toutes deux égales à 0~;
+		\item La formule alors utilisée pour calculer $\mathbb{P}(\omega_k|x) = \frac{f_k(x)\pi_k}{f(x)} = \frac{f_k(x)\pi_k}{f_1(x)\pi_1 + f_2(x)\pi_2}$ revient donc à diviser par 0, ce qui donne une valeur \texttt{NaN}~;
+		\item Ces observations sont en fait situées tellement loin du centre de la courbe gaussienne que leur densité est infinitésimale~;
+		\item Des tests effectués en supprimant ces observations extrêmes ne sont pas concluants et mènent à d'autres erreurs.
+	\end{itemize}
+	\item La solution mise en place pour appliquer l'analyse discriminante linéaire sur les données brutes fut d'attribuer au hasard une classe aux observations posant ce problème~:
+	\begin{itemize}
+		\item Elles sont en effet très peu nombreuse, de l'ordre de moins de 0.5\%.
+	\end{itemize}
+	\item On obtient alors un pourcentage d'erreur $\hat{\epsilon}$ égal à 11.19 pour $N = 20$ itérations (avec 0.38\% des données ayant $f_1(x) = f_2(x) = 0$).
+\end{itemize}
+
+
+\subsubsection{Classifieur bayésien naïf}
+\begin{itemize}
+	\item Erreurs identique au modèle d'analyse discriminante quadratique~;
+	\item Même chose que pour l'analyse discriminante quadratique, on ne considère pas les variables \texttt{V31}, \texttt{V32} et \texttt{V41}~;
+	\item On obtient alors un pourcentage d'erreur $\hat{\epsilon}$ égal à 17.97 pour $N = 20$ itérations.
+	\item Remarque~:
+	\begin{itemize}
+		\item On notera la corrélation de l'erreur entre le classifieur bayésien naïf et l'analyse discriminante quadratique~: tous deux supposent que les classes ont leurs propres matrices de covariances (même si le classifieur bayésien naïf suppose en plus que les covariances sont nulles)~;
+		\item Par contre, l'analyse discriminante linéaire, qui ne présente pas cette erreur, suppose que les matrices de covariances sont identiques et l'estime en en faisant la moyenne~;
+		\item Bien qu'incapables de l'expliquer, nous pensons que ce pourrait être une piste à explorer afin d'expliquer ce type d'erreur.
+	\end{itemize}
+\end{itemize}
 
 
 
+\subsubsection{Régression logistique}
+\begin{itemize}
+	\item Erreur aléatoire lors de l'inversion de la matrice hessienne~:
+	\begin{itemize}
+		\item Cette erreur n'est pas systématique mais apparait de temps en temps~;
+		\item La matrice hessienne n'est parfois pas inversible, on en déduit que son déterminant vaut alors 0~;
+		\item On a donc la dérivée seconde de $\ln L(\beta_{(q)})$ à l'itération $q$ qui vaut 0, ce qui veut dire que la courbe est localement rectiligne~;
+		\item On est situé tellement loin de l'optimum de vraisemblance que l'algorithme de Newton utilisé n'est alors pas capable de déterminer une direction à prendre (absence de courbure) afin de se rapprocher de l'optimum.
+	\end{itemize}
+	\item Une suite de solutions a été trouvée~:
+	\begin{itemize}
+		\item Centrer et réduire les données afin d'éviter les valeurs propres trop grandes ou trop petites dans la matrice hessienne, cause supposée de sa non inversibilité~;
+		\item Cela marche effectivement, par contre, il y a de nouvelles erreurs du fait que la matrice hessienne est alors parfois singulière~;
+		\item Nous avons pris le parti de ne plus utiliser la méthode \texttt{solve} mais \texttt{ginv} (qui permet l'inversion de matrices singulières) afin d'obtenir l'inverse de la matrice hessienne.
+	\end{itemize}
+	\item On obtient alors un pourcentage d'erreur $\hat{\epsilon}$ égal à 7.25 pour $N = 20$ itérations.
+\end{itemize}
+
+
+\subsubsection{Régression logistique quadratique}
+
+Utiliser la régression logistique quadratique impliquerait d'estimer $p(p+3)/2$ paramètres, avec $p=57$, soit 1~710 paramètres, ce qui est beaucoup trop important. Non seulement pour le temps de calcul qui serait nécessaire, mais aussi et surtout compte tenu du faible nombre d'observations au regard des 1~710 paramètres.\\
+On peut aussi supposer, en remarquant la différence de performance entre l'analyse discriminante linéaire et quadratique (même si on a enlevé 3 dimensions pour cette dernière), que la régression logistique simple sera de toute façon plus efficace que la régression logistique quadratique.\\
+Nous n'utiliserons donc pas la régression logistique quadratique sur les données brutes \textit{Spam}.
+
+
+\subsubsection{Arbre de décision}
+
+\begin{itemize}
+	\item Seul modèle qui ne provoque pas d'erreurs sur le jeu de données \textit{Spam}~:
+	\begin{itemize}
+		\item Ce modèle va effectuer des choix successif en ne considérant qu'une seule variable à la fois.
+	\end{itemize}
+	\item On obtient un pourcentage d'erreur $\hat{\epsilon}$ égal à 8.61 pour $N = 20$ itérations.
+\end{itemize}
+
+Voici des exemples d'arbres de décision obtenus~: ils peuvent être "relativement" simples comme très profonds et complexes.
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.45\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/3-2-decision-tree-spam-exp-1}
+%		\caption{\small }
+		\label{fig:arbre-decision-spam-simple}%
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.45\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=1cm}
+		\includegraphics[width=1\linewidth]{img/3-2-decision-tree-spam-exp-2}
+%		\caption{\small }
+		\label{fig:arbre-decision-spam-complexe}%
+	\end{subfigure}%
+	\caption{\small Exemples d'arbres de décisions obtenus sur les données \textit{Spam}}
+	\label{fig:arbre-decision-spam}%
+\end{figure}
+
+Dans chaque feuille, les informations données correspondent à (de haut en bas)~:
+\begin{itemize}
+	\item Le nom de la classe (1 ou 2) dans laquelle la feuille va placer les données~;
+	\item Les proportions d'individus pour chaque classe~:
+	\begin{itemize}
+		\item Classe 1 à gauche, et classe 2 à droite~;
+		\item Pour une feuille donnée, le taux d'erreur va donc être la proportion d'individus n'appartenant pas à la classe de la feuille.
+	\end{itemize}
+	\item Le pourcentage d'individus classés par la feuille~:
+	\begin{itemize}
+		\item Sur le premier arbre, on remarque par exemple que la feuille la plus à gauche classe 24\% des individus dans la classe 1 (avec un taux d'erreur de 0.04) et que la feuille la plus à droite classe 54\% des individus dans la classe 2 (avec un taux d'erreur de 0.06)~;
+		\item A noter que lorsqu'une feuille affiche 0\%, c'est que la proportion d'individus classés est comprise entre 0 et 0.49 \%, l'arrondi à l'entier inférieur donnant alors 0\%.
+	\end{itemize}
+\end{itemize}
+
+
+\subsubsection{Remarque à propos du classifieur des K plus proches voisins}
+
+Étant en dimension 57, la distance entre les individus est immensément plus grande qu'en dimension 2 ou 3. Pour un individu, la probabilité qu'un de ses voisins soit de la même classe que lui est plus faible. Le pourcentage d'erreur obtenu sur $N=20$ itérations parle d'ailleurs de lui-même~: 21.62\%.
+
+\subsubsection{Récapitulatif des pourcentages d'erreur}
+
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\begin{tabular}{c|c|c|c|c|c}
+		Fichier source & ADQ & ADL & NBA & Rég. Log. & Tree \\ 
+		\hline
+		Spam & 16.93 & \textbf{11.19} & 17.97 & \textbf{7.25} & \textbf{8.61}  \\ 
+	\end{tabular}
+	\caption{\small Estimation du pourcentage d'erreur $\hat{\epsilon}$ sur $N=20$ itérations des différents classifieurs sur les données "Spam"}
+	\label{table:3-2-erreur-data-spam}
+\end{table}
+
+
+On remarque, de façon encore plus flagrante que lors de l'analyse des données synthétiques, que les classifieurs ne faisant pas de supposition sur la distribution des données sont meilleurs que les autres. La régression logistique et les arbres de décisions présentent effectivement de bien meilleures performances que les classifieurs d'analyse discriminante.\\
+On note aussi qu'une frontière de décision linéaire est plus indiquée qu'une frontière de décision quadratique.
 
 
 
+\section{Classification sur les données résultantes d'une ACP}
+
+On effectue une ACP (centrée et réduite) sur les données \textit{Spam} afin de diminuer le nombre de dimensions. Par contre, rien ne nous garantit que la dispersion des valeurs autour des axes des variables soit le facteur discriminant des classes \textit{spam} ou \textit{non spam}. On va donc vérifier que les informations de classe ne se soient pas perdus durant l'ACP en représentant graphiquement ces informations sur les deux premières composantes principales.
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/3-3-ACP-scale-center-spam-PC1-PC2}
+	\caption{\small Représentation des résultats de l'ACP (effectué sur les données \textit{Spam}) sur les deux premières composantes principales en fonction des classes}
+	\label{fig:ACP-scale-center-spam-PC1-PC2}%
+\end{figure}
+
+On voit que même s'il y a une zone importante de mélange, l'ACP ne supprime pas les informations de classe.\\
+
+On va donc pouvoir l'utiliser pour effectuer nos discriminations et attester ou non de son utilité~:
+\begin{itemize}
+	\item L'ACP, en normalisant les données, permet-elle de supprimer les erreurs obtenues lors des discriminations effectuées sur les données brutes~?
+	\item L'ACP est-elle concluante, c'est à dire arrive-t-on à obtenir les mêmes performances que précédemment (voir \autoref{section:Essai-des-classifieurs-sans-traitement-des-données}) avec moins de dimensions~?\\
+\end{itemize}
 
 
 
+\paragraph{L'ACP, en normalisant les données, permet-elle de supprimer les erreurs obtenues lors des discriminations effectuées sur les données brutes~?}
+
+La réponse cette question est oui. Effectuer les discriminations sur les données résultantes de l'ACP ne génère plus d'erreur sauf pour l'analyse discriminante linéaire où le problème des densités égales à 0 pour les deux classes persiste.\\
+Nous pensons que cette absence d'erreur est due à la normalisation sur les données (qui ont été centrée et réduites) \textit{ainsi} qu'au changement de base. En effet, nous avons testé les classifieurs sur les données brutes seulement normalisées via la fonction \texttt{scale} (centrées et réduites) sans succès~: les erreurs étaient toujours présentes.\\
 
 
 
+\paragraph{L'ACP est-elle concluante, c'est à dire arrive-t-on à obtenir les mêmes performances que précédemment avec moins de dimensions~?}
+
+Nous avons commencé par analyser l'inertie expliquée cumulée afin de voir si, en termes d'inertie, quelques dimensions étaient suffisantes ou bien s'il fallait en considérer beaucoup pour ne pas perdre d'information~:
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.6\linewidth]{img/3-3-ACP-scale-center-spam-inertie-cumulee}
+	\caption{\small Inertie cumulée de l'ACP (effectué sur les données \textit{Spam})}
+	\label{fig:3-3-ACP-scale-center-spam-inertie-cumulee}%
+\end{figure}
+
+On ne voit pas vraiment de démarcation apparaître nous indiquant quel pourrait être le nombre optimal de composantes principales à considérer.\\
+Nous allons donc estimer cet hyper-paramètre en appliquant successivement les classifieurs sur les deux premières composantes principales, puis sur les trois premières, puis sur les quatre premières, etc. jusqu'à prendre en compte l'ensemble des composantes principales.\\
+
+Voici le graphique obtenus sur les deux classifieurs qui donnent les meilleurs résultats, à savoir la régression logistique et les arbres de décision~:
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.6\linewidth]{img/3-3-ACP-scale-center-spam-taux-erreur-fonction-nb-comp}
+	\caption{\small Taux d'erreurs en fonction du nombre de composantes principales prises en considération}
+	\label{3-3-ACP-scale-center-spam-taux-erreur-fonction-nb-comp}%
+\end{figure}
+
+Ainsi, il faudrait seulement les 9 premières composantes principales pour le modèle des arbres de décision et les 50 premières pour la régression logistique afin d'avoir un pourcentage d'erreur optimal~:
+\begin{itemize}
+	\item 10.53\% d'erreur pour les arbres de décision~;
+	\item 7.33\% d'erreur pour la régression logistique.
+\end{itemize}
+
+
+\subsubsection{Comparaison des résultats des classifications sur les données originales et sur les données après ACP}
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{tabular}{c|c|c}
+		Classifieur & Données originales & Données après ACP \\ 
+		\hline
+		Régression logistique & \textbf{7.25} & 7.33 \\ 
+		Arbres de décision& \textbf{8.61} & 10.53 \\ 
+	\end{tabular}
+	\caption{\small Comparaison des pourcentages d'erreur entre les classifications effectuées sur les données originales et celles effectuées sur les données obtenues après ACP}
+	\label{table:3-3-ACP-scale-center-spam-comparaison-taux-erreur-avant-apres-ACP}
+\end{table}
+
+
+Conclusion, l'ACP n'est pas réellement efficace ici comme outil de réduction de dimensions~:
+\begin{itemize}
+	\item On réduit drastiquement le nombre de dimensions pour le classifieur des arbres de décision (de 57 à 9), par contre, on passe de 8.61\% à 10.53\% d'erreur~;
+	\item On réduit très peu le nombre de dimensions pour le modèle de régression logistique (de 57 à 50) et on passe de 7.25\% à 7.33\% d'erreur (très légère augmentation).
+\end{itemize}
+
+
+
+\subsubsection{Remarque sur la réduction du nombre de dimensions}
+L'ACP est une méthode naïve de réduction de variables à visée de discrimination de classe. C'est à dire qu'elle ne garantie pas de sélectionner les axes discriminants. Si les axes discriminants sont aussi ceux présentant la plus grande dispersion, alors effectivement la réduction du nombre de dimensions sera pertinente, dans le sens ou le maximum d'inertie expliquée signifiera aussi la meilleure discrimination de classe possible. Dans le cas contraire, on perdra l'information de classe au profit de l'inertie expliquée, ce qui ne nous servira à rien dans le cadre d'une classification supervisée.
+
+Des méthodes de sélection de variables, afin de déterminer les variables les plus discriminantes, seraient plus indiquée afin de réduire le nombre de dimensions.
+
+\section{Classification à l'aide d'une forêt d'arbre}
+
+
+Le fait que la classification grâce aux arbres de décision soit la seconde meilleure après la régression logistique, et qu'elle marche sur les données brutes sans traitement préalable nous a poussé à considérer le classifieur de forêt d'arbres aléatoires.\\
+
+Cela a été très simple à mettre en place grâce au package R \texttt{randomForest}. Le code de la fonction d'apprentissage et d'évaluation peut être trouvée en annexe \autoref{appendix:functions-forrests}.
+
+\subsubsection{Performances obtenues}
+
+\begin{table}[H]
+	\centering
+	\captionsetup{justification=centering, margin=4cm}
+	\begin{tabular}{c|c}
+		Nombre d'arbres aléatoires & Pourcentage d'erreur  \\ 
+		\hline
+		2~000 & 4.04 \\ 
+		4~000 & 1.44 \\ 
+		10~000 & 1.44 \\ 
+	\end{tabular}
+	\caption{\small Pourcentage d'erreurs obtenus lors de classifications des données \textit{Spam} avec le classifieur des forêts aléatoires pour $N = 20$ itérations}
+	\label{table:3-4-Spam-forests-error-rates}
+\end{table}
+
+
+Avec 1.44\% d'erreur, on a bien là un classifieur extrêmement efficace.
+
+
+\subsubsection{Importances des variables dans la construction de la forêt}
+
+Le package \texttt{randomForest} permet d'avoir un aperçu de l'importance des variables~:
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.6\linewidth]{img/3-4-Spam-forests-variables-importance}
+	\caption{\small Importance des variables dans la construction de la forêt aléatoire}
+	\label{3-4-Spam-forests-variables-importance}%
+\end{figure}
 
 
 
@@ -951,6 +1239,39 @@ Fonction qui transforme l'espace de X en un espace quadratique~:
 	%	\caption{}
 	\label{fig:B-log-quad-function}
 \end{figure}
+
+
+
+
+
+
+
+
+\chapter{Fonctions pour les arbres de décision et les forêt aléatoires}
+\label{appendix:functions-trees-and-forest}
+
+\section{Apprentissage et prédiction pour les arbres de décision}
+\label{appendix:functions-trees}
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\includegraphics[width=0.9\linewidth]{img/C-tree-app-function}
+	%	\caption{}
+	\label{C-tree-app-function}
+\end{figure}
+
+\section{Apprentissage et prédiction pour les forêts aléatoires}
+\label{appendix:functions-forrests}
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=3cm}
+	\includegraphics[width=0.9\linewidth]{img/C-random-forest-app-function}
+	%	\caption{}
+	\label{fig:C-random-forest-app-function}
+\end{figure}
+
+
+
 
 
 
