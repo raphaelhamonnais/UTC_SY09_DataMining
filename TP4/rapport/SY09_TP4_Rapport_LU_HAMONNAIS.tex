@@ -772,9 +772,92 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 
 \subsection{Visualisation graphique des données avec ACP}
 
+\textit{Rappel~: l'ACP ne sélectionne pas forcément les axes les plus discriminants en terme d'appartenance des observations à une classe, mais elle a le mérite de permettre une visualisation en deux dimensions relativement fidèle aux données d'origine.}\\
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-2-1-ACP-Pima-representation}
+	\caption{\small Représentation des résultats de l'ACP sur les deux premières composantes principales en fonction des classes, avec 54.53\% d'inertie expliquée cumulée}
+	\label{fig:2-2-1-ACP-Pima-representation}%
+\end{figure}
+
+Si on se base sur les résultats de l'ACP, on peut dire que les deux classes semblent bien proches l'une de l'autre, qu'elles semblent avoir la même forme triangulaire et que donc la discrimination ne sera pas performante.
+
 
 \subsection{Visualisation "mathématique" des données via l'estimation des paramètres}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrr}
+		& npreg & glu & bp & skin & bmi & ped & age \\ 
+		\hline
+		$\mu_{1}$  & 2.93 & 110.02 & 69.91 & 27.29 & 31.43 & 0.45 & 29.22 \\ 
+		$\mu_{2}$  & 4.70 & 143.12 & 74.70 & 32.98 & 35.82 & 0.62 & 36.41 \\ 
+	\end{tabular}
+	\caption{Pima~: Centre de gravité des classes}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{rr}
+		\hline
+		& Proportions \\ 
+		\hline
+		$\pi_{1}$ & 0.67 \\ 
+		$\pi_{2}$ & 0.33 \\ 
+	\end{tabular}
+	\caption{Pima~: Proportions des classes}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrr}
+		& npreg & glu & bp & skin & bmi & ped & age \\ 
+		\hline
+		npreg & \textbf{7.77} & 4.62 & 6.63 & 3.67 & 0.01 & -0.04 & 18.30 \\ 
+		glu & 4.62 & \textbf{589.85} & 56.25 & 32.57 & 25.48 & 0.66 & 42.91 \\ 
+		bp & 6.63 & 56.25 & \textbf{141.68} & 28.70 & 23.08 & -0.13 & 39.42 \\ 
+		skin & 3.67 & 32.57 & 28.70 & \textbf{101.61} & 44.32 & 0.06 & 17.46 \\ 
+		bmi & 0.01 & 25.48 & 23.08 & 44.32 & \textbf{42.86} & 0.09 & 4.47 \\ 
+		ped & -0.04 & 0.66 & -0.13 & 0.06 & 0.09 & \textbf{0.09} & 0.06 \\ 
+		age & 18.30 & 42.91 & 39.42 & 17.46 & 4.47 & 0.06 & \textbf{98.08} \\ 
+	\end{tabular}
+	\caption{Pima~: Matrice de covariance $\Sigma_{1}$}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrr}
+		& npreg & glu & bp & skin & bmi & ped & age \\ 
+		\hline
+		npreg & \textbf{15.36} & -9.87 & 6.14 & -4.14 & -4.65 & -0.09 & 23.53 \\ 
+		glu & -9.87 & \textbf{977.50} & 32.84 & 31.18 & 10.24 & 0.23 & 34.69 \\ 
+		bp & 6.14 & 32.84 & \textbf{156.85} & 12.36 & 18.01 & -0.18 & 36.27 \\ 
+		skin & -4.14 & 31.18 & 12.36 & \textbf{108.06} & 35.55 & 0.54 & -7.44 \\ 
+		bmi & -4.65 & 10.24 & 18.01 & 35.55 & \textbf{43.71} & 0.39 & -13.77 \\ 
+		ped & -0.09 & 0.23 & -0.18 & 0.54 & 0.39 & \textbf{0.16} & -0.15 \\ 
+		age & 23.53 & 34.69 & 36.27 & -7.44 & -13.77 & -0.15 & \textbf{117.45} \\ 
+	\end{tabular}
+	\caption{Pima~: Matrice de covariance $\Sigma_{2}$}
+\end{table}
+
+
+
+Remarques~:
+\begin{itemize}
+	\item Centres de gravité~:
+	\begin{itemize}
+		\item Pas de différences flagrantes entre les coordonnées des centres de gravité des classes, il se peut donc qu'ils soient relativement proches.
+	\end{itemize}
+	\item Matrices de covariance~:
+	\begin{itemize}
+		\item Les classes ne sont absolument pas sphériques~;
+		\item Elles ont par contre des dispersions sur les axes qui semblent proches les unes des l'autres.
+	\end{itemize}
+\end{itemize}
+
+En conclusion, on peut s'attendre à une zone de chevauchement conséquentes, les centres de gravité étant relativement proche et les matrices de covariance de donnant pas d'indication de formes totalement différentes pour les classes en présence.
 
 
 \subsection{Calculs des pourcentages d'erreur des classifieurs}
@@ -790,13 +873,99 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 	\label{table:2-1-erreur-data-pima}
 \end{table}
 
+Comme on l'a supposé, on s'aperçoit que la discrimination n'est pas performante. Ca reste logique en regard des informations obtenues précédemment via l'ACP et l'estimation des paramètres des classes.
+
 \section{Test sur données réelles~: "Breast Cancer Wisconsin"}
 
 \subsection{Visualisation graphique des données avec ACP}
 
+\textit{Rappel~: l'ACP ne sélectionne pas forcément les axes les plus discriminants en terme d'appartenance des observations à une classe, mais elle a le mérite de permettre une visualisation en deux dimensions relativement fidèle aux données d'origine.}\\
+
+
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\includegraphics[width=.5\linewidth]{img/2-2-1-ACP-Brestcancer-representation}
+	\caption{\small Représentation des résultats de l'ACP sur les deux premières composantes principales en fonction des classes, avec 70.33\% d'inertie expliquée cumulée}
+	\label{fig:2-2-1-ACP-Brestcancer-representation}%
+\end{figure}
+
+Si on se base sur les résultats de l'ACP, on voit deux classes bien séparées, sans zone de chevauchement ou presque et possédant des formes bien différentes. On peut donc s'attendre à ce que la discrimination soit efficace.
 
 \subsection{Visualisation "mathématique" des données via l'estimation des paramètres}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrrrr}
+		& V2 & V3 & V4 & V5 & V6 & V7 & V8 & V9 & V10 \\ 
+		\hline
+		$\mu_{1}$ & 2.96 & 1.31 & 1.41 & 1.35 & 2.11 & 2.41 & 2.08 & 1.26 & 1.07 \\ 
+		$\mu_{2}$ & 7.19 & 6.58 & 6.56 & 5.59 & 5.33 & 4.71 & 5.97 & 5.86 & 2.60 \\ 
+	\end{tabular}
+	\caption{Breastcancer~: Centre de gravité des classes}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|r}
+		& Proportions \\ 
+		\hline
+		$\pi_{1}$ & 0.65 \\ 
+		$\pi_{2}$ & 0.35 \\ 
+	\end{tabular}
+	\caption{Breastcancer~: Proportions des classes}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrrrr}
+		& V2 & V3 & V4 & V5 & V6 & V7 & V8 & V9 & V10 \\ 
+		\hline
+		V2 & \textbf{2.80} & 0.39 & 0.48 & 0.39 & 0.23 & 0.21 & 0.18 & 0.33 & -0.03 \\ 
+		V3 & 0.39 & \textbf{0.73} & 0.57 & 0.22 & 0.31 & 0.48 & 0.24 & 0.40 & 0.02 \\ 
+		V4 & 0.48 & 0.57 & \textbf{0.92} & 0.21 & 0.29 & 0.41 & 0.20 & 0.36 & -0.00 \\ 
+		V5 & 0.39 & 0.22 & 0.21 & \textbf{0.84} & 0.24 & 0.35 & 0.11 & 0.22 & 0.03 \\ 
+		V6 & 0.23 & 0.31 & 0.29 & 0.24 & \textbf{0.77} & 0.30 & 0.14 & 0.37 & -0.01 \\ 
+		V7 & 0.21 & 0.48 & 0.41 & 0.35 & 0.30 & \textbf{1.49} & 0.28 & 0.34 & 0.05 \\ 
+		V8 & 0.18 & 0.24 & 0.20 & 0.11 & 0.14 & 0.28 & \textbf{1.13} & 0.35 & -0.02 \\ 
+		V9 & 0.33 & 0.40 & 0.36 & 0.22 & 0.37 & 0.34 & 0.35 & \textbf{0.91} & 0.03 \\ 
+		V10 & -0.03 & 0.02 & -0.00 & 0.03 & -0.01 & 0.05 & -0.02 & 0.03 & \textbf{0.26} \\ 
+	\end{tabular}
+	\caption{Breastcancer~: Matrice de covariance $\Sigma_{1}$}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|rrrrrrrrr}
+		& V2 & V3 & V4 & V5 & V6 & V7 & V8 & V9 & V10 \\ 
+		\hline
+		V2 & \textbf{5.94} & 0.65 & 0.70 & -1.12 & 0.10 & -0.42 & -0.10 & -0.11 & 0.74 \\ 
+		V3 & 0.65 & \textbf{7.42} & 5.04 & 2.79 & 3.07 & -0.41 & 2.42 & 2.73 & 1.68 \\ 
+		V4 & 0.70 & 5.04 & \textbf{6.60} & 2.20 & 2.40 & -0.25 & 1.98 & 2.66 & 1.38 \\ 
+		V5 & -1.12 & 2.79 & 2.20 & \textbf{10.22} & 1.51 & -1.74 & 2.46 & 1.98 & 1.65 \\ 
+		V6 & 0.10 & 3.07 & 2.40 & 1.51 & \textbf{5.97} & -0.25 & 1.21 & 1.89 & 2.09 \\ 
+		V7 & -0.42 & -0.41 & -0.25 & -1.74 & -0.25 & \textbf{7.06} & -0.61 & 0.34 & 0.03 \\ 
+		V8 & -0.10 & 2.42 & 1.98 & 2.46 & 1.21 & -0.61 & \textbf{5.21} & 1.94 & 0.35 \\ 
+		V9 & -0.11 & 2.73 & 2.66 & 1.98 & 1.89 & 0.34 & 1.94 & \textbf{11.21} & 1.91 \\ 
+		V10 & 0.74 & 1.68 & 1.38 & 1.65 & 2.09 & 0.03 & 0.35 & 1.91 & \textbf{6.58} \\ 
+	\end{tabular}
+	\caption{Breastcancer~: Matrice de covariance $\Sigma_{2}$}
+\end{table}
+
+
+
+Remarques~:
+\begin{itemize}
+	\item Centres de gravité~:
+	\begin{itemize}
+		\item Toutes les coordonnées sont positives mais les coordonnées de la classe 2 sont deux à trois fois plus élevées~;
+		\item On peut donc en conclure que les centres de gravité des classes sont éloignés~;
+		\item S'ils le sont assez, alors une frontière de décision linéaire pourra être performante.
+	\end{itemize}
+	\item Matrices de covariance~:
+	\begin{itemize}
+		\item $\Sigma_{1}$ tend à respecter l'hypothèse d'indépendance des variables du classifieur bayésien naïf~;
+		\item $\Sigma_{2}$ présente aussi des covariances proches de zéro mais elle ne sont pas majoritaires.
+	\end{itemize}
+\end{itemize}
 
 
 \subsection{Calculs des pourcentages d'erreur des classifieurs}
@@ -814,20 +983,36 @@ On remarquera aussi en observant les variances que les modèles les plus adéqua
 \end{table}
 
 
+Comme le laissait à penser les paramètres et la visualisation par ACP, le classifieur bayésien naïf et la régression logistique (pour la frontière linéaire) sont les classifieurs qui présentent les meilleurs performances. Quoi qu'il en soit, tous les classifieurs effectuent une discrimination correcte avec de très faibles pourcentages d'erreur.
 
+Il peut être intéressant de représenter les frontières de décision sur le plan formé par les deux premières composantes principales~:
 
+\begin{figure}[H]
+	\centering
+	\captionsetup{justification=centering, margin=2cm}
+	\begin{subfigure}[b]{0.33\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=0cm}
+		\includegraphics[width=1\linewidth]{img/2-3-3-front-ACP-breastcancer-log}
+		\caption{\small Régression logistique}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=0cm}
+		\includegraphics[width=1\linewidth]{img/2-3-3-front-ACP-breastcancer-nba}
+		\caption{\small Classifieur bayésien naïf}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.33\linewidth}
+		\centering
+		\captionsetup{justification=centering, margin=0cm}
+		\includegraphics[width=1\linewidth]{img/2-3-3-front-ACP-breastcancer-adq}
+		\caption{\small A. D. quadratique}
+	\end{subfigure}%
+	\caption{\small Visualisation des frontières de décision obtenues sur les données \textit{Breastcancer} après ACP avec trois différent classifieurs}
+	\label{fig:2-3-3-front-ACP-breastcancer}%
+\end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
+On remarque que l'analyse discriminante quadratique "s'attache" un peu trop à la classe rouge et ne l'englobe pas aussi bien que le modèle bayésien naïf.
 
 
 
@@ -1077,7 +1262,7 @@ Ainsi, il faudrait seulement les 9 premières composantes principales pour le mo
 
 Conclusion, l'ACP n'est pas réellement efficace ici comme outil de réduction de dimensions~:
 \begin{itemize}
-	\item On réduit drastiquement le nombre de dimensions pour le classifieur des arbres de décision (de 57 à 9), par contre, on passe de 8.61\% à 10.53\% d'erreur~;
+	\item On réduit drastiquement le nombre de dimensions pour le classifieur des arbres de décision (de 57 à 9), mais on passe de 8.61\% à 10.53\% d'erreur~;
 	\item On réduit très peu le nombre de dimensions pour le modèle de régression logistique (de 57 à 50) et on passe de 7.25\% à 7.33\% d'erreur (très légère augmentation).
 \end{itemize}
 
@@ -1107,7 +1292,7 @@ Cela a été très simple à mettre en place grâce au package R \texttt{randomF
 		4~000 & 1.44 \\ 
 		10~000 & 1.44 \\ 
 	\end{tabular}
-	\caption{\small Pourcentage d'erreurs obtenus lors de classifications des données \textit{Spam} avec le classifieur des forêts aléatoires pour $N = 20$ itérations}
+	\caption{\small Pourcentage d'erreurs obtenus lors de classifications des données \textit{Spam} avec le classifieur des forêts aléatoires}
 	\label{table:3-4-Spam-forests-error-rates}
 \end{table}
 

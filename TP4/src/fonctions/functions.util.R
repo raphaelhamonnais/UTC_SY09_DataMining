@@ -58,15 +58,8 @@ plotAfterACPClasses <- function(file, centerEnabled = T, scaleEnabled = T) {
     X <- data[,1:zIndex-1]
     Z <- data[,zIndex]
     acp = prcomp(X, center = centerEnabled, scale = scaleEnabled)
-    plot(acp$x[,1:2], col=Z)
-    
-    inert = (acp$sdev)^2
-    inertExplique = inert / sum(inert)
-    inertExpliqueCumul = inertExplique
-    for (i in 1:length(inertExpliqueCumul))
-        inertExpliqueCumul[i] = sum(inertExplique[1:i])
-    print("inertExpliqueCumul")
-    print(inertExpliqueCumul)
+    plot(acp$x[,1:2], col=c("red", "black")[Z])
+    return(acp)
 }
 
 

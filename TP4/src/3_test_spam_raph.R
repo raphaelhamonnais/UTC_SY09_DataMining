@@ -151,13 +151,10 @@ legend(40,0.15, legend=c("Régression logistique", "Arbres de décision"), col=c
 
 ################ Random forest #############
 
-errorsForest = vector(length = 20)
-for (i in 1:20) {
-    sample = separ1(X,Z)
-    valRandomForest = random.forest.app(sample$Xapp, sample$zapp, sample$Xtst, nbTrees = 4000)
-    varImpPlot(fit)
-    prediction <- predict(fit, sample$Xtst)
-    errorsForest[i] = (1 - compute.sucess.rate(prediction, sample$ztst))
-}
-random_forest
+sample = separ1(X,Z)
+valRandomForest = random.forest.app(sample$Xapp, sample$zapp, sample$Xtst, nbTrees = 100)
+varImpPlot(fit)
+prediction <- predict(fit, sample$Xtst)
+(1 - compute.sucess.rate(prediction, sample$ztst))
+getTree(valRandomForest, k=1, labelVar=TRUE)
 

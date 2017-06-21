@@ -73,7 +73,8 @@ for (m in models) {
     writeLines("--------")
     meanErrorRates(pimaFile,m, 100)
 }
-plotAfterACPClasses(pimaFile, scaleEnabled = F, centerEnabled = F)
+acp_pima = plotAfterACPClasses(pimaFile)
+summary(acp_pima)
 data = read.csv(pimaFile)
 sqrt(diag(var(data)))
 zIndex = dim(data)[2]
@@ -100,13 +101,15 @@ for (i in 1:length(inertExpliqueCumul))
 
 
 ################## Données breast cancer ################
-plotAfterACPClasses(brestcancerFile)
+acp_breastcancer = plotAfterACPClasses(brestcancerFile)
+summary(acp_breastcancer)
 for (m in models) {
     writeLines("--------")
     writeLines(m)
     writeLines("--------")
     meanErrorRates(brestcancerFile,m, 100)
 }
+
 
 data = read.csv(brestcancerFile)
 zIndex = dim(data)[2]
@@ -115,6 +118,8 @@ Z = data[,zIndex]
 displayDecisionTree(X, Z, 106)
 
 
+
+displayDecisionBorder(acp_breastcancer$x, Z, nbaName)
 
 
 
